@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\DietController;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,4 +18,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group([
+], function (Router $router) {
+    $router->get('diets', [DietController::class, 'index']);
+    $router->post('diets', [DietController::class, 'store']);
+    $router->get('diets/{id}', [DietController::class, 'show']);
+    $router->put('diets/{id}', [DietController::class, 'update']);
+    $router->delete('diets/{id}', [DietController::class, 'destroy']);
 });

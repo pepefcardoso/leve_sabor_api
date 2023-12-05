@@ -13,5 +13,6 @@ class DietSeeder extends Seeder
     public function run(): void
     {
         //
+        \App\Models\Diet::factory(10)->create();
     }
 }
