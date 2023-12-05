@@ -23,6 +23,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'birthday',
+        'phone',
     ];
 
     /**
@@ -43,5 +45,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'birthday' => 'datetime',
     ];
+
+    public function businesses()
+    {
+        return $this->hasMany(Business::class);
+    }
 }
