@@ -21,9 +21,16 @@ Route::group([],
         $router->get('user', function (Request $request) {
             return $request->user();
         });
+
         $router->get('diets', [DietController::class, 'index']);
         $router->post('diets', [DietController::class, 'store']);
         $router->get('diets/{id}', [DietController::class, 'show']);
         $router->put('diets/{id}', [DietController::class, 'update']);
         $router->delete('diets/{id}', [DietController::class, 'destroy']);
+
+        $router->get('categories', [DietController::class, 'index']);
+        $router->post('categories', [DietController::class, 'store']);
+        $router->get('categories/{id}', [DietController::class, 'show']);
+        $router->put('categories/{id}', [DietController::class, 'update']);
+        $router->delete('categories/{id}', [DietController::class, 'destroy']);
     });
