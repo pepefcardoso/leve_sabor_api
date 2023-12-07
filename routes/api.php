@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['guest:' . config('fortify.guard')])->group(
+Route::group([],
     function (Router $router) {
         $router->get('user', function (Request $request) {
             return $request->user();
