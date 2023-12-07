@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DietController;
+use App\Http\Controllers\PhoneController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -28,9 +30,15 @@ Route::group([],
         $router->put('diets/{id}', [DietController::class, 'update']);
         $router->delete('diets/{id}', [DietController::class, 'destroy']);
 
-        $router->get('categories', [DietController::class, 'index']);
-        $router->post('categories', [DietController::class, 'store']);
-        $router->get('categories/{id}', [DietController::class, 'show']);
-        $router->put('categories/{id}', [DietController::class, 'update']);
-        $router->delete('categories/{id}', [DietController::class, 'destroy']);
+        $router->get('categories', [CategoryController::class, 'index']);
+        $router->post('categories', [CategoryController::class, 'store']);
+        $router->get('categories/{id}', [CategoryController::class, 'show']);
+        $router->put('categories/{id}', [CategoryController::class, 'update']);
+        $router->delete('categories/{id}', [CategoryController::class, 'destroy']);
+
+        $router->get('phones', [PhoneController::class, 'index']);
+        $router->post('phones', [PhoneController::class, 'store']);
+        $router->get('phones/{id}', [PhoneController::class, 'show']);
+        $router->put('phones/{id}', [PhoneController::class, 'update']);
+        $router->delete('phones/{id}', [PhoneController::class, 'destroy']);
     });
