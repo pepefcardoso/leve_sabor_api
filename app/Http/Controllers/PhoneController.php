@@ -2,66 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Phone;
 use Illuminate\Http\Request;
+use \App\Services\Phones\RegisterPhone;
+use App\Services\Phones\SearchPhones;
+use App\Services\Phones\ShowPhone;
+use App\Services\Phones\UpdatePhone;
+use App\Services\Phones\DeletePhone;
 
 class PhoneController extends Controller
 {
     //
     //
-    public function index()
+    public function index(Request $request, SearchPhones $searchPhones, int $contactId)
     {
-        $phones = Phone::all();
+        $filters = ['contactId' => $contactId];
 
-        return response()->json($phones, 200);
+        $phones = $searchPhones->search($request->all(), $filters);
+
+        return response()->json($phones);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, RegisterPhone $registerPhone, int $contactId)
     {
-        $phone = Phone::create($request->all());
+        $phone = $registerPhone->register($request->all(), $contactId);
 
-        return response()->json($phone, 201);
+        return response()->json($phone);
     }
 
-    public function show(int $id)
+    public function show(Request $request, ShowPhone $showPhone)
     {
-        $phone = Phone::findOrFail($id);
+        $phone = $showPhone->show($request->all());
 
-        if (is_null($phone)) {
-            return response()->json('', 204);
-        }
-
-        return response()->json($phone, 200);
+        return response()->json($phone);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, UpdatePhone $updatePhone)
     {
-        $phone = Phone::findOrFail($request->id);
+        $phone = $updatePhone->update($request->all());
 
-        if (is_null($phone)) {
-            return response()->json([
-                'erro' => 'Recurso não encontrado'
-            ], 404);
-        }
-
-        $phone->fill($request->all());
-        $phone->save();
-
-        return response()->json($phone, 200);
+        return response()->json($phone);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, DeletePhone $deletePhone)
     {
-        $phone = Phone::findOrFail($request->id);
+        $phone = $deletePhone->delete($request->all());
 
-        if (is_null($phone)) {
-            return response()->json([
-                'erro' => 'Recurso não encontrado'
-            ], 404);
-        }
-
-        $phone->delete();
-
-        return response()->json('', 204);
+        return response()->json($phone);
     }
 }

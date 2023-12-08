@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contacts;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 
 class ContactsController extends Controller
 {
     public function index()
     {
-        $contacts = Contacts::all();
+        $contacts = Contact::with('phone')->get();
 
         return response()->json($contacts, 200);
     }
 
     public function store(Request $request)
     {
-        $contact = Contacts::create($request->all());
+        $contact = Contact::create($request->all());
 
         return response()->json($contact, 201);
     }
 
     public function show(int $id)
     {
-        $contact = Contacts::findOrFail($id);
+        $contact = Contact::findOrFail($id);
 
         if (is_null($contact)) {
             return response()->json('', 204);
@@ -34,7 +34,7 @@ class ContactsController extends Controller
 
     public function update(Request $request)
     {
-        $contact = Contacts::findOrFail($request->id);
+        $contact = Contact::findOrFail($request->id);
 
         if (is_null($contact)) {
             return response()->json([
@@ -50,7 +50,7 @@ class ContactsController extends Controller
 
     public function destroy(Request $request)
     {
-        $contact = Contacts::findOrFail($request->id);
+        $contact = Contact::findOrFail($request->id);
 
         if (is_null($contact)) {
             return response()->json([

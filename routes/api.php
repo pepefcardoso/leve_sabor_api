@@ -38,11 +38,11 @@ Route::group([],
         $router->put('categories/{id}', [CategoryController::class, 'update']);
         $router->delete('categories/{id}', [CategoryController::class, 'destroy']);
 
-        $router->get('phones', [PhoneController::class, 'index']);
-        $router->post('phones', [PhoneController::class, 'store']);
-        $router->get('phones/{id}', [PhoneController::class, 'show']);
-        $router->put('phones/{id}', [PhoneController::class, 'update']);
-        $router->delete('phones/{id}', [PhoneController::class, 'destroy']);
+        $router->get('contacts/{contactId}/phones', [PhoneController::class, 'index']);
+        $router->post('contacts/{contactId}/phones', [PhoneController::class, 'store']);
+        $router->get('contacts/{contactId}/phones/{id}', [PhoneController::class, 'show']);
+        $router->put('contacts/{contactId}/phones/{id}', [PhoneController::class, 'update']);
+        $router->delete('contacts/{contactId}/phones/{id}', [PhoneController::class, 'destroy']);
 
         $router->get('cooking-styles', [CookingStyleController::class, 'index']);
         $router->post('cooking-styles', [CookingStyleController::class, 'store']);
