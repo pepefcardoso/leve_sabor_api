@@ -5,17 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Phone extends Model
+class Contacts extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'number',
-        'whatsapp',
+        'email',
+        'website',
+        'facebook',
+        'instagram',
+        'ifood',
     ];
 
-    public function contact()
+    public function phone()
     {
-        return $this->belongsTo(Contacts::class);
+        return $this->hasMany(Phone::class);
     }
 }
