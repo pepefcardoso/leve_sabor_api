@@ -3,63 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Services\Contacts\DeleteContact;
+use App\Services\Contacts\RegisterContact;
+use App\Services\Contacts\SearchContacts;
+use App\Services\Contacts\ShowContact;
+use App\Services\Contacts\UpdateContact;
 use Illuminate\Http\Request;
 
 class ContactsController extends Controller
 {
-    public function index()
+    public function index(Request $request, SearchContacts $searchContacts)
     {
-        $contacts = Contact::with('phone')->get();
+        $contacts = $searchContacts->search();
 
-        return response()->json($contacts, 200);
+        return response()->json($contacts);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, RegisterContact $registerContact)
     {
-        $contact = Contact::create($request->all());
+        $contact = $registerContact->register($request->all());
 
-        return response()->json($contact, 201);
+        return response()->json($contact);
     }
 
-    public function show(int $id)
+    public function show(Request $request, ShowContact $showContact)
     {
-        $contact = Contact::findOrFail($id);
+        $contact = $showContact->show($request->all());
 
-        if (is_null($contact)) {
-            return response()->json('', 204);
-        }
-
-        return response()->json($contact, 200);
+        return response()->json($contact);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, UpdateContact $updateContact)
     {
-        $contact = Contact::findOrFail($request->id);
+        $contact = $updateContact->update($request->all());
 
-        if (is_null($contact)) {
-            return response()->json([
-                'erro' => 'Recurso não encontrado'
-            ], 404);
-        }
-
-        $contact->fill($request->all());
-        $contact->save();
-
-        return response()->json($contact, 200);
+        return response()->json($contact);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, DeleteContact $deleteContact)
     {
-        $contact = Contact::findOrFail($request->id);
+        $contact = $deleteContact->delete($request->all());
 
-        if (is_null($contact)) {
-            return response()->json([
-                'erro' => 'Recurso não encontrado'
-            ], 404);
-        }
-
-        $contact->delete();
-
-        return response()->json('', 204);
+        return response()->json($contact);
     }
 }

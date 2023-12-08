@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \App\Services\Phones\RegisterPhone;
+use App\Services\Phones\RegisterPhone;
 use App\Services\Phones\SearchPhones;
 use App\Services\Phones\ShowPhone;
 use App\Services\Phones\UpdatePhone;
