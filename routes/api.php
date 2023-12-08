@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DietController;
 use App\Http\Controllers\PhoneController;
+use App\Http\Controllers\CookingStyleController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -41,4 +42,10 @@ Route::group([],
         $router->get('phones/{id}', [PhoneController::class, 'show']);
         $router->put('phones/{id}', [PhoneController::class, 'update']);
         $router->delete('phones/{id}', [PhoneController::class, 'destroy']);
+
+        $router->get('cooking-styles', [CookingStyleController::class, 'index']);
+        $router->post('cooking-styles', [CookingStyleController::class, 'store']);
+        $router->get('cooking-styles/{id}', [CookingStyleController::class, 'show']);
+        $router->put('cooking-styles/{id}', [CookingStyleController::class, 'update']);
+        $router->delete('cooking-styles/{id}', [CookingStyleController::class, 'destroy']);
     });
