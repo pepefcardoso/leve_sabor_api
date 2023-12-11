@@ -6,9 +6,11 @@ use App\Models\Phone;
 
 class ShowPhone
 {
-    public function show($request)
+    public function show($contactId, $phoneId)
     {
-        $phone = Phone::findOrFail($request->id);
+        $phone = Phone::where('contact_id', $contactId)
+            ->where('id', $phoneId)
+            ->firstOrFail();
 
         return $phone;
     }

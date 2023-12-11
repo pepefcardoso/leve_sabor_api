@@ -6,10 +6,10 @@ use App\Models\Contact;
 
 class ShowContact
 {
-    public function show($request)
+    public function show($id)
     {
-        $contact = Contact::findOrFail($request->id);
+        $contact = Contact::findOrFail($id);
 
-        return $contact;
+        return $contact->load('phone');
     }
 }

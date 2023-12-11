@@ -8,7 +8,7 @@ class SearchContacts
 {
     public function search()
     {
-        $contacts = Contact::all();
+        $contacts = Contact::with('phone')->get();
 
         return $contacts;
     }

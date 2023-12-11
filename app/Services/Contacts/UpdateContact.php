@@ -4,13 +4,13 @@ namespace App\Services\Contacts;
 
 use App\Models\Contact;
 class UpdateContact {
-    public function update($request)
+    public function update($request, $contactId)
     {
-        $contact = Contact::findOrFail($request->id);
+        $contact = Contact::findOrFail($contactId);
 
         $contact->fill($request->all());
         $contact->save();
 
-        return $contact;
+        return $contact->load('phone');
     }
 }
