@@ -2,66 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Diet;
+use App\Services\Diets\DeleteDiet;
+use App\Services\Diets\RegisterDiet;
+use App\Services\Diets\SearchDiets;
+use App\Services\Diets\ShowDiet;
+use App\Services\Diets\UpdateDiet;
 use Illuminate\Http\Request;
 
 class DietController extends Controller
 {
     //
-    public function index()
+    public function index(SearchDiets $searchDiets)
     {
-        $diets = Diet::all();
+        $diets = $searchDiets->search();
 
-        return response()->json($diets, 200);
+        return response()->json($diets);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, RegisterDiet $registerDiet)
     {
-        $diet = Diet::create($request->all());
+        $diet = $registerDiet->register($request);
 
-        return response()->json($diet, 201);
+        return response()->json($diet);
     }
 
-    public function show(int $id)
+    public function show(ShowDiet $showDiet, int $id)
     {
-        $diet = Diet::findOrFail($id);
+        $diet = $showDiet->show($id);
 
-        if (is_null($diet)) {
-            return response()->json('', 204);
-        }
-
-        return response()->json($diet, 200);
+        return response()->json($diet);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, int $id, UpdateDiet $updateDiet)
     {
-        $diet = Diet::findOrFail($request->id);
+        $diet = $updateDiet->update($request, $id);
 
-        if (is_null($diet)) {
-            return response()->json([
-                'erro' => 'Recurso não encontrado'
-            ], 404);
-        }
-
-        $diet->fill($request->all());
-        $diet->save();
-
-        return response()->json($diet, 200);
+        return response()->json($diet);
     }
 
-    public function destroy(Request $request)
+    public function destroy(int $id, DeleteDiet $deleteDiet)
     {
-        $diet = Diet::findOrFail($request->id);
+        $diet = $deleteDiet->delete($id);
 
-        if (is_null($diet)) {
-            return response()->json([
-                'erro' => 'Recurso não encontrado'
-            ], 404);
-        }
-
-        $diet->delete();
-
-        return response()->json('', 204);
+        return response()->json($diet);
     }
 
 }
