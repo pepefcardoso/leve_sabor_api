@@ -8,8 +8,7 @@ class UpdateCategory
 {
     public function update($request, $id)
     {
-        $category = Category::where('id', $id)
-            ->firstOrFail();
+        $category = Category::findOrFail($id);
 
         $category->fill($request->all());
         $category->save();

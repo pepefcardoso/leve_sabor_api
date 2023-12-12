@@ -8,8 +8,7 @@ class DeleteDiet
 {
     public function delete($id)
     {
-        $diet = Diet::where('id', $id)
-            ->firstOrFail();
+        $diet = Diet::findOrFail($id);
 
         $diet->delete();
 

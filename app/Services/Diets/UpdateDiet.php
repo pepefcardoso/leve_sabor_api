@@ -9,8 +9,7 @@ class UpdateDiet
 {
     public function update($request, $id)
     {
-        $diet = Diet::where('id', $id)
-            ->firstOrFail();
+        $diet = Diet::findOrFail($id);
 
         $diet->fill($request->all());
         $diet->save();

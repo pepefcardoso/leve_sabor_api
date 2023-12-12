@@ -31,14 +31,14 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
-    public function show(int $id, ShowCategory $showCategory)
+    public function show(ShowCategory $showCategory, int $id)
     {
         $category = $showCategory->show($id);
 
         return response()->json($category);
     }
 
-    public function update(Request $request, int $id, UpdateCategory $updateCategory)
+    public function update(Request $request, UpdateCategory $updateCategory, int $id)
     {
         $request->validate([
             'name' => 'required|string|min:3|max:30',
@@ -49,7 +49,7 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
-    public function destroy(int $id, DeleteCategory $deleteCategory)
+    public function destroy(DeleteCategory $deleteCategory, int $id)
     {
         $category = $deleteCategory->delete($id);
 

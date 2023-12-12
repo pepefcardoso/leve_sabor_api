@@ -6,11 +6,9 @@ use App\Models\Phone;
 
 class DeletePhone
 {
-    public function delete($request, $contactId, $phoneId)
+    public function delete($id)
     {
-        $phone = Phone::where('contact_id', $contactId)
-            ->where('id', $phoneId)
-            ->firstOrFail();
+        $phone = Phone::findOrFail($id);
 
         $phone->delete();
 

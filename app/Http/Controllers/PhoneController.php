@@ -13,11 +13,11 @@ class PhoneController extends Controller
 {
     //
     //
-    public function index(Request $request, SearchPhones $searchPhones, int $contactId)
+    public function index(SearchPhones $searchPhones, int $contactId)
     {
         $filters = ['contactId' => $contactId];
 
-        $phones = $searchPhones->search($request->all(), $filters);
+        $phones = $searchPhones->search($filters);
 
         return response()->json($phones);
     }
@@ -34,28 +34,28 @@ class PhoneController extends Controller
         return response()->json($phone);
     }
 
-    public function show(Request $request, ShowPhone $showPhone, int $contactId, int $id)
+    public function show(ShowPhone $showPhone, int $id)
     {
-        $phone = $showPhone->show($contactId, $id);
+        $phone = $showPhone->show($id);
 
         return response()->json($phone);
     }
 
-    public function update(Request $request, UpdatePhone $updatePhone, int $contactId, int $id)
+    public function update(Request $request, UpdatePhone $updatePhone, int $id)
     {
         $request->validate([
             'number' => 'required|string|min:10|max:11',
             'whatsapp' => 'nullable|boolean',
         ]);
 
-        $phone = $updatePhone->update($request, $contactId, $id);
+        $phone = $updatePhone->update($request, $id);
 
         return response()->json($phone);
     }
 
-    public function destroy(Request $request, DeletePhone $deletePhone, int $contactId, int $id)
+    public function destroy(DeletePhone $deletePhone, int $id)
     {
-        $phone = $deletePhone->delete($request, $contactId, $id);
+        $phone = $deletePhone->delete($id);
 
         return response()->json($phone);
     }

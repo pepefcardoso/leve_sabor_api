@@ -38,7 +38,7 @@ class CookingStyleController extends Controller
     }
 
 
-    public function update(Request $request, int $id, UpdateCookingStyle $updateCookingStyle)
+    public function update(Request $request,UpdateCookingStyle $updateCookingStyle, int $id)
     {
         $request->validate([
             'name' => 'required|string|min:3|max:30',
@@ -50,7 +50,7 @@ class CookingStyleController extends Controller
     }
 
 
-    public function destroy(int $id, DeleteCookingStyle $deleteCookingStyle)
+    public function destroy(DeleteCookingStyle $deleteCookingStyle, int $id)
     {
         $cookingStyle = $deleteCookingStyle->delete($id);
 

@@ -6,11 +6,9 @@ use App\Models\Phone;
 
 class UpdatePhone
 {
-    public function update($request, $contactId, $phoneId)
+    public function update($request, $id)
     {
-        $phone = Phone::where('contact_id', $contactId)
-            ->where('id', $phoneId)
-            ->firstOrFail();
+        $phone = Phone::findOrFail($id);
 
         $phone->fill($request->all());
         $phone->save();

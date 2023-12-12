@@ -19,7 +19,7 @@ class ContactsController extends Controller
         return response()->json($contacts);
     }
 
-    public function store(Request $request, RegisterContact $registerContact, RegisterPhone $registerPhone)
+    public function store(Request $request, RegisterContact $registerContact)
     {
         $request->validate([
             'email' => 'nullable|email',
@@ -33,7 +33,7 @@ class ContactsController extends Controller
         $contact = $registerContact->register($request);
 
 
-        $phones = $request->get('phones');
+//        $phones = $request->get('phones');
 
 //        foreach ($phones as $phone) {
 //            $registerPhone->register($phone, $contact->id);
@@ -42,7 +42,7 @@ class ContactsController extends Controller
         return response()->json($contact->load('phone'));
     }
 
-    public function show(Request $request, ShowContact $showContact, int $id)
+    public function show(ShowContact $showContact, int $id)
     {
         $contact = $showContact->show($id);
 
@@ -71,9 +71,9 @@ class ContactsController extends Controller
         return response()->json($contact);
     }
 
-    public function destroy(Request $request, DeleteContact $deleteContact, int $id)
+    public function destroy(DeleteContact $deleteContact, int $id)
     {
-        $contact = $deleteContact->delete($request, $id);
+        $contact = $deleteContact->delete($id);
 
         return response()->json($contact);
     }

@@ -8,8 +8,7 @@ class ShowDiet
 {
     public function show($id)
     {
-        $diet = Diet::where('id', $id)
-            ->firstOrFail();
+        $diet = Diet::findOrFail($id);
 
         return $diet;
     }

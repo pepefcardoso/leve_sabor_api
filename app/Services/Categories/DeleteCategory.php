@@ -8,7 +8,7 @@ class DeleteCategory
 {
     public function delete(int $id)
     {
-        $category = Category::where('id', $id)->firstOrFail();
+        $category = Category::findOrFail($id);
 
         $category->delete();
 

@@ -6,9 +6,9 @@ use App\Models\Contact;
 
 class DeleteContact
 {
-    public function delete($request, $contactId)
+    public function delete($id)
     {
-        $contact = Contact::findOrFail($contactId);
+        $contact = Contact::findOrFail($id);
 
         $contact->delete();
 

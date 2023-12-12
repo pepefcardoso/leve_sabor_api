@@ -37,7 +37,7 @@ class DietController extends Controller
         return response()->json($diet);
     }
 
-    public function update(Request $request, int $id, UpdateDiet $updateDiet)
+    public function update(Request $request, UpdateDiet $updateDiet, int $id)
     {
         $request->validate([
             'name' => 'required|string|min:3|max:30',
@@ -48,7 +48,7 @@ class DietController extends Controller
         return response()->json($diet);
     }
 
-    public function destroy(int $id, DeleteDiet $deleteDiet)
+    public function destroy(DeleteDiet $deleteDiet, int $id)
     {
         $diet = $deleteDiet->delete($id);
 
