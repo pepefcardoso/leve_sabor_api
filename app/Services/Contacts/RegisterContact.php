@@ -8,7 +8,7 @@ class RegisterContact
 {
     public function register($request)
     {
-        $contact = Contact::create($request);
+        $contact = Contact::create($request->all());
 
         return $contact;
     }

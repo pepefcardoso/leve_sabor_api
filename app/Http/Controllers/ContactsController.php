@@ -8,12 +8,11 @@ use App\Services\Contacts\SearchContacts;
 use App\Services\Contacts\ShowContact;
 use App\Services\Contacts\UpdateContact;
 use App\Services\Phones\RegisterPhone;
-use App\Services\Phones\UpdatePhone;
 use Illuminate\Http\Request;
 
 class ContactsController extends Controller
 {
-    public function index(Request $request, SearchContacts $searchContacts)
+    public function index(SearchContacts $searchContacts)
     {
         $contacts = $searchContacts->search();
 
@@ -22,14 +21,23 @@ class ContactsController extends Controller
 
     public function store(Request $request, RegisterContact $registerContact, RegisterPhone $registerPhone)
     {
-        $contact = $registerContact->register($request->all());
+        $request->validate([
+            'email' => 'nullable|email',
+            'website' => 'nullable|url',
+            'facebook' => 'nullable|string|min:3|max:99',
+            'instagram' => 'nullable|string|min:3|max:99',
+            'ifood' => 'nullable|string|min:3|max:99',
+            'phones' => 'nullable|array',
+        ]);
+
+        $contact = $registerContact->register($request);
 
 
         $phones = $request->get('phones');
 
-        foreach ($phones as $phone) {
-            $registerPhone->register($phone, $contact->id);
-        }
+//        foreach ($phones as $phone) {
+//            $registerPhone->register($phone, $contact->id);
+//        }
 
         return response()->json($contact->load('phone'));
     }
@@ -43,6 +51,15 @@ class ContactsController extends Controller
 
     public function update(Request $request, UpdateContact $updateContact, int $id)
     {
+        $request->validate([
+            'email' => 'nullable|email',
+            'website' => 'nullable|url',
+            'facebook' => 'nullable|string|min:3|max:99',
+            'instagram' => 'nullable|string|min:3|max:99',
+            'ifood' => 'nullable|string|min:3|max:99',
+            'phones' => 'nullable|array',
+        ]);
+
         $contact = $updateContact->update($request, $id);
 
 //        $phones = $request->get('phones');

@@ -21,6 +21,10 @@ class DietController extends Controller
 
     public function store(Request $request, RegisterDiet $registerDiet)
     {
+        $request->validate([
+            'name' => 'required|string|min:3|max:30',
+        ]);
+
         $diet = $registerDiet->register($request);
 
         return response()->json($diet);
@@ -35,6 +39,10 @@ class DietController extends Controller
 
     public function update(Request $request, int $id, UpdateDiet $updateDiet)
     {
+        $request->validate([
+            'name' => 'required|string|min:3|max:30',
+        ]);
+
         $diet = $updateDiet->update($request, $id);
 
         return response()->json($diet);

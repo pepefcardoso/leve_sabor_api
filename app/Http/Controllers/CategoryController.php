@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Services\Categories\DeleteCategory;
 use App\Services\Categories\RegisterCategory;
 use App\Services\Categories\SearchCategories;
@@ -23,6 +22,10 @@ class CategoryController extends Controller
 
     public function store(Request $request, RegisterCategory $registerCategory)
     {
+        $request->validate([
+            'name' => 'required|string|min:3|max:30',
+        ]);
+
         $category = $registerCategory->register($request);
 
         return response()->json($category);
@@ -37,6 +40,10 @@ class CategoryController extends Controller
 
     public function update(Request $request, int $id, UpdateCategory $updateCategory)
     {
+        $request->validate([
+            'name' => 'required|string|min:3|max:30',
+        ]);
+
         $category = $updateCategory->update($request, $id);
 
         return response()->json($category);

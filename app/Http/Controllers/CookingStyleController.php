@@ -21,6 +21,10 @@ class CookingStyleController extends Controller
 
     public function store(Request $request, RegisterCookingStyle $registerCookingStyle)
     {
+        $request->validate([
+            'name' => 'required|string|min:3|max:30',
+        ]);
+
         $cookingStyle = $registerCookingStyle->register($request);
 
         return response()->json($cookingStyle);
@@ -36,6 +40,10 @@ class CookingStyleController extends Controller
 
     public function update(Request $request, int $id, UpdateCookingStyle $updateCookingStyle)
     {
+        $request->validate([
+            'name' => 'required|string|min:3|max:30',
+        ]);
+
         $cookingStyle = $updateCookingStyle->update($request, $id);
 
         return response()->json($cookingStyle);
