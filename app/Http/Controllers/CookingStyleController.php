@@ -2,65 +2,50 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CookingStyle;
+use App\Services\CookingStyle\DeleteCookingStyle;
+use App\Services\CookingStyle\RegisterCookingStyle;
+use App\Services\CookingStyle\SearchCookingStyles;
+use App\Services\CookingStyle\ShowCookingStyle;
+use App\Services\CookingStyle\UpdateCookingStyle;
 use Illuminate\Http\Request;
 
 class CookingStyleController extends Controller
 {
     //
-    public function index()
+    public function index(SearchCookingStyles $searchCookingStyles)
     {
-        $cookingStyles = CookingStyle::all();
+        $cookingStyles = $searchCookingStyles->search();
 
-        return response()->json($cookingStyles, 200);
+        return response()->json($cookingStyles);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, RegisterCookingStyle $registerCookingStyle)
     {
-        $cookingStyle = CookingStyle::create($request->all());
+        $cookingStyle = $registerCookingStyle->register($request);
 
-        return response()->json($cookingStyle, 201);
+        return response()->json($cookingStyle);
     }
 
-    public function show(int $id)
+    public function show(ShowCookingStyle $showCookingStyle, int $id)
     {
-        $cookingStyle = CookingStyle::findOrFail($id);
+        $cookingStyle = $showCookingStyle->show($id);
 
-        if (is_null($cookingStyle)) {
-            return response()->json('', 204);
-        }
-
-        return response()->json($cookingStyle, 200);
+        return response()->json($cookingStyle);
     }
 
-    public function update(Request $request)
+
+    public function update(Request $request, int $id, UpdateCookingStyle $updateCookingStyle)
     {
-        $cookingStyle = CookingStyle::findOrFail($request->id);
+        $cookingStyle = $updateCookingStyle->update($request, $id);
 
-        if (is_null($cookingStyle)) {
-            return response()->json([
-                'erro' => 'Recurso não encontrado'
-            ], 404);
-        }
-
-        $cookingStyle->fill($request->all());
-        $cookingStyle->save();
-
-        return response()->json($cookingStyle, 200);
+        return response()->json($cookingStyle);
     }
 
-    public function destroy(Request $request)
+
+    public function destroy(int $id, DeleteCookingStyle $deleteCookingStyle)
     {
-        $cookingStyle = CookingStyle::findOrFail($request->id);
+        $cookingStyle = $deleteCookingStyle->delete($id);
 
-        if (is_null($cookingStyle)) {
-            return response()->json([
-                'erro' => 'Recurso não encontrado'
-            ], 404);
-        }
-
-        $cookingStyle->delete();
-
-        return response()->json('', 204);
+        return response()->json($cookingStyle);
     }
 }
