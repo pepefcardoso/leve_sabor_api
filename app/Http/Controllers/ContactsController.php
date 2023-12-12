@@ -28,16 +28,11 @@ class ContactsController extends Controller
             'instagram' => 'nullable|string|min:3|max:99',
             'ifood' => 'nullable|string|min:3|max:99',
             'phones' => 'nullable|array',
+            'phones.*.number' => 'required|string|min:10|max:1',
+            'phones.*.whatsapp' => 'nullable|boolean',
         ]);
 
         $contact = $registerContact->register($request);
-
-
-//        $phones = $request->get('phones');
-
-//        foreach ($phones as $phone) {
-//            $registerPhone->register($phone, $contact->id);
-//        }
 
         return response()->json($contact->load('phone'));
     }
@@ -58,15 +53,11 @@ class ContactsController extends Controller
             'instagram' => 'nullable|string|min:3|max:99',
             'ifood' => 'nullable|string|min:3|max:99',
             'phones' => 'nullable|array',
+            'phones.*.number' => 'required|string|min:10|max:1',
+            'phones.*.whatsapp' => 'nullable|boolean',
         ]);
 
         $contact = $updateContact->update($request, $id);
-
-//        $phones = $request->get('phones');
-//
-//        foreach ($phones as $phone) {
-//            $updatePhone->update($phone, $contact->id, $phone['id']);
-//        }
 
         return response()->json($contact);
     }
