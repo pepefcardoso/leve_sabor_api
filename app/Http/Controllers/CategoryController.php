@@ -3,65 +3,49 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Services\Categories\DeleteCategory;
+use App\Services\Categories\RegisterCategory;
+use App\Services\Categories\SearchCategories;
+use App\Services\Categories\ShowCategory;
+use App\Services\Categories\UpdateCategory;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     //
     //
-    public function index()
+    public function index(SearchCategories $searchCategories)
     {
-        $categories = Category::all();
+        $categories = $searchCategories->search();
 
-        return response()->json($categories, 200);
+        return response()->json($categories);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, RegisterCategory $registerCategory)
     {
-        $category = Category::create($request->all());
+        $category = $registerCategory->register($request);
 
-        return response()->json($category, 201);
+        return response()->json($category);
     }
 
-    public function show(int $id)
+    public function show(int $id, ShowCategory $showCategory)
     {
-        $category = Category::findOrFail($id);
+        $category = $showCategory->show($id);
 
-        if (is_null($category)) {
-            return response()->json('', 204);
-        }
-
-        return response()->json($category, 200);
+        return response()->json($category);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, int $id, UpdateCategory $updateCategory)
     {
-        $category = Category::findOrFail($request->id);
+        $category = $updateCategory->update($request, $id);
 
-        if (is_null($category)) {
-            return response()->json([
-                'erro' => 'Recurso não encontrado'
-            ], 404);
-        }
-
-        $category->fill($request->all());
-        $category->save();
-
-        return response()->json($category, 200);
+        return response()->json($category);
     }
 
-    public function destroy(Request $request)
+    public function destroy(int $id, DeleteCategory $deleteCategory)
     {
-        $category = Category::findOrFail($request->id);
+        $category = $deleteCategory->delete($id);
 
-        if (is_null($category)) {
-            return response()->json([
-                'erro' => 'Recurso não encontrado'
-            ], 404);
-        }
-
-        $category->delete();
-
-        return response()->json('', 204);
+        return response()->json($category);
     }
 }
