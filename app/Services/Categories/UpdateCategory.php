@@ -10,7 +10,7 @@ class UpdateCategory
     {
         $category = Category::findOrFail($id);
 
-        $category->fill($request->all());
+        $category->fill($request);
         $category->save();
 
         return $category;

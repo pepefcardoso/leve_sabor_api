@@ -7,12 +7,21 @@ use App\Services\Phones\DeletePhone;
 
 class DeleteContact
 {
-    public function delete($id, DeletePhone $deletePhone)
+    public function __construct(DeletePhone $deletePhone)
     {
-        $contact = Contact::with('phones')->findOrFail($id);
+        $this->deletePhone = $deletePhone;
+    }
 
-        foreach ($contact->phones as $phone) {
-            $deletePhone->delete($phone->id);
+    public function delete($id)
+    {
+        $contact = Contact::with('phone')->findOrFail($id);
+
+        $phones = $contact->phones;
+
+        if ($phones) {
+            foreach ($phones as $phone) {
+                $this->deletePhone->delete($phone->id);
+            }
         }
 
         $contact->delete();

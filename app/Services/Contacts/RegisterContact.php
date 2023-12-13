@@ -7,7 +7,12 @@ use App\Services\Phones\RegisterPhone;
 
 class RegisterContact
 {
-    public function register($request, RegisterPhone $registerPhone)
+    public function __construct(RegisterPhone $registerPhone)
+    {
+        $this->registerPhone = $registerPhone;
+    }
+
+    public function register($request)
     {
         $contact = Contact::create($request->all());
 
@@ -15,7 +20,7 @@ class RegisterContact
 
         if ($phones) {
             foreach ($phones as $phone) {
-                $phone = $registerPhone->register($phone, $contact->id);
+                $phone = $this->registerPhone->register($phone, $contact->id);
             }
         }
 

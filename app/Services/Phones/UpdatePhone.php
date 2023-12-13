@@ -10,7 +10,7 @@ class UpdatePhone
     {
         $phone = Phone::findOrFail($id);
 
-        $phone->fill($request->all());
+        $phone->fill($request);
         $phone->save();
 
         return $phone;

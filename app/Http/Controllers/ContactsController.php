@@ -28,7 +28,7 @@ class ContactsController extends Controller
             'instagram' => 'nullable|string|min:3|max:99',
             'ifood' => 'nullable|string|min:3|max:99',
             'phones' => 'nullable|array',
-            'phones.*.number' => 'required|string|min:10|max:1',
+            'phones.*.number' => 'required|string|min:10|max:11',
             'phones.*.whatsapp' => 'nullable|boolean',
         ]);
 
@@ -53,7 +53,7 @@ class ContactsController extends Controller
             'instagram' => 'nullable|string|min:3|max:99',
             'ifood' => 'nullable|string|min:3|max:99',
             'phones' => 'nullable|array',
-            'phones.*.number' => 'required|string|min:10|max:1',
+            'phones.*.number' => 'required|string|min:10|max:11',
             'phones.*.whatsapp' => 'nullable|boolean',
         ]);
 

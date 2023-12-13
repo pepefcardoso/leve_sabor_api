@@ -10,7 +10,14 @@ use Illuminate\Http\Request;
 
 class UpdateContact
 {
-    public function update(Request $request, int $contactId, RegisterPhone $registerPhone, UpdatePhone $updatePhone, DeletePhone $deletePhone,)
+    public function __construct(RegisterPhone $registerPhone, UpdatePhone $updatePhone, DeletePhone $deletePhone)
+    {
+        $this->registerPhone = $registerPhone;
+        $this->updatePhone = $updatePhone;
+        $this->deletePhone = $deletePhone;
+    }
+
+    public function update(Request $request, int $contactId)
     {
         $contact = Contact::findOrFail($contactId);
         $currentPhoneIds = $contact->phone->pluck('id')->toArray();
@@ -24,10 +31,10 @@ class UpdateContact
         if ($phones) {
             foreach ($phones as $phone) {
                 if (isset($phone['id'])) {
-                    $updatePhone->update($phone, $contact->id);
+                    $this->updatePhone->update($phone, $contact->id);
                     $updatedPhoneIds[] = $phone['id'];
                 } else {
-                    $newPhone = $registerPhone->register($phone, $contact->id);
+                    $newPhone = $this->registerPhone->register($phone, $contact->id);
                     $updatedPhoneIds[] = $newPhone->id; // Supondo que 'register' retorna o telefone registrado
                 }
             }
@@ -37,7 +44,7 @@ class UpdateContact
 
         if ($deletedPhoneIds) {
             foreach ($deletedPhoneIds as $phoneId) {
-                $deletePhone->delete($phoneId);
+                $this->deletePhone->delete($phoneId);
             }
         }
 

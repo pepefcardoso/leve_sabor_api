@@ -8,7 +8,7 @@ class RegisterCategory
 {
     public function register($request)
     {
-        $category = Category::create($request->all());
+        $category = Category::create($request);
 
         return $category;
     }

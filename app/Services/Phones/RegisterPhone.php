@@ -10,7 +10,7 @@ class RegisterPhone
     {
         $request['contact_id'] = $contactId;
 
-        $phone = Phone::create($request->all());
+        $phone = Phone::create($request);
 
         return $phone;
     }
