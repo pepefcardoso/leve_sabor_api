@@ -22,11 +22,11 @@ class CategoryController extends Controller
 
     public function store(Request $request, RegisterCategory $registerCategory)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|min:3|max:30',
         ]);
 
-        $category = $registerCategory->register($request);
+        $category = $registerCategory->register($data);
 
         return response()->json($category);
     }
@@ -40,11 +40,11 @@ class CategoryController extends Controller
 
     public function update(Request $request, UpdateCategory $updateCategory, int $id)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|min:3|max:30',
         ]);
 
-        $category = $updateCategory->update($request, $id);
+        $category = $updateCategory->update($data, $id);
 
         return response()->json($category);
     }

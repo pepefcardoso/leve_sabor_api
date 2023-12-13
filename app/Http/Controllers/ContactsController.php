@@ -21,7 +21,7 @@ class ContactsController extends Controller
 
     public function store(Request $request, RegisterContact $registerContact)
     {
-        $request->validate([
+        $data = $request->validate([
             'email' => 'nullable|email',
             'website' => 'nullable|url',
             'facebook' => 'nullable|string|min:3|max:99',
@@ -32,7 +32,7 @@ class ContactsController extends Controller
             'phones.*.whatsapp' => 'nullable|boolean',
         ]);
 
-        $contact = $registerContact->register($request);
+        $contact = $registerContact->register($data);
 
         return response()->json($contact->load('phone'));
     }
@@ -46,7 +46,7 @@ class ContactsController extends Controller
 
     public function update(Request $request, UpdateContact $updateContact, int $id)
     {
-        $request->validate([
+        $data = $request->validate([
             'email' => 'nullable|email',
             'website' => 'nullable|url',
             'facebook' => 'nullable|string|min:3|max:99',
@@ -57,7 +57,7 @@ class ContactsController extends Controller
             'phones.*.whatsapp' => 'nullable|boolean',
         ]);
 
-        $contact = $updateContact->update($request, $id);
+        $contact = $updateContact->update($data, $id);
 
         return response()->json($contact);
     }

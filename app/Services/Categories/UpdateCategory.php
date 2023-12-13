@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateCategory
 {
-    public function update($request, $id)
+    public function update(array $data,int $id)
     {
         DB::beginTransaction();
 
         try {
             $category = Category::findOrFail($id);
 
-            $category->fill($request->all());
+            $category->fill($data);
             $category->save();
 
             DB::commit();

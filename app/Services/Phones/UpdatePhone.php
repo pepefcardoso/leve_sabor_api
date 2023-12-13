@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\DB;
 
 class UpdatePhone
 {
-    public function update($request, $id)
+    public function update(array $data,int $id)
     {
         DB::beginTransaction();
 
         try {
             $phone = Phone::findOrFail($id);
 
-            $phone->fill($request);
+            $phone->fill($data);
             $phone->save();
 
             DB::commit();

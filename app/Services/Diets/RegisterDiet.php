@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\DB;
 
 class RegisterDiet
 {
-    public function register($request)
+    public function register(array $data)
     {
         DB::beginTransaction();
 
         try {
-            $diet = Diet::create($request->all());
+            $diet = Diet::create($data);
 
             DB::commit();
 

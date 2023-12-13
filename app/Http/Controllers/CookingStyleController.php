@@ -21,11 +21,11 @@ class CookingStyleController extends Controller
 
     public function store(Request $request, RegisterCookingStyle $registerCookingStyle)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|min:3|max:30',
         ]);
 
-        $cookingStyle = $registerCookingStyle->register($request);
+        $cookingStyle = $registerCookingStyle->register($data);
 
         return response()->json($cookingStyle);
     }
@@ -40,11 +40,11 @@ class CookingStyleController extends Controller
 
     public function update(Request $request,UpdateCookingStyle $updateCookingStyle, int $id)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|min:3|max:30',
         ]);
 
-        $cookingStyle = $updateCookingStyle->update($request, $id);
+        $cookingStyle = $updateCookingStyle->update($data, $id);
 
         return response()->json($cookingStyle);
     }

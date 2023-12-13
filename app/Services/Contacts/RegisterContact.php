@@ -13,18 +13,18 @@ class RegisterContact
         $this->registerPhone = $registerPhone;
     }
 
-    public function register($request)
+    public function register(array $data)
     {
         DB::beginTransaction();
 
         try {
-            $contact = Contact::create($request->all());
+            $contact = Contact::create($data);
 
-            $phones = $request->get('phones');
+            $phones = $data['phones'] ?? null;
 
             if ($phones) {
                 foreach ($phones as $phone) {
-                    $phone = $this->registerPhone->register($phone, $contact->id);
+                    $this->registerPhone->register($phone, $contact->id);
                 }
             }
 

@@ -6,7 +6,6 @@ use App\Models\Contact;
 use App\Services\Phones\DeletePhone;
 use App\Services\Phones\RegisterPhone;
 use App\Services\Phones\UpdatePhone;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class UpdateContact
@@ -18,7 +17,7 @@ class UpdateContact
         $this->deletePhone = $deletePhone;
     }
 
-    public function update(Request $request, int $contactId)
+    public function update(array $data, int $contactId)
     {
         DB::beginTransaction();
 
@@ -26,10 +25,10 @@ class UpdateContact
             $contact = Contact::findOrFail($contactId);
             $currentPhoneIds = $contact->phone->pluck('id')->toArray();
 
-            $contact->fill($request->all());
+            $contact->fill($data);
             $contact->save();
 
-            $phones = $request->get('phones');
+            $phones = $data['phones'] ?? null;
 
             $updatedPhoneIds = [];
             if ($phones) {

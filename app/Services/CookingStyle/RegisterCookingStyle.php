@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\DB;
 
 class RegisterCookingStyle
 {
-    public function register($request)
+    public function register(array $data)
     {
         DB::beginTransaction();
 
         try {
-            $cookingStyle = CookingStyle::create($request->all());
+            $cookingStyle = CookingStyle::create($data);
 
             DB::commit();
 

@@ -8,14 +8,14 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateDiet
 {
-    public function update($request, $id)
+    public function update(array $data,int $id)
     {
         DB::beginTransaction();
 
         try {
             $diet = Diet::findOrFail($id);
 
-            $diet->fill($request->all());
+            $diet->fill($data);
             $diet->save();
 
             DB::commit();

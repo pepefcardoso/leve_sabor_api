@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateCookingStyle
 {
-    public function update($request, $id)
+    public function update(array $data,int $id)
     {
         DB::beginTransaction();
 
         try {
             $cookingStyle = CookingStyle::findOrFail($id);
 
-            $cookingStyle->fill($request->all());
+            $cookingStyle->fill($data);
             $cookingStyle->save();
 
             DB::commit();

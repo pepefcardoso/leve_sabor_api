@@ -24,12 +24,12 @@ class PhoneController extends Controller
 
     public function store(Request $request, RegisterPhone $registerPhone, int $contactId)
     {
-        $request->validate([
+        $data = $request->validate([
             'number' => 'required|string|min:10|max:11',
             'whatsapp' => 'nullable|boolean',
         ]);
 
-        $phone = $registerPhone->register($request, $contactId);
+        $phone = $registerPhone->register($data, $contactId);
 
         return response()->json($phone);
     }
@@ -43,12 +43,12 @@ class PhoneController extends Controller
 
     public function update(Request $request, UpdatePhone $updatePhone, int $id)
     {
-        $request->validate([
+        $data = $request->validate([
             'number' => 'required|string|min:10|max:11',
             'whatsapp' => 'nullable|boolean',
         ]);
 
-        $phone = $updatePhone->update($request, $id);
+        $phone = $updatePhone->update($data, $id);
 
         return response()->json($phone);
     }

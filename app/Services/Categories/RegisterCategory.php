@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\DB;
 
 class RegisterCategory
 {
-    public function register($request)
+    public function register(array $data)
     {
         DB::beginTransaction();
 
         try {
-            $category = Category::create($request->all());
+            $category = Category::create($data);
 
             DB::commit();
 
