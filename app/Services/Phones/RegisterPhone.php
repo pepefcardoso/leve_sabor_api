@@ -3,6 +3,7 @@
 namespace App\Services\Phones;
 
 use App\Models\Phone;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class RegisterPhone
@@ -14,7 +15,11 @@ class RegisterPhone
         try {
             $request['contact_id'] = $contactId;
 
-            $phone = Phone::create($request->all());
+            if ($request instanceof Request) {
+                $phone = Phone::create($request->all());
+            } else {
+                $phone = Phone::create($request);
+            }
 
             DB::commit();
 
