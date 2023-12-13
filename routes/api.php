@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\AdressController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactsController;
+use App\Http\Controllers\CookingStyleController;
 use App\Http\Controllers\DietController;
 use App\Http\Controllers\PhoneController;
-use App\Http\Controllers\CookingStyleController;
-use App\Http\Controllers\ContactsController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -55,4 +56,10 @@ Route::group([],
         $router->get('contacts/{id}', [ContactsController::class, 'show']);
         $router->put('contacts/{id}', [ContactsController::class, 'update']);
         $router->delete('contacts/{id}', [ContactsController::class, 'destroy']);
+
+        $router->get('adresses', [AdressController::class, 'index']);
+        $router->post('adresses', [AdressController::class, 'store']);
+        $router->get('adresses/{id}', [AdressController::class, 'show']);
+        $router->put('adresses/{id}', [AdressController::class, 'update']);
+        $router->delete('adresses/{id}', [AdressController::class, 'destroy']);
     });
