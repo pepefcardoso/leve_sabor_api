@@ -24,8 +24,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([],
     function (Router $router) {
-        Route::post('register', [UserController::class, 'store']);
-        Route::post('login', [UserController::class, 'login']);
+        $router->post('register', [UserController::class, 'store']);
+        $router->post('login', [UserController::class, 'login']);
+    });
+
+Route::middleware('auth:api')->group(
+    function (Router $router) {
 
         $router->get('diets', [DietController::class, 'index']);
         $router->post('diets', [DietController::class, 'store']);
