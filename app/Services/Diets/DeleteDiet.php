@@ -3,15 +3,25 @@
 namespace App\Services\Diets;
 
 use App\Models\Diet;
+use Illuminate\Support\Facades\DB;
 
 class DeleteDiet
 {
     public function delete($id)
     {
-        $diet = Diet::findOrFail($id);
+        DB::beginTransaction();
 
-        $diet->delete();
+        try {
+            $diet = Diet::findOrFail($id);
 
-        return $diet;
+            $diet->delete();
+
+            DB::commit();
+
+            return $diet;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
     }
 }
