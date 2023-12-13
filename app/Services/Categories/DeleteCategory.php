@@ -3,15 +3,25 @@
 namespace App\Services\Categories;
 
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 
 class DeleteCategory
 {
     public function delete(int $id)
     {
-        $category = Category::findOrFail($id);
+        DB::beginTransaction();
 
-        $category->delete();
+        try {
+            $category = Category::findOrFail($id);
 
-        return $category;
+            $category->delete();
+
+            DB::commit();
+
+            return $category;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
     }
 }

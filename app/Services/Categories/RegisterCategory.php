@@ -3,13 +3,23 @@
 namespace App\Services\Categories;
 
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 
 class RegisterCategory
 {
     public function register($request)
     {
-        $category = Category::create($request);
+        DB::beginTransaction();
 
-        return $category;
+        try {
+            $category = Category::create($request->all());
+
+            DB::commit();
+
+            return $category;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
     }
 }

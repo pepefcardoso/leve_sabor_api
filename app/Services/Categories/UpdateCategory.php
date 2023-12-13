@@ -3,16 +3,26 @@
 namespace App\Services\Categories;
 
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 
 class UpdateCategory
 {
     public function update($request, $id)
     {
-        $category = Category::findOrFail($id);
+        DB::beginTransaction();
 
-        $category->fill($request);
-        $category->save();
+        try {
+            $category = Category::findOrFail($id);
 
-        return $category;
+            $category->fill($request->all());
+            $category->save();
+
+            DB::commit();
+
+            return $category;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
     }
 }
