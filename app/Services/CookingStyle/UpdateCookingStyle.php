@@ -3,16 +3,26 @@
 namespace App\Services\CookingStyle;
 
 use App\Models\CookingStyle;
+use Illuminate\Support\Facades\DB;
 
 class UpdateCookingStyle
 {
     public function update($request, $id)
     {
-        $cookingStyle = CookingStyle::findOrFail($id);
+        DB::beginTransaction();
 
-        $cookingStyle->fill($request->all());
-        $cookingStyle->save();
+        try {
+            $cookingStyle = CookingStyle::findOrFail($id);
 
-        return $cookingStyle;
+            $cookingStyle->fill($request->all());
+            $cookingStyle->save();
+
+            DB::commit();
+
+            return $cookingStyle;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
     }
 }
