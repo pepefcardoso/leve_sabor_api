@@ -7,6 +7,7 @@ use App\Services\Phones\DeletePhone;
 use App\Services\Phones\RegisterPhone;
 use App\Services\Phones\UpdatePhone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UpdateContact
 {
@@ -19,35 +20,44 @@ class UpdateContact
 
     public function update(Request $request, int $contactId)
     {
-        $contact = Contact::findOrFail($contactId);
-        $currentPhoneIds = $contact->phone->pluck('id')->toArray();
+        DB::beginTransaction();
 
-        $contact->fill($request->all());
-        $contact->save();
+        try {
+            $contact = Contact::findOrFail($contactId);
+            $currentPhoneIds = $contact->phone->pluck('id')->toArray();
 
-        $phones = $request->get('phones');
+            $contact->fill($request->all());
+            $contact->save();
 
-        $updatedPhoneIds = [];
-        if ($phones) {
-            foreach ($phones as $phone) {
-                if (isset($phone['id'])) {
-                    $this->updatePhone->update($phone, $contact->id);
-                    $updatedPhoneIds[] = $phone['id'];
-                } else {
-                    $newPhone = $this->registerPhone->register($phone, $contact->id);
-                    $updatedPhoneIds[] = $newPhone->id; // Supondo que 'register' retorna o telefone registrado
+            $phones = $request->get('phones');
+
+            $updatedPhoneIds = [];
+            if ($phones) {
+                foreach ($phones as $phone) {
+                    if (isset($phone['id'])) {
+                        $this->updatePhone->update($phone, $contact->id);
+                        $updatedPhoneIds[] = $phone['id'];
+                    } else {
+                        $newPhone = $this->registerPhone->register($phone, $contact->id);
+                        $updatedPhoneIds[] = $newPhone->id; // Supondo que 'register' retorna o telefone registrado
+                    }
                 }
             }
-        }
 
-        $deletedPhoneIds = array_diff($currentPhoneIds, $updatedPhoneIds);
+            $deletedPhoneIds = array_diff($currentPhoneIds, $updatedPhoneIds);
 
-        if ($deletedPhoneIds) {
-            foreach ($deletedPhoneIds as $phoneId) {
-                $this->deletePhone->delete($phoneId);
+            if ($deletedPhoneIds) {
+                foreach ($deletedPhoneIds as $phoneId) {
+                    $this->deletePhone->delete($phoneId);
+                }
             }
-        }
 
-        return $contact->load('phone');
+            DB::commit();
+
+            return $contact->load('phone');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
     }
 }

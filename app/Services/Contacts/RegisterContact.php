@@ -4,6 +4,7 @@ namespace App\Services\Contacts;
 
 use App\Models\Contact;
 use App\Services\Phones\RegisterPhone;
+use Illuminate\Support\Facades\DB;
 
 class RegisterContact
 {
@@ -14,16 +15,25 @@ class RegisterContact
 
     public function register($request)
     {
-        $contact = Contact::create($request->all());
+        DB::beginTransaction();
 
-        $phones = $request->get('phones');
+        try {
+            $contact = Contact::create($request->all());
 
-        if ($phones) {
-            foreach ($phones as $phone) {
-                $phone = $this->registerPhone->register($phone, $contact->id);
+            $phones = $request->get('phones');
+
+            if ($phones) {
+                foreach ($phones as $phone) {
+                    $phone = $this->registerPhone->register($phone, $contact->id);
+                }
             }
-        }
 
-        return $contact;
+            DB::commit();
+
+            return $contact;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
     }
 }

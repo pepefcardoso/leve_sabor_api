@@ -4,6 +4,7 @@ namespace App\Services\Contacts;
 
 use App\Models\Contact;
 use App\Services\Phones\DeletePhone;
+use Illuminate\Support\Facades\DB;
 
 class DeleteContact
 {
@@ -14,18 +15,27 @@ class DeleteContact
 
     public function delete($id)
     {
-        $contact = Contact::with('phone')->findOrFail($id);
+        DB::beginTransaction();
 
-        $phones = $contact->phones;
+        try {
+            $contact = Contact::with('phone')->findOrFail($id);
 
-        if ($phones) {
-            foreach ($phones as $phone) {
-                $this->deletePhone->delete($phone->id);
+            $phones = $contact->phones;
+
+            if ($phones) {
+                foreach ($phones as $phone) {
+                    $this->deletePhone->delete($phone->id);
+                }
             }
+
+            $contact->delete();
+
+            DB::commit();
+
+            return $contact;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
         }
-
-        $contact->delete();
-
-        return $contact;
     }
 }
