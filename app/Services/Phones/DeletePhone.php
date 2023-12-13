@@ -3,15 +3,25 @@
 namespace App\Services\Phones;
 
 use App\Models\Phone;
+use Illuminate\Support\Facades\DB;
 
 class DeletePhone
 {
     public function delete($id)
     {
-        $phone = Phone::findOrFail($id);
+        DB::beginTransaction();
 
-        $phone->delete();
+        try {
+            $phone = Phone::findOrFail($id);
 
-        return $phone;
+            $phone->delete();
+
+            DB::commit();
+
+            return $phone;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
     }
 }
