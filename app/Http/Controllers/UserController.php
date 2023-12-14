@@ -2,15 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\User\DeleteUser;
 use App\Services\User\LoginUser;
 use App\Services\User\RegisterUser;
+use App\Services\User\SearchUsers;
+use App\Services\User\ShowUser;
+use App\Services\User\UpdateUser;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Registration
-     */
+    public function index(SearchUsers $searchUsers)
+    {
+        $users = $searchUsers->search();
+
+        return response()->json($users);
+    }
+
     public function store(Request $request, RegisterUser $registerUser)
     {
         $data = $request->validate([
@@ -27,9 +35,36 @@ class UserController extends Controller
         return response()->json(['token' => $token], 200);
     }
 
-    /**
-     * Login
-     */
+    public function show(ShowUser $showUser, int $id)
+    {
+        $user = $showUser->show($id);
+
+        return response()->json($user);
+    }
+
+    public function update(Request $request, UpdateUser $updateUser, int $id)
+    {
+        $data = $request->validate([
+            'name' => 'required|min:4',
+            'email' => 'required|email',
+            'birthday' => 'nullable|date',
+            'phone' => 'nullable|string',
+            'cpf' => 'nullable|string',
+            'password' => 'required|min:8',
+        ]);
+
+        $user = $updateUser->update($data, $id);
+
+        return response()->json($user);
+    }
+
+    public function destroy(DeleteUser $deleteUser, int $id)
+    {
+        $user = $deleteUser->delete($id);
+
+        return response()->json($user);
+    }
+
     public function login(Request $request, LoginUser $loginUser)
     {
         $data = [

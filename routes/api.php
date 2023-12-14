@@ -32,6 +32,11 @@ Route::group([],
 Route::middleware('auth:api')->group(
     function (Router $router) {
 
+        $router->get('users', [UserController::class, 'index']);
+        $router->get('users/{id}', [UserController::class, 'show']);
+        $router->put('users/{id}', [UserController::class, 'update']);
+        $router->delete('users/{id}', [UserController::class, 'destroy']);
+
         $router->get('diets', [DietController::class, 'index']);
         $router->post('diets', [DietController::class, 'store']);
         $router->get('diets/{id}', [DietController::class, 'show']);

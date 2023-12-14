@@ -29,7 +29,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'role_id',
     ];
     /**
      * The attributes that should be cast to native types.
@@ -45,9 +44,9 @@ class User extends Authenticatable
         return $this->hasMany(Business::class);
     }
 
-    public function roles()
+    public function role()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsTo(Role::class);
     }
 
 }
