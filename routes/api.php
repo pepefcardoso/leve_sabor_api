@@ -8,7 +8,6 @@ use App\Http\Controllers\DietController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +28,7 @@ Route::group([],
         $router->post('login', [UserController::class, 'login']);
     });
 
-Route::middleware('auth:api')->group(
+Route::middleware(['auth:api', 'role'])->group(
     function (Router $router) {
 
         $router->get('users', [UserController::class, 'index']);

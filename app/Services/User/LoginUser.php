@@ -9,11 +9,25 @@ class LoginUser
     {
         if (auth()->attempt($data)) {
 
-            $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
+            $user = auth()->user();
 
-            return $token;
-        } else {
-            return null;
+            if ($user) {
+
+                $userRole = $user->role;
+
+                if ($userRole) {
+                    $user->scope = $userRole;
+                }
+
+                $token = $user->createToken('Access token', [$user->scope->name])->accessToken;
+
+
+                return $token;
+            }
+
+
         }
+
+        return null;
     }
 }
