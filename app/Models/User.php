@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
@@ -18,6 +18,7 @@ class User extends Authenticatable
         'phone',
         'cpf',
         'password',
+        'role_id',
     ];
 
     /**
@@ -28,6 +29,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'role_id',
     ];
     /**
      * The attributes that should be cast to native types.
@@ -42,4 +44,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Business::class);
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
 }

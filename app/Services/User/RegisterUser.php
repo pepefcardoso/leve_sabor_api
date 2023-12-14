@@ -14,6 +14,8 @@ class RegisterUser
         try {
             $data['password'] = bcrypt($data['password']);
 
+            $data['role_id'] = 1;
+
             $user = User::create($data);
 
             $token = $user->createToken('LaravelAuthApp')->accessToken;

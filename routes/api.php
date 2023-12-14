@@ -6,6 +6,7 @@ use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\CookingStyleController;
 use App\Http\Controllers\DietController;
 use App\Http\Controllers\PhoneController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
@@ -66,4 +67,10 @@ Route::middleware('auth:api')->group(
         $router->get('adresses/{id}', [AdressController::class, 'show']);
         $router->put('adresses/{id}', [AdressController::class, 'update']);
         $router->delete('adresses/{id}', [AdressController::class, 'destroy']);
+
+        $router->get('roles', [RoleController::class, 'index']);
+        $router->post('roles', [RoleController::class, 'store']);
+        $router->get('roles/{id}', [RoleController::class, 'show']);
+        $router->put('roles/{id}', [RoleController::class, 'update']);
+        $router->delete('roles/{id}', [RoleController::class, 'destroy']);
     });
