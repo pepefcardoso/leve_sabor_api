@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\CookingStyleController;
 use App\Http\Controllers\DietController;
+use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\OpeningHoursController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\RoleController;
@@ -22,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::post('image-upload', [ImageUploadController::class, 'imageUploadPost'])->name('image.upload.post');
 
 Route::group([],
     function (Router $router) {
