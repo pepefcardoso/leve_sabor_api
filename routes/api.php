@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\CookingStyleController;
 use App\Http\Controllers\DietController;
+use App\Http\Controllers\OpeningHoursController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -77,4 +78,10 @@ Route::middleware(['auth:api', 'role'])->group(
         $router->get('roles/{id}', [RoleController::class, 'show']);
         $router->put('roles/{id}', [RoleController::class, 'update']);
         $router->delete('roles/{id}', [RoleController::class, 'destroy']);
+
+        $router->get('opening-hours', [OpeningHoursController::class, 'index']);
+        $router->post('opening-hours', [OpeningHoursController::class, 'store']);
+        $router->get('opening-hours/{id}', [OpeningHoursController::class, 'show']);
+        $router->put('opening-hours/{id}', [OpeningHoursController::class, 'update']);
+        $router->delete('opening-hours/{id}', [OpeningHoursController::class, 'destroy']);
     });
