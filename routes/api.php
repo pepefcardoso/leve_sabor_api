@@ -5,11 +5,12 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\CookingStyleController;
 use App\Http\Controllers\DietController;
-use App\Http\Controllers\ImageUploadController;
+use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OpeningHoursController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserImageController;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
@@ -23,8 +24,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::post('image-upload', [ImageUploadController::class, 'imageUploadPost'])->name('image.upload.post');
 
 Route::group([],
     function (Router $router) {
@@ -87,4 +86,10 @@ Route::middleware(['auth:api', 'role'])->group(
         $router->get('opening-hours/{id}', [OpeningHoursController::class, 'show']);
         $router->put('opening-hours/{id}', [OpeningHoursController::class, 'update']);
         $router->delete('opening-hours/{id}', [OpeningHoursController::class, 'destroy']);
+
+        $router->get('users/{userId}/user-images', [UserImageController::class, 'index']);
+        $router->post('users/{userId}/user-images', [UserImageController::class, 'store']);
+        $router->get('users/{userId}/user-images/{id}', [UserImageController::class, 'show']);
+        $router->put('users/{userId}/user-images/{id}', [UserImageController::class, 'update']);
+        $router->delete('users/{userId}/user-images/{id}', [UserImageController::class, 'destroy']);
     });

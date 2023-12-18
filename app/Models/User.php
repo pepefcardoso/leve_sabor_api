@@ -39,14 +39,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function businesses()
-    {
-        return $this->hasMany(Business::class);
-    }
-
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function userImage()
+    {
+        return $this->hasOne(UserImage::class);
     }
 
 }
