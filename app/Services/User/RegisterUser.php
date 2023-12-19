@@ -3,10 +3,15 @@
 namespace App\Services\User;
 
 use App\Models\User;
+use App\Services\UserImages\RegisterUserImage;
 use Illuminate\Support\Facades\DB;
 
 class RegisterUser
 {
+    public function __construct(RegisterUserImage $registerUserImage)
+    {
+        $this->registerUserImage = $registerUserImage;
+    }
     public function register(array $data)
     {
         DB::beginTransaction();
@@ -19,6 +24,12 @@ class RegisterUser
             $user = User::create($data);
 
             $token = $user->createToken('LaravelAuthApp')->accessToken;
+
+            $userImage = $data['image'] ?? null;
+
+            if ($userImage) {
+                $this->registerUserImage->register($userImage, $user->id);
+            }
 
             DB::commit();
 

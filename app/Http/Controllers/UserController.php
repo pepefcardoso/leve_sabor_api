@@ -28,6 +28,7 @@ class UserController extends Controller
             'phone' => 'nullable|string',
             'cpf' => 'nullable|string',
             'password' => 'required|min:8',
+            'image' => 'nullable|image',
         ]);
 
         $token = $registerUser->register($data);
@@ -51,6 +52,7 @@ class UserController extends Controller
             'phone' => 'nullable|string',
             'cpf' => 'nullable|string',
             'password' => 'required|min:8',
+            'image' => 'nullable|image',
         ]);
 
         $user = $updateUser->update($data, $id);

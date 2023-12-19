@@ -38,7 +38,7 @@ class UpdateContact
                         $updatedPhoneIds[] = $phone['id'];
                     } else {
                         $newPhone = $this->registerPhone->register($phone, $contact->id);
-                        $updatedPhoneIds[] = $newPhone->id; // Supondo que 'register' retorna o telefone registrado
+                        $updatedPhoneIds[] = $newPhone->id;
                     }
                 }
             }

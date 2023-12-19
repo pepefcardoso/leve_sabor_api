@@ -14,11 +14,11 @@ class RegisterUserImage
         DB::beginTransaction();
 
         try {
-            $imageExtension = $data['image']->extension();
+            $image = $data['image'];
 
-            $imageName = $userId . '.' . $imageExtension;
+            $imageName = $userId . '.' . $image->extension();
 
-            $path = Storage::disk('s3')->put('users_images', $data['image']);
+            $path = Storage::disk('s3')->putFileAs('user_images', $image, $imageName);
             $path = Storage::disk('s3')->url($path);
 
             $userImage = UserImage::create([

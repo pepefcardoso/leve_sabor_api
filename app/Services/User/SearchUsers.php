@@ -8,7 +8,7 @@ class SearchUsers
 {
     public function search()
     {
-        $users = User::with('role')->get();
+        $users = User::with('role', 'userImage')->get();
 
         return $users;
     }
