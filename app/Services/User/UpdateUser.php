@@ -28,19 +28,19 @@ class UpdateUser
             $user->save();
 
             $currentUserImage = $user->userImage;
-            $newUserImage = $data['image'] ?? null;
+            $newUserImage = data_get($data, 'image');
 
             if ($currentUserImage) {
                 if ($newUserImage) {
                     $this->updateUserImage->update($newUserImage, $currentUserImage->id, $user->id);
+                } else {
+                    $this->deleteUserImage->delete($currentUserImage->id);
                 }
             } else {
                 if ($newUserImage) {
                     $this->registerUserImage->register($newUserImage, $user->id);
                 }
             }
-
-            //TODO - Delete user image
 
             DB::commit();
 

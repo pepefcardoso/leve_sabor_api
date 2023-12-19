@@ -3,25 +3,31 @@
 namespace App\Services\UserImages;
 
 use App\Models\UserImage;
+use App\Services\Phones\DeletePhone;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class UpdateUserImage
 {
+    public function __construct(DeletePhone $deletePhone)
+    {
+        $this->deletePhone = $deletePhone;
+    }
+
     public function update(array $data, int $id, int $userId)
     {
         DB::beginTransaction();
 
         try {
             $userImage = UserImage::findOrFail($id);
-            Storage::disk('s3')->delete($userImage->path);
 
-            $imageExtension = $data['image']->extension();
+            $this->deletePhone->delete($id);
 
-            $imageName = $userId . '.' . $imageExtension;
+            $image = data_get($data, 'image');
 
-            $path = Storage::disk('s3')->put('users_images', $data['image']);
-            $path = Storage::disk('s3')->url($path);
+            $imageName = $userId . '.' . $image->extension();
+
+            $path = Storage::disk('s3')->putFileAs('users_images', $image, $imageName);
 
             $userImage->fill([
                 'user_id' => $userId,
