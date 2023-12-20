@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Services\UserBusiness;
+
+use App\Models\Business;
+
+class ShowUserBusiness
+{
+    public function show($id)
+    {
+        $userBusiness = Business::findOrfail($id);
+
+        return $userBusiness;
+    }
+}

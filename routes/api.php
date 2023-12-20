@@ -9,6 +9,7 @@ use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OpeningHoursController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserBusinessController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserImageController;
 use Illuminate\Routing\Router;
@@ -92,4 +93,10 @@ Route::middleware(['auth:api', 'role'])->group(
         $router->get('users/{userId}/user-images/{id}', [UserImageController::class, 'show']);
         $router->put('users/{userId}/user-images/{id}', [UserImageController::class, 'update']);
         $router->delete('users/{userId}/user-images/{id}', [UserImageController::class, 'destroy']);
+
+        $router->get('users/{userId}/business', [UserBusinessController::class, 'index']);
+        $router->post('users/{userId}/business', [UserBusinessController::class, 'store']);
+        $router->get('users/{userId}/business/{id}', [UserBusinessController::class, 'show']);
+        $router->put('users/{userId}/business/{id}', [UserBusinessController::class, 'update']);
+        $router->delete('users/{userId}/business/{id}', [UserBusinessController::class, 'destroy']);
     });
