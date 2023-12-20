@@ -18,6 +18,7 @@ class BusinessFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
+            'description' => $this->faker->text,
             'user_id' => $this->faker->randomNumber(),
         ];
     }
