@@ -20,6 +20,7 @@ class BusinessFactory extends Factory
             'name' => $this->faker->name,
             'description' => $this->faker->text,
             'user_id' => $this->faker->randomNumber(),
+            'category_id' => $this->faker->randomNumber(),
         ];
     }
 }

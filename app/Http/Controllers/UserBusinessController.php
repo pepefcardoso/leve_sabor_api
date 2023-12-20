@@ -25,6 +25,7 @@ class UserBusinessController extends Controller
         $data = $request->validate([
             "name" => "required|string|max:255",
             "description" => "nullable|string|max:255",
+            "category_id" => "required|integer|exists:categories,id",
         ]);
 
         $userBusiness = $registerUserBusiness->register($data, $userId);
@@ -44,6 +45,7 @@ class UserBusinessController extends Controller
         $data = $request->validate([
             "name" => "required|string|max:255",
             "description" => "nullable|string|max:255",
+            "category_id" => "required|integer|exists:categories,id",
         ]);
 
         $userBusiness = $updateUserBusiness->update($data, $id);
