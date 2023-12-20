@@ -26,6 +26,8 @@ class UserBusinessController extends Controller
             "name" => "required|string|max:255",
             "description" => "nullable|string|max:255",
             "category_id" => "required|integer|exists:categories,id",
+            "diets_id" => "nullable|array",
+            "diets_id.*" => "nullable|integer|exists:diets,id",
         ]);
 
         $userBusiness = $registerUserBusiness->register($data, $userId);
@@ -46,6 +48,8 @@ class UserBusinessController extends Controller
             "name" => "required|string|max:255",
             "description" => "nullable|string|max:255",
             "category_id" => "required|integer|exists:categories,id",
+            "diets_id" => "nullable|array",
+            "diets_id.*" => "nullable|integer|exists:diets,id",
         ]);
 
         $userBusiness = $updateUserBusiness->update($data, $id);

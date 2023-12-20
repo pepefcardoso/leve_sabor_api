@@ -10,6 +10,6 @@ class ShowUserBusiness
     {
         $userBusiness = Business::findOrfail($id);
 
-        return $userBusiness->load('category', 'user');
+        return $userBusiness->load('category', 'user', 'diet');
     }
 }

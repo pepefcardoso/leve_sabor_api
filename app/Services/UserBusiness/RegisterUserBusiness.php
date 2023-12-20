@@ -16,6 +16,12 @@ class RegisterUserBusiness
 
             $userBusiness = Business::create($data);
 
+            $diets = $data['diets_id'] ?? [];
+
+            if (count($diets) > 0) {
+                $userBusiness->diet()->attach($diets);
+            }
+
             DB::commit();
 
             return $userBusiness;

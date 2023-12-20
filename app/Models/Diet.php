@@ -13,4 +13,9 @@ class Diet extends Model
         'name',
     ];
 
+    public function business()
+    {
+        return $this->belongsToMany(Business::class, 'rl_business_diets', 'diet_id', 'business_id');
+    }
+
 }
