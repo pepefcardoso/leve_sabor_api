@@ -29,7 +29,21 @@ class UserBusinessController extends Controller
             "diets_id" => "nullable|array",
             "diets_id.*" => "nullable|integer|exists:diets,id",
             "address" => "nullable|array",
+            "address.street" => "nullable|string|max:255",
+            "address.number" => "nullable|string|max:6",
+            "address.complement" => "nullable|string|max:255",
+            "address.district" => "nullable|string|max:255",
+            "address.city" => "nullable|string|max:255",
+            "address.state" => "nullable|string|exact:2",
+            "address.zip_code" => "required|string|exact:8",
+            "address.latitude" => "nullable|string|max:255",
+            "address.longitude" => "nullable|string|max:255",
             "contact" => "nullable|array",
+            "contact.email" => "nullable|string|max:255",
+            "contact.website" => "nullable|string|max:255",
+            "contact.facebook" => "nullable|string|max:255",
+            "contact.instagram" => "nullable|string|max:255",
+            "contact.ifood" => "nullable|string|max:255",
         ]);
 
         $userBusiness = $registerUserBusiness->register($data, $userId);
@@ -53,7 +67,21 @@ class UserBusinessController extends Controller
             "diets_id" => "nullable|array",
             "diets_id.*" => "nullable|integer|exists:diets,id",
             "address" => "nullable|array",
+            "address.street" => "nullable|string|max:255",
+            "address.number" => "nullable|string|max:6",
+            "address.complement" => "nullable|string|max:255",
+            "address.district" => "nullable|string|max:255",
+            "address.city" => "nullable|string|max:255",
+            "address.state" => "nullable|string|exact:2",
+            "address.zip_code" => "required|string|exact:8",
+            "address.latitude" => "nullable|string|max:255",
+            "address.longitude" => "nullable|string|max:255",
             "contact" => "nullable|array",
+            "contact.email" => "nullable|string|max:255",
+            "contact.website" => "nullable|string|max:255",
+            "contact.facebook" => "nullable|string|max:255",
+            "contact.instagram" => "nullable|string|max:255",
+            "contact.ifood" => "nullable|string|max:255",
         ]);
 
         $userBusiness = $updateUserBusiness->update($data, $id);
