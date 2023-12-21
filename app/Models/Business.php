@@ -35,4 +35,9 @@ class Business extends Model
     {
         return $this->hasOne(Address::class);
     }
+
+    public function contact()
+    {
+        return $this->hasOne(Contact::class);
+    }
 }

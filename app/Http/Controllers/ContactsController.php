@@ -12,14 +12,16 @@ use Illuminate\Http\Request;
 
 class ContactsController extends Controller
 {
-    public function index(SearchContacts $searchContacts)
+    public function index(SearchContacts $searchContacts, int $businessId)
     {
-        $contacts = $searchContacts->search();
+        $filters = ['businessId' => $businessId];
+
+        $contacts = $searchContacts->search($filters);
 
         return response()->json($contacts);
     }
 
-    public function store(Request $request, RegisterContact $registerContact)
+    public function store(Request $request, RegisterContact $registerContact, int $businessId)
     {
         $data = $request->validate([
             'email' => 'nullable|email',
@@ -32,19 +34,19 @@ class ContactsController extends Controller
             'phones.*.whatsapp' => 'nullable|boolean',
         ]);
 
-        $contact = $registerContact->register($data);
+        $contact = $registerContact->register($data, $businessId);
 
         return response()->json($contact->load('phone'));
     }
 
-    public function show(ShowContact $showContact, int $id)
+    public function show(ShowContact $showContact, int $businessId, int $id)
     {
         $contact = $showContact->show($id);
 
         return response()->json($contact);
     }
 
-    public function update(Request $request, UpdateContact $updateContact, int $id)
+    public function update(Request $request, UpdateContact $updateContact, int $businessId, int $id)
     {
         $data = $request->validate([
             'email' => 'nullable|email',
@@ -62,7 +64,7 @@ class ContactsController extends Controller
         return response()->json($contact);
     }
 
-    public function destroy(DeleteContact $deleteContact, int $id)
+    public function destroy(DeleteContact $deleteContact, int $businessId, int $id)
     {
         $contact = $deleteContact->delete($id);
 

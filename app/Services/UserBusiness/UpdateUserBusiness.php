@@ -6,15 +6,21 @@ use App\Models\Business;
 use App\Services\Addresses\DeleteAddress;
 use App\Services\Addresses\RegisterAddress;
 use App\Services\Addresses\UpdateAddress;
+use App\Services\Contacts\DeleteContact;
+use App\Services\Contacts\RegisterContact;
+use App\Services\Contacts\UpdateContact;
 use Illuminate\Support\Facades\DB;
 
 class UpdateUserBusiness
 {
-    public function __construct(RegisterAddress $registerAddress, UpdateAddress $updateAddress, DeleteAddress $deleteAddress)
+    public function __construct(RegisterAddress $registerAddress, UpdateAddress $updateAddress, DeleteAddress $deleteAddress, RegisterContact $registerContact, UpdateContact $updateContact, DeleteContact $deleteContact,)
     {
         $this->registerAddress = $registerAddress;
         $this->updateAddress = $updateAddress;
         $this->deleteAddress = $deleteAddress;
+        $this->registerContact = $registerContact;
+        $this->updateContact = $updateContact;
+        $this->deleteContact = $deleteContact;
     }
 
     public function update(array $data, int $id)
@@ -43,6 +49,18 @@ class UpdateUserBusiness
                 }
             } else {
                 $this->deleteAddress->delete($userBusiness->id);
+            }
+
+            $contact = data_get($data, 'contact');
+
+            if ($contact) {
+                if (isset($contact['id'])) {
+                    $this->updateContact->update($contact, $userBusiness->id);
+                } else {
+                    $this->registerContact->register($contact, $userBusiness->id);
+                }
+            } else {
+                $this->deleteContact->delete($userBusiness->id);
             }
 
             DB::commit();

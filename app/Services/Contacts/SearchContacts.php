@@ -6,9 +6,11 @@ use App\Models\Contact;
 
 class SearchContacts
 {
-    public function search()
+    public function search(array $filters)
     {
-        $contacts = Contact::with('phone')->get();
+        $contacts = Contact::where('business_id', $filters['businessId'])
+            ->with('phone')
+            ->get();
 
         return $contacts;
     }

@@ -15,10 +15,16 @@ class Contact extends Model
         'facebook',
         'instagram',
         'ifood',
+        'business_id',
     ];
 
     public function phone()
     {
         return $this->hasMany(Phone::class);
+    }
+
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
     }
 }

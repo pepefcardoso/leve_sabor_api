@@ -22,6 +22,7 @@ class ContactFactory extends Factory
             'facebook' => $this->faker->url,
             'instagram' => $this->faker->url,
             'ifood' => $this->faker->url,
+            'business_id' => $this->faker->numberBetween(1, 10)
         ];
     }
 }

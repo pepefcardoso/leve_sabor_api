@@ -4,13 +4,15 @@ namespace App\Services\UserBusiness;
 
 use App\Models\Business;
 use App\Services\Addresses\RegisterAddress;
+use App\Services\Contacts\RegisterContact;
 use Illuminate\Support\Facades\DB;
 
 class RegisterUserBusiness
 {
-    public function __construct(RegisterAddress $registerAddress)
+    public function __construct(RegisterAddress $registerAddress, RegisterContact $registerContact)
     {
         $this->registerAddress = $registerAddress;
+        $this->registerContact = $registerContact;
     }
 
     public function register(array $data, int $userId)
@@ -32,6 +34,12 @@ class RegisterUserBusiness
 
             if ($address) {
                 $this->registerAddress->register($address, $userBusiness->id);
+            }
+
+            $contact = data_get($data, 'contact');
+
+            if ($contact) {
+                $this->registerContact->register($contact, $userBusiness->id);
             }
 
             DB::commit();

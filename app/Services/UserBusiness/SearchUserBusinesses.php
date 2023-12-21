@@ -11,6 +11,6 @@ class SearchUserBusinesses
         $userBusinesses = Business::where('user_id', $filters['userId'])
             ->get();
 
-        return $userBusinesses->load('category', 'user', 'diet', 'address');
+        return $userBusinesses->load('category', 'user', 'diet', 'address', 'contact');
     }
 }

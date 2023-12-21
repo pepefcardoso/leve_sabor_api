@@ -13,11 +13,13 @@ class RegisterContact
         $this->registerPhone = $registerPhone;
     }
 
-    public function register(array $data)
+    public function register(array $data, int $businessId)
     {
         DB::beginTransaction();
 
         try {
+            $data['business_id'] = $businessId;
+
             $contact = Contact::create($data);
 
             $phones = $data['phones'] ?? null;

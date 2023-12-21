@@ -4,13 +4,15 @@ namespace App\Services\UserBusiness;
 
 use App\Models\Business;
 use App\Services\Addresses\DeleteAddress;
+use App\Services\Contacts\DeleteContact;
 use Illuminate\Support\Facades\DB;
 
 class DeleteUserBusiness
 {
-    public function __construct(DeleteAddress $deleteAddress)
+    public function __construct(DeleteAddress $deleteAddress, DeleteContact $deleteContact)
     {
         $this->deleteAddress = $deleteAddress;
+        $this->deleteContact = $deleteContact;
     }
 
     public function delete($id)
@@ -26,6 +28,12 @@ class DeleteUserBusiness
 
             if ($address) {
                 $this->deleteAddress->delete($address->id);
+            }
+
+            $contact = $userBusiness->contact;
+
+            if ($contact) {
+                $this->deleteContact->delete($contact->id);
             }
 
             $userBusiness->delete();

@@ -29,6 +29,7 @@ class UserBusinessController extends Controller
             "diets_id" => "nullable|array",
             "diets_id.*" => "nullable|integer|exists:diets,id",
             "address" => "nullable|array",
+            "contact" => "nullable|array",
         ]);
 
         $userBusiness = $registerUserBusiness->register($data, $userId);
@@ -52,6 +53,7 @@ class UserBusinessController extends Controller
             "diets_id" => "nullable|array",
             "diets_id.*" => "nullable|integer|exists:diets,id",
             "address" => "nullable|array",
+            "contact" => "nullable|array",
         ]);
 
         $userBusiness = $updateUserBusiness->update($data, $id);

@@ -64,11 +64,11 @@ Route::middleware(['auth:api', 'role'])->group(
         $router->put('cooking-styles/{id}', [CookingStyleController::class, 'update']);
         $router->delete('cooking-styles/{id}', [CookingStyleController::class, 'destroy']);
 
-        $router->get('contacts', [ContactsController::class, 'index']);
-        $router->post('contacts', [ContactsController::class, 'store']);
-        $router->get('contacts/{id}', [ContactsController::class, 'show']);
-        $router->put('contacts/{id}', [ContactsController::class, 'update']);
-        $router->delete('contacts/{id}', [ContactsController::class, 'destroy']);
+        $router->get('businesses/{businessId}/contacts', [ContactsController::class, 'index']);
+        $router->post('businesses/{businessId}/contacts', [ContactsController::class, 'store']);
+        $router->get('businesses/{businessId}/contacts/{id}', [ContactsController::class, 'show']);
+        $router->put('businesses/{businessId}/contacts/{id}', [ContactsController::class, 'update']);
+        $router->delete('businesses/{businessId}/contacts/{id}', [ContactsController::class, 'destroy']);
 
         $router->get('businesses/{businessId}/addresses', [AddressController::class, 'index']);
         $router->post('businesses/{businessId}/addresses', [AddressController::class, 'store']);
