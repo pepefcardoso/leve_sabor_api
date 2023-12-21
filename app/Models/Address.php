@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Adress extends Model
+class Address extends Model
 {
     use HasFactory;
 
@@ -19,5 +19,11 @@ class Adress extends Model
         'zip_code',
         'latitude',
         'longitude',
+        'business_id',
     ];
+
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
+    }
 }

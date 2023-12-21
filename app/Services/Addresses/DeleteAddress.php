@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Services\Adresses;
+namespace App\Services\Addresses;
 
-use App\Models\Adress;
+use App\Models\Address;
 use Illuminate\Support\Facades\DB;
 
-class DeleteAdress
+class DeleteAddress
 {
     public function delete(int $id)
     {
         DB::beginTransaction();
 
         try {
-            $adress = Adress::findOrFail($id);
+            $address = Address::findOrFail($id);
 
-            $adress->delete();
+            $address->delete();
 
             DB::commit();
 
-            return $adress;
+            return $address;
         } catch (\Exception $e) {
             DB::rollBack();
 

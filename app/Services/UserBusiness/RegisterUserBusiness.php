@@ -3,10 +3,16 @@
 namespace App\Services\UserBusiness;
 
 use App\Models\Business;
+use App\Services\Addresses\RegisterAddress;
 use Illuminate\Support\Facades\DB;
 
 class RegisterUserBusiness
 {
+    public function __construct(RegisterAddress $registerAddress)
+    {
+        $this->registerAddress = $registerAddress;
+    }
+
     public function register(array $data, int $userId)
     {
         DB::beginTransaction();
@@ -20,6 +26,12 @@ class RegisterUserBusiness
 
             if (count($diets) > 0) {
                 $userBusiness->diet()->attach($diets);
+            }
+
+            $address = data_get($data, 'address');
+
+            if ($address) {
+                $this->registerAddress->register($address, $userBusiness->id);
             }
 
             DB::commit();

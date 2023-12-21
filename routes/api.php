@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AdressController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\CookingStyleController;
@@ -70,11 +70,11 @@ Route::middleware(['auth:api', 'role'])->group(
         $router->put('contacts/{id}', [ContactsController::class, 'update']);
         $router->delete('contacts/{id}', [ContactsController::class, 'destroy']);
 
-        $router->get('adresses', [AdressController::class, 'index']);
-        $router->post('adresses', [AdressController::class, 'store']);
-        $router->get('adresses/{id}', [AdressController::class, 'show']);
-        $router->put('adresses/{id}', [AdressController::class, 'update']);
-        $router->delete('adresses/{id}', [AdressController::class, 'destroy']);
+        $router->get('businesses/{businessId}/addresses', [AddressController::class, 'index']);
+        $router->post('businesses/{businessId}/addresses', [AddressController::class, 'store']);
+        $router->get('businesses/{businessId}/addresses/{id}', [AddressController::class, 'show']);
+        $router->put('businesses/{businessId}/addresses/{id}', [AddressController::class, 'update']);
+        $router->delete('businesses/{businessId}/addresses/{id}', [AddressController::class, 'destroy']);
 
         $router->get('roles', [RoleController::class, 'index']);
         $router->post('roles', [RoleController::class, 'store']);

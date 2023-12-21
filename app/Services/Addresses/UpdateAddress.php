@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Services\Adresses;
+namespace App\Services\Addresses;
 
-use App\Models\Adress;
+use App\Models\Address;
 use Illuminate\Support\Facades\DB;
 
-class UpdateAdress
+class UpdateAddress
 {
     public function update(array $data, int $id)
     {
         DB::beginTransaction();
 
         try {
-            $adress = Adress::findOrFail($id);
+            $address = Address::findOrFail($id);
 
-            $adress->fill($data);
-            $adress->save();
+            $address->fill($data);
+            $address->save();
 
             DB::commit();
 
-            return $adress;
+            return $address;
         } catch (\Exception $e) {
             DB::rollback();
             return $e->getMessage();

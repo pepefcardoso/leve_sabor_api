@@ -2,24 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Adresses\DeleteAdress;
-use App\Services\Adresses\RegisterAdress;
-use App\Services\Adresses\SearchAdress;
-use App\Services\Adresses\ShowAdress;
-use App\Services\Adresses\UpdateAdress;
+use App\Services\Addresses\DeleteAddress;
+use App\Services\Addresses\RegisterAddress;
+use App\Services\Addresses\SearchAddress;
+use App\Services\Addresses\ShowAddress;
+use App\Services\Addresses\UpdateAddress;
 use Illuminate\Http\Request;
 
-class AdressController extends Controller
+class AddressController extends Controller
 {
     //
-    public function index(SearchAdress $searchAdress)
+    public function index(SearchAddress $searchAddress, int $businessId)
     {
-        $adresses = $searchAdress->search();
+        $filters = ['businessId' => $businessId];
 
-        return response()->json($adresses);
+        $addresses = $searchAddress->search($filters);
+
+        return response()->json($addresses);
     }
 
-    public function store(Request $request, RegisterAdress $registerAdress)
+    public function store(Request $request, RegisterAddress $registerAddress, int $businessId)
     {
         $data = $request->validate([
             'street' => 'nullable|string|min:3|max:99',
@@ -33,19 +35,19 @@ class AdressController extends Controller
             'longitude' => 'nullable|string|min:3|max:99',
         ]);
 
-        $adress = $registerAdress->register($data);
+        $address = $registerAddress->register($data, $businessId);
 
-        return response()->json($adress);
+        return response()->json($address);
     }
 
-    public function show(ShowAdress $showAdress, int $id)
+    public function show(ShowAddress $showAddress, int $businessId, int $id)
     {
-        $adress = $showAdress->show($id);
+        $address = $showAddress->show($id);
 
-        return response()->json($adress);
+        return response()->json($address);
     }
 
-    public function update(Request $request, UpdateAdress $updateAdress, int $id)
+    public function update(Request $request, UpdateAddress $updateAddress, int $businessId, int $id)
     {
         $data = $request->validate([
             'street' => 'nullable|string|min:3|max:99',
@@ -59,15 +61,15 @@ class AdressController extends Controller
             'longitude' => 'nullable|string|min:3|max:99',
         ]);
 
-        $adress = $updateAdress->update($data, $id);
+        $address = $updateAddress->update($data, $id);
 
-        return response()->json($adress);
+        return response()->json($address);
     }
 
-    public function destroy(DeleteAdress $deleteAdress, int $id)
+    public function destroy(DeleteAddress $deleteAddress, int $businessId, int $id)
     {
-        $adress = $deleteAdress->delete($id);
+        $address = $deleteAddress->delete($id);
 
-        return response()->json($adress);
+        return response()->json($address);
     }
 }
