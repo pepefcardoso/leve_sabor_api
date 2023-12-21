@@ -18,8 +18,6 @@ return new class extends Migration {
                 ->on('businesses')->onDelete('cascade');
             $table->foreign('diet_id')->references('id')
                 ->on('diets')->onDelete('cascade');
-
-            $table->timestamps();
         });
     }
 

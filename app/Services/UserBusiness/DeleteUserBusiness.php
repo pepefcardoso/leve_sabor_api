@@ -14,6 +14,8 @@ class DeleteUserBusiness
         try {
             $userBusiness = Business::findOrFail($id);
 
+            $userBusiness->diet()->detach();
+
             $userBusiness->delete();
 
             DB::commit();

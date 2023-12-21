@@ -14,6 +14,12 @@ class UpdateUserBusiness
         try {
             $userBusiness = Business::findOrFail($id);
 
+            $diets = $data['diets_id'] ?? [];
+
+            if (count($diets) > 0) {
+                $userBusiness->diet()->sync($diets);
+            }
+
             $userBusiness->fill($data);
             $userBusiness->save();
 
