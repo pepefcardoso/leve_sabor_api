@@ -9,11 +9,17 @@ use App\Services\Addresses\UpdateAddress;
 use App\Services\Contacts\DeleteContact;
 use App\Services\Contacts\RegisterContact;
 use App\Services\Contacts\UpdateContact;
+use App\Services\OpeningHours\DeleteOpeningHours;
+use App\Services\OpeningHours\RegisterOpeningHours;
+use App\Services\OpeningHours\UpdateOpeningHours;
 use Illuminate\Support\Facades\DB;
 
 class UpdateUserBusiness
 {
-    public function __construct(RegisterAddress $registerAddress, UpdateAddress $updateAddress, DeleteAddress $deleteAddress, RegisterContact $registerContact, UpdateContact $updateContact, DeleteContact $deleteContact,)
+    public function __construct(
+        RegisterAddress      $registerAddress, UpdateAddress $updateAddress, DeleteAddress $deleteAddress,
+        RegisterContact      $registerContact, UpdateContact $updateContact, DeleteContact $deleteContact,
+        RegisterOpeningHours $registerOpeningHours, UpdateOpeningHours $updateOpeningHours, DeleteOpeningHours $deleteOpeningHours)
     {
         $this->registerAddress = $registerAddress;
         $this->updateAddress = $updateAddress;
@@ -21,6 +27,9 @@ class UpdateUserBusiness
         $this->registerContact = $registerContact;
         $this->updateContact = $updateContact;
         $this->deleteContact = $deleteContact;
+        $this->registerOpeningHours = $registerOpeningHours;
+        $this->updateOpeningHours = $updateOpeningHours;
+        $this->deleteOpeningHours = $deleteOpeningHours;
     }
 
     public function update(array $data, int $id)
@@ -61,6 +70,20 @@ class UpdateUserBusiness
                 }
             } else {
                 $this->deleteContact->delete($userBusiness->id);
+            }
+
+            $openingHours = data_get($data, 'opening_hours');
+
+            if ($openingHours) {
+                foreach ($openingHours as $openingHour) {
+                    if (isset($openingHour['id'])) {
+                        $this->updateOpeningHours->update($openingHour, $userBusiness->id);
+                    } else {
+                        $this->registerOpeningHours->register($openingHour, $userBusiness->id);
+                    }
+                }
+            } else {
+                $this->deleteOpeningHours->delete($userBusiness->id);
             }
 
             DB::commit();

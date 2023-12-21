@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateOpeningHours
 {
-    public function update(array $data,int $id)
+    public function update(array $data, int $id)
     {
         DB::beginTransaction();
 

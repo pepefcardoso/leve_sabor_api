@@ -11,45 +11,47 @@ use Illuminate\Http\Request;
 
 class OpeningHoursController extends Controller
 {
-    public function index(SearchOpeningHours $searchOpeningHours)
+    public function index(SearchOpeningHours $searchOpeningHours, int $businessId)
     {
-        $openingHours = $searchOpeningHours->search();
+        $filters = ['businessId' => $businessId];
+
+        $openingHours = $searchOpeningHours->search($filters);
 
         return response()->json($openingHours);
     }
 
-    public function store(Request $request, RegisterOpeningHours $registerOpeningHours)
+    public function store(Request $request, RegisterOpeningHours $registerOpeningHours, int $businessId)
     {
         $data = $request->validate([
-            'specific_date' => 'nullable|date',
-            'week_day' => 'required|integer',
-            'open_time_1' => 'required|string',
-            'close_time_1' => 'required|string',
-            'open_time_2' => 'nullable|string',
-            'close_time_2' => 'nullable|string',
+            "specific_date" => "nullable|date",
+            "week_day" => "nullable|integer|between:0,6",
+            "open_time_1" => "required|date_format:H:i",
+            "close_time_1" => "required|date_format:H:i",
+            "open_time_2" => "nullable|date_format:H:i",
+            "close_time_2" => "nullable|date_format:H:i",
         ]);
 
-        $openingHours = $registerOpeningHours->register($data);
+        $openingHours = $registerOpeningHours->register($data, $businessId);
 
         return response()->json($openingHours);
     }
 
-    public function show(ShowOpeningHours $showOpeningHours, int $id)
+    public function show(ShowOpeningHours $showOpeningHours, int $businessId, int $id)
     {
         $openingHours = $showOpeningHours->show($id);
 
         return response()->json($openingHours);
     }
 
-    public function update(Request $request, UpdateOpeningHours $updateOpeningHours, int $id)
+    public function update(Request $request, UpdateOpeningHours $updateOpeningHours, int $businessId, int $id)
     {
         $data = $request->validate([
-            'specific_date' => 'nullable|date',
-            'week_day' => 'required|integer',
-            'open_time_1' => 'required|string',
-            'close_time_1' => 'required|string',
-            'open_time_2' => 'nullable|string',
-            'close_time_2' => 'nullable|string',
+            "specific_date" => "nullable|date",
+            "week_day" => "nullable|integer|between:0,6",
+            "open_time_1" => "required|date_format:H:i",
+            "close_time_1" => "required|date_format:H:i",
+            "open_time_2" => "nullable|date_format:H:i",
+            "close_time_2" => "nullable|date_format:H:i",
         ]);
 
         $openingHours = $updateOpeningHours->update($data, $id);
@@ -57,7 +59,7 @@ class OpeningHoursController extends Controller
         return response()->json($openingHours);
     }
 
-    public function destroy(DeleteOpeningHours $deleteOpeningHours, int $id)
+    public function destroy(DeleteOpeningHours $deleteOpeningHours, int $businessId, int $id)
     {
         $openingHours = $deleteOpeningHours->delete($id);
 

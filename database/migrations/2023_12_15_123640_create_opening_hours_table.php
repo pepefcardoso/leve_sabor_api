@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->time('close_time_1');
             $table->time('open_time_2')->nullable();
             $table->time('close_time_2')->nullable();
+            $table->foreignId('business_id')->constrained('businesses');
             $table->timestamps();
         });
     }

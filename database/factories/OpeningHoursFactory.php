@@ -23,6 +23,7 @@ class OpeningHoursFactory extends Factory
             'close_time_1' => $this->faker->time(),
             'open_time_2' => $this->faker->time(),
             'close_time_2' => $this->faker->time(),
+            'business_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

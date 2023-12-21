@@ -5,7 +5,7 @@ namespace App\Services\OpeningHours;
 use App\Models\OpeningHours;
 use Illuminate\Support\Facades\DB;
 
-Class DeleteOpeningHours
+class DeleteOpeningHours
 {
     public function delete($id)
     {

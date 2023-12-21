@@ -40,4 +40,9 @@ class Business extends Model
     {
         return $this->hasOne(Contact::class);
     }
+
+    public function openingHours()
+    {
+        return $this->hasMany(OpeningHours::class);
+    }
 }

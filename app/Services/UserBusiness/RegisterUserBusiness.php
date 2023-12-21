@@ -5,14 +5,16 @@ namespace App\Services\UserBusiness;
 use App\Models\Business;
 use App\Services\Addresses\RegisterAddress;
 use App\Services\Contacts\RegisterContact;
+use App\Services\OpeningHours\RegisterOpeningHours;
 use Illuminate\Support\Facades\DB;
 
 class RegisterUserBusiness
 {
-    public function __construct(RegisterAddress $registerAddress, RegisterContact $registerContact)
+    public function __construct(RegisterAddress $registerAddress, RegisterContact $registerContact, RegisterOpeningHours $registerOpeningHours)
     {
         $this->registerAddress = $registerAddress;
         $this->registerContact = $registerContact;
+        $this->registerOpeningHours = $registerOpeningHours;
     }
 
     public function register(array $data, int $userId)
@@ -40,6 +42,14 @@ class RegisterUserBusiness
 
             if ($contact) {
                 $this->registerContact->register($contact, $userBusiness->id);
+            }
+
+            $openingHours = data_get($data, 'opening_hours');
+
+            if ($openingHours) {
+                foreach ($openingHours as $openingHour) {
+                    $this->registerOpeningHours->register($openingHour, $userBusiness->id);
+                }
             }
 
             DB::commit();

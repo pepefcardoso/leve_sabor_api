@@ -82,11 +82,11 @@ Route::middleware(['auth:api', 'role'])->group(
         $router->put('roles/{id}', [RoleController::class, 'update']);
         $router->delete('roles/{id}', [RoleController::class, 'destroy']);
 
-        $router->get('opening-hours', [OpeningHoursController::class, 'index']);
-        $router->post('opening-hours', [OpeningHoursController::class, 'store']);
-        $router->get('opening-hours/{id}', [OpeningHoursController::class, 'show']);
-        $router->put('opening-hours/{id}', [OpeningHoursController::class, 'update']);
-        $router->delete('opening-hours/{id}', [OpeningHoursController::class, 'destroy']);
+        $router->get('businesses/{businessId}/opening-hours', [OpeningHoursController::class, 'index']);
+        $router->post('businesses/{businessId}/opening-hours', [OpeningHoursController::class, 'store']);
+        $router->get('businesses/{businessId}/opening-hours/{id}', [OpeningHoursController::class, 'show']);
+        $router->put('businesses/{businessId}/opening-hours/{id}', [OpeningHoursController::class, 'update']);
+        $router->delete('businesses/{businessId}/opening-hours/{id}', [OpeningHoursController::class, 'destroy']);
 
         $router->get('users/{userId}/user-images', [UserImageController::class, 'index']);
         $router->post('users/{userId}/user-images', [UserImageController::class, 'store']);

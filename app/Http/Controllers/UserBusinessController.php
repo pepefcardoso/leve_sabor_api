@@ -47,6 +47,13 @@ class UserBusinessController extends Controller
             "contact.phones" => "nullable|array",
             "contact.phones.*.number" => "required|string|min:10|max:11",
             "contact.phones.*.whatsapp" => "nullable|boolean",
+            "opening_hours" => "nullable|array",
+            "opening_hours.*.specific_date" => "nullable|date",
+            "opening_hours.*.week_day" => "nullable|integer|between:0,6",
+            "opening_hours.*.open_time_1" => "required|date_format:H:i",
+            "opening_hours.*.close_time_1" => "required|date_format:H:i",
+            "opening_hours.*.open_time_2" => "nullable|date_format:H:i",
+            "opening_hours.*.close_time_2" => "nullable|date_format:H:i",
         ]);
 
         $userBusiness = $registerUserBusiness->register($data, $userId);
@@ -88,6 +95,13 @@ class UserBusinessController extends Controller
             "contact.phones" => "nullable|array",
             "contact.phones.*.number" => "required|string|min:10|max:11",
             "contact.phones.*.whatsapp" => "nullable|boolean",
+            "opening_hours" => "nullable|array",
+            "opening_hours.*.specific_date" => "nullable|date",
+            "opening_hours.*.week_day" => "nullable|integer|between:0,6",
+            "opening_hours.*.open_time_1" => "required|date_format:H:i",
+            "opening_hours.*.close_time_1" => "required|date_format:H:i",
+            "opening_hours.*.open_time_2" => "nullable|date_format:H:i",
+            "opening_hours.*.close_time_2" => "nullable|date_format:H:i",
         ]);
 
         $userBusiness = $updateUserBusiness->update($data, $id);

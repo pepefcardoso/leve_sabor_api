@@ -16,5 +16,11 @@ class OpeningHours extends Model
         'close_time_1',
         'open_time_2',
         'close_time_2',
+        'business_id',
     ];
+
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
+    }
 }
