@@ -44,6 +44,9 @@ class UserBusinessController extends Controller
             "contact.facebook" => "nullable|string|max:255",
             "contact.instagram" => "nullable|string|max:255",
             "contact.ifood" => "nullable|string|max:255",
+            "contact.phones" => "nullable|array",
+            "contact.phones.*.number" => "required|string|min:10|max:11",
+            "contact.phones.*.whatsapp" => "nullable|boolean",
         ]);
 
         $userBusiness = $registerUserBusiness->register($data, $userId);
@@ -82,6 +85,9 @@ class UserBusinessController extends Controller
             "contact.facebook" => "nullable|string|max:255",
             "contact.instagram" => "nullable|string|max:255",
             "contact.ifood" => "nullable|string|max:255",
+            "contact.phones" => "nullable|array",
+            "contact.phones.*.number" => "required|string|min:10|max:11",
+            "contact.phones.*.whatsapp" => "nullable|boolean",
         ]);
 
         $userBusiness = $updateUserBusiness->update($data, $id);
