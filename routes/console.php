@@ -17,3 +17,16 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('project:init', function () {
+    Artisan::call('migrate:reset');
+    Artisan::call('migrate:fresh');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    Artisan::call('route:clear');
+    Artisan::call('route:cache');
+    Artisan::call('db:seed --class=CategorySeeder');
+    Artisan::call('db:seed --class=DietSeeder');
+    Artisan::call('db:seed --class=RoleSeeder');
+    Artisan::call('optimize');
+})->describe('Initialize the project');
