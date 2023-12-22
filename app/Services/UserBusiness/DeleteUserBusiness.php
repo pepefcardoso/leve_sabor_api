@@ -26,6 +26,8 @@ class DeleteUserBusiness
 
             $userBusiness->diet()->detach();
 
+            $userBusiness->cookingStyle()->detach();
+
             $address = $userBusiness->address;
 
             if ($address) {

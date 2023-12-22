@@ -54,6 +54,8 @@ class UserBusinessController extends Controller
             "opening_hours.*.close_time_1" => "required|date_format:H:i",
             "opening_hours.*.open_time_2" => "nullable|date_format:H:i",
             "opening_hours.*.close_time_2" => "nullable|date_format:H:i",
+            "cooking_styles_ids" => "nullable|array",
+            "cooking_styles_ids.*" => "nullable|integer|exists:cooking_styles,id",
         ]);
 
         $userBusiness = $registerUserBusiness->register($data, $userId);
@@ -102,6 +104,8 @@ class UserBusinessController extends Controller
             "opening_hours.*.close_time_1" => "required|date_format:H:i",
             "opening_hours.*.open_time_2" => "nullable|date_format:H:i",
             "opening_hours.*.close_time_2" => "nullable|date_format:H:i",
+            "cooking_styles_ids" => "nullable|array",
+            "cooking_styles_ids.*" => "nullable|integer|exists:cooking_styles,id",
         ]);
 
         $userBusiness = $updateUserBusiness->update($data, $id);

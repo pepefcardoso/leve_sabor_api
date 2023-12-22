@@ -45,4 +45,9 @@ class Business extends Model
     {
         return $this->hasMany(OpeningHours::class);
     }
+
+    public function cookingStyle()
+    {
+        return $this->belongsToMany(CookingStyle::class, 'rl_business_cooking_styles', 'business_id', 'cooking_style_id');
+    }
 }

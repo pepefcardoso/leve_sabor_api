@@ -28,5 +28,6 @@ Artisan::command('project:init', function () {
     Artisan::call('db:seed --class=CategorySeeder');
     Artisan::call('db:seed --class=DietSeeder');
     Artisan::call('db:seed --class=RoleSeeder');
+    Artisan::call('db:seed --class=CookingStyleSeeder');
     Artisan::call('optimize');
 })->describe('Initialize the project');

@@ -26,10 +26,16 @@ class RegisterUserBusiness
 
             $userBusiness = Business::create($data);
 
-            $diets = $data['diets_id'] ?? [];
+            $diets = data_get($data, 'diets_id');
 
             if (count($diets) > 0) {
                 $userBusiness->diet()->attach($diets);
+            }
+
+            $cookingStyles = data_get($data, 'cooking_styles_ids');
+
+            if (count($cookingStyles) > 0) {
+                $userBusiness->cookingStyle()->attach($cookingStyles);
             }
 
             $address = data_get($data, 'address');

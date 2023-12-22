@@ -39,10 +39,16 @@ class UpdateUserBusiness
         try {
             $userBusiness = Business::findOrFail($id);
 
-            $diets = $data['diets_id'] ?? [];
+            $diets = data_get($data, 'diets_id');
 
             if (count($diets) > 0) {
                 $userBusiness->diet()->sync($diets);
+            }
+
+            $cooking_styles = data_get($data, 'cooking_styles_ids');
+
+            if (count($cooking_styles) > 0) {
+                $userBusiness->cookingStyle()->sync($cooking_styles);
             }
 
             $userBusiness->fill($data);

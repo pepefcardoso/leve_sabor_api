@@ -12,4 +12,9 @@ class CookingStyle extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function business()
+    {
+        return $this->belongsToMany(Business::class, 'rl_business_cooking_styles', 'cooking_style_id', 'business_id');
+    }
 }
