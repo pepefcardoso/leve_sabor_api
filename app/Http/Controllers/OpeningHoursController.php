@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OpeningHours;
 use App\Services\OpeningHours\DeleteOpeningHours;
 use App\Services\OpeningHours\RegisterOpeningHours;
 use App\Services\OpeningHours\SearchOpeningHours;
@@ -22,14 +23,7 @@ class OpeningHoursController extends Controller
 
     public function store(Request $request, RegisterOpeningHours $registerOpeningHours, int $businessId)
     {
-        $data = $request->validate([
-            "specific_date" => "nullable|date",
-            "week_day" => "nullable|integer|between:0,6",
-            "open_time_1" => "required|date_format:H:i",
-            "close_time_1" => "required|date_format:H:i",
-            "open_time_2" => "nullable|date_format:H:i",
-            "close_time_2" => "nullable|date_format:H:i",
-        ]);
+        $data = $request->validate(OpeningHours::rules());
 
         $openingHours = $registerOpeningHours->register($data, $businessId);
 
@@ -45,14 +39,7 @@ class OpeningHoursController extends Controller
 
     public function update(Request $request, UpdateOpeningHours $updateOpeningHours, int $businessId, int $id)
     {
-        $data = $request->validate([
-            "specific_date" => "nullable|date",
-            "week_day" => "nullable|integer|between:0,6",
-            "open_time_1" => "required|date_format:H:i",
-            "close_time_1" => "required|date_format:H:i",
-            "open_time_2" => "nullable|date_format:H:i",
-            "close_time_2" => "nullable|date_format:H:i",
-        ]);
+        $data = $request->validate(OpeningHours::rules());
 
         $openingHours = $updateOpeningHours->update($data, $id);
 

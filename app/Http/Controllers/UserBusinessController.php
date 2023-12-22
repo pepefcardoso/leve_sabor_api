@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Contact;
+use App\Models\OpeningHours;
 use App\Services\UserBusiness\DeleteUserBusiness;
 use App\Services\UserBusiness\RegisterUserBusiness;
 use App\Services\UserBusiness\SearchUserBusinesses;
@@ -38,12 +39,7 @@ class UserBusinessController extends Controller
             "contact.phones.*.number" => "required|string|min:10|max:11",
             "contact.phones.*.whatsapp" => "nullable|boolean",
             "opening_hours" => "nullable|array",
-            "opening_hours.*.specific_date" => "nullable|date",
-            "opening_hours.*.week_day" => "nullable|integer|between:0,6",
-            "opening_hours.*.open_time_1" => "required|date_format:H:i",
-            "opening_hours.*.close_time_1" => "required|date_format:H:i",
-            "opening_hours.*.open_time_2" => "nullable|date_format:H:i",
-            "opening_hours.*.close_time_2" => "nullable|date_format:H:i",
+            ...[OpeningHours::outsideRules()],
             "cooking_styles_ids" => "nullable|array",
             "cooking_styles_ids.*" => "nullable|integer|exists:cooking_styles,id",
         ]);
@@ -75,13 +71,7 @@ class UserBusinessController extends Controller
             "contact.phones" => "nullable|array",
             "contact.phones.*.number" => "required|string|min:10|max:11",
             "contact.phones.*.whatsapp" => "nullable|boolean",
-            "opening_hours" => "nullable|array",
-            "opening_hours.*.specific_date" => "nullable|date",
-            "opening_hours.*.week_day" => "nullable|integer|between:0,6",
-            "opening_hours.*.open_time_1" => "required|date_format:H:i",
-            "opening_hours.*.close_time_1" => "required|date_format:H:i",
-            "opening_hours.*.open_time_2" => "nullable|date_format:H:i",
-            "opening_hours.*.close_time_2" => "nullable|date_format:H:i",
+            ...[OpeningHours::outsideRules()],
             "cooking_styles_ids" => "nullable|array",
             "cooking_styles_ids.*" => "nullable|integer|exists:cooking_styles,id",
         ]);
