@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use App\Services\UserBusiness\DeleteUserBusiness;
 use App\Services\UserBusiness\RegisterUserBusiness;
 use App\Services\UserBusiness\SearchUserBusinesses;
@@ -29,15 +30,7 @@ class UserBusinessController extends Controller
             "diets_id" => "nullable|array",
             "diets_id.*" => "nullable|integer|exists:diets,id",
             "address" => "nullable|array",
-            "address.street" => "nullable|string|max:255",
-            "address.number" => "nullable|string|max:6",
-            "address.complement" => "nullable|string|max:255",
-            "address.district" => "nullable|string|max:255",
-            "address.city" => "nullable|string|max:255",
-            "address.state" => "nullable|string|size:2",
-            "address.zip_code" => "required|string|digits:8",
-            "address.latitude" => "nullable|string|max:255",
-            "address.longitude" => "nullable|string|max:255",
+            ...Address::outsideRules(),
             "contact" => "nullable|array",
             "contact.email" => "nullable|string|max:255",
             "contact.website" => "nullable|string|max:255",
@@ -79,15 +72,7 @@ class UserBusinessController extends Controller
             "diets_id" => "nullable|array",
             "diets_id.*" => "nullable|integer|exists:diets,id",
             "address" => "nullable|array",
-            "address.street" => "nullable|string|max:255",
-            "address.number" => "nullable|string|max:6",
-            "address.complement" => "nullable|string|max:255",
-            "address.district" => "nullable|string|max:255",
-            "address.city" => "nullable|string|max:255",
-            "address.state" => "nullable|string|size:2",
-            "address.zip_code" => "required|string|digits:8",
-            "address.latitude" => "nullable|string|max:255",
-            "address.longitude" => "nullable|string|max:255",
+            ...Address::outsideRules(),
             "contact" => "nullable|array",
             "contact.email" => "nullable|string|max:255",
             "contact.website" => "nullable|string|max:255",

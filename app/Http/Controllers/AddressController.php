@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use App\Services\Addresses\DeleteAddress;
 use App\Services\Addresses\RegisterAddress;
 use App\Services\Addresses\SearchAddress;
@@ -22,17 +23,7 @@ class AddressController extends Controller
 
     public function store(Request $request, RegisterAddress $registerAddress, int $businessId)
     {
-        $data = $request->validate([
-            'street' => 'nullable|string|min:3|max:99',
-            'number' => 'nullable|string|min:1|max:10',
-            'complement' => 'nullable|string|min:3|max:99',
-            'district' => 'nullable|string|min:3|max:99',
-            'city' => 'nullable|string|min:3|max:99',
-            'state' => 'nullable|string|min:2|max:2',
-            'zip_code' => 'required|string|min:8|max:8',
-            'latitude' => 'nullable|string|min:3|max:99',
-            'longitude' => 'nullable|string|min:3|max:99',
-        ]);
+        $data = $request->validate(Address::rules());
 
         $address = $registerAddress->register($data, $businessId);
 
@@ -48,17 +39,7 @@ class AddressController extends Controller
 
     public function update(Request $request, UpdateAddress $updateAddress, int $businessId, int $id)
     {
-        $data = $request->validate([
-            'street' => 'nullable|string|min:3|max:99',
-            'number' => 'nullable|string|min:1|max:10',
-            'complement' => 'nullable|string|min:3|max:99',
-            'district' => 'nullable|string|min:3|max:99',
-            'city' => 'nullable|string|min:3|max:99',
-            'state' => 'nullable|string|min:2|max:2',
-            'zip_code' => 'required|string|min:8|max:8',
-            'latitude' => 'nullable|string|min:3|max:99',
-            'longitude' => 'nullable|string|min:3|max:99',
-        ]);
+        $data = $request->validate(Address::rules());
 
         $address = $updateAddress->update($data, $id);
 
