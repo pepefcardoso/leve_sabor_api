@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Contact;
 use App\Services\UserBusiness\DeleteUserBusiness;
 use App\Services\UserBusiness\RegisterUserBusiness;
 use App\Services\UserBusiness\SearchUserBusinesses;
@@ -32,11 +33,7 @@ class UserBusinessController extends Controller
             "address" => "nullable|array",
             ...Address::outsideRules(),
             "contact" => "nullable|array",
-            "contact.email" => "nullable|string|max:255",
-            "contact.website" => "nullable|string|max:255",
-            "contact.facebook" => "nullable|string|max:255",
-            "contact.instagram" => "nullable|string|max:255",
-            "contact.ifood" => "nullable|string|max:255",
+            ...Contact::outsideRules(),
             "contact.phones" => "nullable|array",
             "contact.phones.*.number" => "required|string|min:10|max:11",
             "contact.phones.*.whatsapp" => "nullable|boolean",
@@ -74,11 +71,7 @@ class UserBusinessController extends Controller
             "address" => "nullable|array",
             ...Address::outsideRules(),
             "contact" => "nullable|array",
-            "contact.email" => "nullable|string|max:255",
-            "contact.website" => "nullable|string|max:255",
-            "contact.facebook" => "nullable|string|max:255",
-            "contact.instagram" => "nullable|string|max:255",
-            "contact.ifood" => "nullable|string|max:255",
+            ...Contact::outsideRules(),
             "contact.phones" => "nullable|array",
             "contact.phones.*.number" => "required|string|min:10|max:11",
             "contact.phones.*.whatsapp" => "nullable|boolean",
