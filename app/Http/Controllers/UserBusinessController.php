@@ -39,7 +39,7 @@ class UserBusinessController extends Controller
             "contact.phones.*.number" => "required|string|min:10|max:11",
             "contact.phones.*.whatsapp" => "nullable|boolean",
             "opening_hours" => "nullable|array",
-            ...[OpeningHours::outsideRules()],
+            ...OpeningHours::outsideRules(),
             "cooking_styles_ids" => "nullable|array",
             "cooking_styles_ids.*" => "nullable|integer|exists:cooking_styles,id",
         ]);
@@ -71,7 +71,8 @@ class UserBusinessController extends Controller
             "contact.phones" => "nullable|array",
             "contact.phones.*.number" => "required|string|min:10|max:11",
             "contact.phones.*.whatsapp" => "nullable|boolean",
-            ...[OpeningHours::outsideRules()],
+            "opening_hours" => "nullable|array",
+            ...OpeningHours::outsideRules(),
             "cooking_styles_ids" => "nullable|array",
             "cooking_styles_ids.*" => "nullable|integer|exists:cooking_styles,id",
         ]);
