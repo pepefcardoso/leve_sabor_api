@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Phone;
 use App\Services\Phones\DeletePhone;
 use App\Services\Phones\RegisterPhone;
 use App\Services\Phones\SearchPhones;
@@ -24,10 +25,7 @@ class PhoneController extends Controller
 
     public function store(Request $request, RegisterPhone $registerPhone, int $contactId)
     {
-        $data = $request->validate([
-            'number' => 'required|string|min:10|max:11',
-            'whatsapp' => 'nullable|boolean',
-        ]);
+        $data = $request->validate(Phone::rules());
 
         $phone = $registerPhone->register($data, $contactId);
 
@@ -43,10 +41,7 @@ class PhoneController extends Controller
 
     public function update(Request $request, UpdatePhone $updatePhone, int $id)
     {
-        $data = $request->validate([
-            'number' => 'required|string|min:10|max:11',
-            'whatsapp' => 'nullable|boolean',
-        ]);
+        $data = $request->validate(Phone::rules());
 
         $phone = $updatePhone->update($data, $id);
 

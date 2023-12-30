@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Models\Phone;
 use App\Services\Contacts\DeleteContact;
 use App\Services\Contacts\RegisterContact;
 use App\Services\Contacts\SearchContacts;
@@ -26,8 +27,7 @@ class ContactsController extends Controller
         $data = $request->validate([
             ...Contact::rules(),
             'phones' => 'nullable|array',
-            'phones.*.number' => 'required|string|min:10|max:11',
-            'phones.*.whatsapp' => 'nullable|boolean',
+            ...Phone::contactRules(),
         ]);
 
         $contact = $registerContact->register($data, $businessId);
@@ -47,8 +47,7 @@ class ContactsController extends Controller
         $data = $request->validate([
             ...Contact::rules(),
             'phones' => 'nullable|array',
-            'phones.*.number' => 'required|string|min:10|max:11',
-            'phones.*.whatsapp' => 'nullable|boolean',
+            ...Phone::contactRules(),
         ]);
 
         $contact = $updateContact->update($data, $id);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use App\Models\Contact;
 use App\Models\OpeningHours;
+use App\Models\Phone;
 use App\Services\UserBusiness\DeleteUserBusiness;
 use App\Services\UserBusiness\RegisterUserBusiness;
 use App\Services\UserBusiness\SearchUserBusinesses;
@@ -35,9 +36,7 @@ class UserBusinessController extends Controller
             ...Address::outsideRules(),
             "contact" => "nullable|array",
             ...Contact::outsideRules(),
-            "contact.phones" => "nullable|array",
-            "contact.phones.*.number" => "required|string|min:10|max:11",
-            "contact.phones.*.whatsapp" => "nullable|boolean",
+            ...Phone::businessRules(),
             "opening_hours" => "nullable|array",
             ...OpeningHours::outsideRules(),
             "cooking_styles_ids" => "nullable|array",
@@ -68,9 +67,7 @@ class UserBusinessController extends Controller
             ...Address::outsideRules(),
             "contact" => "nullable|array",
             ...Contact::outsideRules(),
-            "contact.phones" => "nullable|array",
-            "contact.phones.*.number" => "required|string|min:10|max:11",
-            "contact.phones.*.whatsapp" => "nullable|boolean",
+            ...Phone::businessRules(),
             "opening_hours" => "nullable|array",
             ...OpeningHours::outsideRules(),
             "cooking_styles_ids" => "nullable|array",
