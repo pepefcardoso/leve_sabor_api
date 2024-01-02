@@ -41,6 +41,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    static public function rules()
+    {
+        return [
+            'name' => 'nullable|string|min:3|max:99|unique:users,name',
+            'email' => 'required|email|unique:users,email',
+            'birthday' => 'nullable|date|before:today',
+            'phone' => 'nullable|string|regex:/^\(\d{2}\)\s?\d{4,5}-\d{4}$/|unique:users,phone',
+            'cpf' => 'nullable|string|size:14|regex:/^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$/|unique:users,cpf',
+            'password' => 'required|string|min:8|max:99',
+            'role_id' => 'nullable|integer|exists:roles,id',
+            'image' => 'nullable|image|max:2048|mimes:jpeg,png,jpg,svg',
+        ];
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class);

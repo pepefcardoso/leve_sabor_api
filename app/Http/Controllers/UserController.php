@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\User\DeleteUser;
 use App\Services\User\LoginUser;
 use App\Services\User\RegisterUser;
@@ -21,15 +22,7 @@ class UserController extends Controller
 
     public function store(Request $request, RegisterUser $registerUser)
     {
-        $data = $request->validate([
-            'name' => 'required|min:4',
-            'email' => 'required|email',
-            'birthday' => 'nullable|date',
-            'phone' => 'nullable|string',
-            'cpf' => 'nullable|string',
-            'password' => 'required|min:8',
-            'image' => 'nullable|image',
-        ]);
+        $data = $request->validate(User::rules());
 
         $token = $registerUser->register($data);
 
@@ -45,15 +38,7 @@ class UserController extends Controller
 
     public function update(Request $request, UpdateUser $updateUser, int $id)
     {
-        $data = $request->validate([
-            'name' => 'required|min:4',
-            'email' => 'required|email',
-            'birthday' => 'nullable|date',
-            'phone' => 'nullable|string',
-            'cpf' => 'nullable|string',
-            'password' => 'required|min:8',
-            'image' => 'nullable|image',
-        ]);
+        $data = $request->validate((User::rules()));
 
         $user = $updateUser->update($data, $id);
 
