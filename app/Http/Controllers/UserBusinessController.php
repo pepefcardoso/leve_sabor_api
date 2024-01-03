@@ -30,7 +30,7 @@ class UserBusinessController extends Controller
             "name" => "required|string|max:255",
             "description" => "nullable|string|max:255",
             "category_id" => "required|integer|exists:categories,id",
-            "diets_id" => "nullable|array",
+            "diets_id" => "required|array",
             "diets_id.*" => "nullable|integer|exists:diets,id",
             "address" => "nullable|array",
             ...Address::outsideRules(),
@@ -39,7 +39,7 @@ class UserBusinessController extends Controller
             ...Phone::businessRules(),
             "opening_hours" => "nullable|array",
             ...OpeningHours::outsideRules(),
-            "cooking_styles_ids" => "nullable|array",
+            "cooking_styles_ids" => "required|array",
             "cooking_styles_ids.*" => "nullable|integer|exists:cooking_styles,id",
         ]);
 

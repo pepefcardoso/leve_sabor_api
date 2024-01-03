@@ -40,22 +40,17 @@ class UpdateUserBusiness
             $userBusiness = Business::findOrFail($id);
 
             $diets = data_get($data, 'diets_id');
-
-            if (count($diets) > 0) {
-                $userBusiness->diet()->sync($diets);
-            }
+            throw_if(empty($diets), \Exception::class, 'Diets are required');
+            $userBusiness->diet()->sync($diets);
 
             $cooking_styles = data_get($data, 'cooking_styles_ids');
-
-            if (count($cooking_styles) > 0) {
-                $userBusiness->cookingStyle()->sync($cooking_styles);
-            }
+            throw_if(empty($cooking_styles), \Exception::class, 'Cooking styles are required');
+            $userBusiness->cookingStyle()->sync($cooking_styles);
 
             $userBusiness->fill($data);
             $userBusiness->save();
 
             $address = data_get($data, 'address');
-
             if ($address) {
                 if (isset($address['id'])) {
                     $this->updateAddress->update($address, $userBusiness->id);
@@ -67,7 +62,6 @@ class UpdateUserBusiness
             }
 
             $contact = data_get($data, 'contact');
-
             if ($contact) {
                 if (isset($contact['id'])) {
                     $this->updateContact->update($contact, $userBusiness->id);
@@ -79,9 +73,17 @@ class UpdateUserBusiness
             }
 
             $openingHours = data_get($data, 'opening_hours');
-
             if ($openingHours) {
+                $usedWeekdays = [];
                 foreach ($openingHours as $openingHour) {
+                    $weekday = $openingHour['week_day'] ?? null;
+                    if ($weekday !== null && in_array($weekday, $usedWeekdays)) {
+                        throw new \Exception("Only one opening hour allowed per weekday.");
+                    }
+                    if ($weekday !== null) {
+                        $usedWeekdays[] = $weekday;
+                    }
+
                     if (isset($openingHour['id'])) {
                         $this->updateOpeningHours->update($openingHour, $userBusiness->id);
                     } else {
@@ -93,11 +95,11 @@ class UpdateUserBusiness
             }
 
             DB::commit();
-
             return $userBusiness;
         } catch (\Exception $e) {
             DB::rollBack();
             return $e->getMessage();
         }
     }
+
 }

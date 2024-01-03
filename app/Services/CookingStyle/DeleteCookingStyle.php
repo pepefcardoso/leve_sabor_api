@@ -14,6 +14,10 @@ class DeleteCookingStyle
         try {
             $cookingStyle = CookingStyle::findOrFail($id);
 
+            if ($cookingStyle->business()->exists()) {
+                throw new \Exception("Cannot delete this diet. It is associated with one or more businesses.");
+            }
+
             $cookingStyle->delete();
 
             DB::commit();

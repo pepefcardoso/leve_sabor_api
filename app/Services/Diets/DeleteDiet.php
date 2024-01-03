@@ -14,6 +14,10 @@ class DeleteDiet
         try {
             $diet = Diet::findOrFail($id);
 
+            if ($diet->business()->exists()) {
+                throw new \Exception("Cannot delete this diet. It is associated with one or more businesses.");
+            }
+
             $diet->delete();
 
             DB::commit();

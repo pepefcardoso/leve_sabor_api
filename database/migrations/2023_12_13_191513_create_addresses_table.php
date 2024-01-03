@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('zip_code');
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
-            $table->foreignId('business_id')->constrained('businesses');
+            $table->foreignId('business_id')->constrained('businesses')->onDelete('cascade');
             $table->timestamps();
         });
     }

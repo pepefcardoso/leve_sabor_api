@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('facebook')->nullable();
             $table->string('instagram')->nullable();
             $table->string('ifood')->nullable();
-            $table->foreignId('business_id')->constrained('businesses');
+            $table->foreignId('business_id')->constrained('businesses')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -28,7 +28,11 @@ class UpdateContact
             $contact->fill($data);
             $contact->save();
 
-            $phones = $data['phones'] ?? null;
+            $phones = $data['phones'] ?? [];
+
+            if (count($phones) > 2) {
+                throw new \Exception("A contact can have at most 2 phones.");
+            }
 
             $updatedPhoneIds = [];
             if ($phones) {
