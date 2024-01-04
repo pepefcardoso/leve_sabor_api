@@ -4,17 +4,19 @@ namespace App\Services\UserBusiness;
 
 use App\Models\Business;
 use App\Services\Addresses\RegisterAddress;
+use App\Services\BusinessImages\RegisterBusinessImage;
 use App\Services\Contacts\RegisterContact;
 use App\Services\OpeningHours\RegisterOpeningHours;
 use Illuminate\Support\Facades\DB;
 
 class RegisterUserBusiness
 {
-    public function __construct(RegisterAddress $registerAddress, RegisterContact $registerContact, RegisterOpeningHours $registerOpeningHours)
+    public function __construct(RegisterAddress $registerAddress, RegisterContact $registerContact, RegisterOpeningHours $registerOpeningHours, RegisterBusinessImage $registerBusinessImage)
     {
         $this->registerAddress = $registerAddress;
         $this->registerContact = $registerContact;
         $this->registerOpeningHours = $registerOpeningHours;
+        $this->registerBusinessImage = $registerBusinessImage;
     }
 
     public function register(array $data, int $userId)
@@ -65,6 +67,13 @@ class RegisterUserBusiness
                 }
             }
 
+            $images = data_get($data, 'images');
+
+            if ($images) {
+                foreach ($images as $image) {
+                    $this->registerBusinessImage->register($image, $userBusiness->id);
+                }
+            }
 
             DB::commit();
 

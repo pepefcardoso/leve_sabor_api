@@ -18,6 +18,27 @@ class Business extends Model
         'category_id',
     ];
 
+    static public function rules()
+    {
+        return [
+            'name' => 'required|string|min:3|max:99|unique:businesses,name',
+            'description' => 'nullable|string|max:255',
+            "category_id" => "required|integer|exists:categories,id",
+            "diets_id" => "required|array",
+            "diets_id.*" => "nullable|integer|exists:diets,id",
+            "address" => "nullable|array",
+            ...Address::outsideRules(),
+            "contact" => "nullable|array",
+            ...Contact::outsideRules(),
+            ...Phone::businessRules(),
+            "opening_hours" => "nullable|array",
+            ...OpeningHours::outsideRules(),
+            "cooking_styles_ids" => "required|array",
+            "cooking_styles_ids.*" => "nullable|integer|exists:cooking_styles,id",
+            ...BusinessImage::businessRules(),
+        ];
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

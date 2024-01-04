@@ -6,6 +6,9 @@ use App\Models\Business;
 use App\Services\Addresses\DeleteAddress;
 use App\Services\Addresses\RegisterAddress;
 use App\Services\Addresses\UpdateAddress;
+use App\Services\BusinessImages\DeleteBusinessImage;
+use App\Services\BusinessImages\RegisterBusinessImage;
+use App\Services\BusinessImages\UpdateBusinessImage;
 use App\Services\Contacts\DeleteContact;
 use App\Services\Contacts\RegisterContact;
 use App\Services\Contacts\UpdateContact;
@@ -17,9 +20,10 @@ use Illuminate\Support\Facades\DB;
 class UpdateUserBusiness
 {
     public function __construct(
-        RegisterAddress      $registerAddress, UpdateAddress $updateAddress, DeleteAddress $deleteAddress,
-        RegisterContact      $registerContact, UpdateContact $updateContact, DeleteContact $deleteContact,
-        RegisterOpeningHours $registerOpeningHours, UpdateOpeningHours $updateOpeningHours, DeleteOpeningHours $deleteOpeningHours)
+        RegisterAddress       $registerAddress, UpdateAddress $updateAddress, DeleteAddress $deleteAddress,
+        RegisterContact       $registerContact, UpdateContact $updateContact, DeleteContact $deleteContact,
+        RegisterOpeningHours  $registerOpeningHours, UpdateOpeningHours $updateOpeningHours, DeleteOpeningHours $deleteOpeningHours,
+        RegisterBusinessImage $registerBusinessImage, UpdateBusinessImage $updateBusinessImage, DeleteBusinessImage $deleteBusinessImage)
     {
         $this->registerAddress = $registerAddress;
         $this->updateAddress = $updateAddress;
@@ -30,6 +34,9 @@ class UpdateUserBusiness
         $this->registerOpeningHours = $registerOpeningHours;
         $this->updateOpeningHours = $updateOpeningHours;
         $this->deleteOpeningHours = $deleteOpeningHours;
+        $this->registerBusinessImage = $registerBusinessImage;
+        $this->updateBusinessImage = $updateBusinessImage;
+        $this->deleteBusinessImage = $deleteBusinessImage;
     }
 
     public function update(array $data, int $id)
@@ -94,7 +101,34 @@ class UpdateUserBusiness
                 $this->deleteOpeningHours->delete($userBusiness->id);
             }
 
+            $currentImagesIds = $userBusiness->businessImages->pluck('id')->toArray();
+
+            $newImages = data_get($data, 'images');
+
+            $updatedImagesIds = [];
+
+            if ($newImages) {
+                foreach ($newImages as $image) {
+                    if (isset($image['id'])) {
+                        $this->updateBusinessImage->update($image, $userBusiness->id);
+                        $updatedImagesIds[] = $image['id'];
+                    } else {
+                        $newImage = $this->registerBusinessImage->register($image, $userBusiness->id);
+                        $updatedImagesIds[] = $newImage->id;
+                    }
+                }
+            }
+
+            $deletedImagesIds = array_diff($currentImagesIds, $updatedImagesIds);
+
+            if ($deletedImagesIds) {
+                foreach ($deletedImagesIds as $imageId) {
+                    $this->deleteBusinessImage->delete($imageId);
+                }
+            }
+
             DB::commit();
+
             return $userBusiness;
         } catch (\Exception $e) {
             DB::rollBack();

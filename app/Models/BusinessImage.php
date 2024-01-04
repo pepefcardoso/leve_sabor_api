@@ -27,6 +27,15 @@ class BusinessImage extends Model
         ];
     }
 
+    static public function businessRules()
+    {
+        return [
+            'images' => 'nullable|array',
+            'images.*.file' => 'required|image|max:2048|mimes:jpeg,png,jpg,svg',
+            'images.*.type' => ['nullable', Rule::in(BusinessImageTypeEnum::cases())],
+        ];
+    }
+
     public function business()
     {
         return $this->belongsTo(Business::class);
