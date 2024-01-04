@@ -3,25 +3,17 @@
 namespace App\Services\UserImages;
 
 use App\Models\UserImage;
-use App\Services\Phones\DeletePhone;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class UpdateUserImage
 {
-    public function __construct(DeletePhone $deletePhone)
-    {
-        $this->deletePhone = $deletePhone;
-    }
-
     public function update(array $data, int $id, int $userId)
     {
         DB::beginTransaction();
 
         try {
             $userImage = UserImage::findOrFail($id);
-
-            $this->deletePhone->delete($id);
 
             $image = data_get($data, 'image');
 

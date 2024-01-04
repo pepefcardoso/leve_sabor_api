@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\BusinessImageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\CookingStyleController;
@@ -99,4 +100,10 @@ Route::middleware(['auth:api', 'role'])->group(
         $router->get('users/{userId}/business/{id}', [UserBusinessController::class, 'show']);
         $router->put('users/{userId}/business/{id}', [UserBusinessController::class, 'update']);
         $router->delete('users/{userId}/business/{id}', [UserBusinessController::class, 'destroy']);
+
+        $router->get('businesses/{businessId}/images', [BusinessImageController::class, 'index']);
+        $router->post('businesses/{businessId}/images', [BusinessImageController::class, 'store']);
+        $router->get('businesses/{businessId}/images/{id}', [BusinessImageController::class, 'show']);
+        $router->put('businesses/{businessId}/images/{id}', [BusinessImageController::class, 'update']);
+        $router->delete('businesses/{businessId}/images/{id}', [BusinessImageController::class, 'destroy']);
     });
