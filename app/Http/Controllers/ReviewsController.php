@@ -7,6 +7,7 @@ use App\Services\Reviews\DeleteReview;
 use App\Services\Reviews\RegisterReview;
 use App\Services\Reviews\SearchReviews;
 use App\Services\Reviews\ShowReview;
+use App\Services\Reviews\ShowReviewsRating;
 use App\Services\Reviews\UpdateReview;
 use Illuminate\Http\Request;
 
@@ -51,5 +52,12 @@ class ReviewsController extends Controller
         $review = $deleteReview->delete($id);
 
         return response()->json($review);
+    }
+
+    public function ratings(ShowReviewsRating $showReviewsRating, int $businessId)
+    {
+        $ratingInfo = $showReviewsRating->getRating($businessId);
+
+        return response()->json($ratingInfo);
     }
 }

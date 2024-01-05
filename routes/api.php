@@ -6,7 +6,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\CookingStyleController;
 use App\Http\Controllers\DietController;
-use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OpeningHoursController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\ReviewsController;
@@ -78,6 +77,8 @@ Route::prefix('api')
             $router->get('business/{businessId}/images', [BusinessImageController::class, 'index']);
 
             $router->get('business/{businessId}/reviews', [ReviewsController::class, 'index']);
+
+            $router->get('business/{businessId}/ratings', [ReviewsController::class, 'ratings']);
         });
 
 Route::prefix('api/business')
