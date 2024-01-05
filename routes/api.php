@@ -9,6 +9,7 @@ use App\Http\Controllers\DietController;
 use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OpeningHoursController;
 use App\Http\Controllers\PhoneController;
+use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserBusinessController;
 use App\Http\Controllers\UserController;
@@ -106,4 +107,11 @@ Route::middleware(['auth:api', 'role'])->group(
         $router->get('businesses/{businessId}/images/{id}', [BusinessImageController::class, 'show']);
         $router->put('businesses/{businessId}/images/{id}', [BusinessImageController::class, 'update']);
         $router->delete('businesses/{businessId}/images/{id}', [BusinessImageController::class, 'destroy']);
+
+        $router->get('users/{userId}/reviews', [ReviewsController::class, 'userIndex']);
+        $router->get('business/{businessId}/reviews', [ReviewsController::class, 'businessIndex']);
+        $router->post('users/{userId}/business/{businessId}/reviews', [ReviewsController::class, 'store']);
+        $router->get('reviews/{id}', [ReviewsController::class, 'show']);
+        $router->put('reviews/{id}', [ReviewsController::class, 'update']);
+        $router->delete('reviews/{id}', [ReviewsController::class, 'destroy']);
     });

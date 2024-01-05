@@ -87,4 +87,8 @@ class User extends Authenticatable
         return $this->hasMany(Business::class);
     }
 
+    public function review()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

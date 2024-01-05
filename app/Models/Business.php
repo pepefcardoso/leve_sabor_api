@@ -79,6 +79,11 @@ class Business extends Model
         return $this->hasMany(BusinessImage::class);
     }
 
+    public function review()
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function imageTemporaryUrl(int $imageId): Attribute
     {
         return Attribute::make(
