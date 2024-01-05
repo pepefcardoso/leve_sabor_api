@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\BusinessImages\TemporaryUrlBusinessImage;
+use App\Services\Reviews\ShowReviewsRating;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -97,6 +98,17 @@ class Business extends Model
                 }
 
                 return null;
+            }
+        );
+    }
+
+    public function ratings(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $ratings = app(ShowReviewsRating::class);
+
+                return $ratings->show($this->id);
             }
         );
     }
