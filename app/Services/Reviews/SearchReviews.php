@@ -4,7 +4,7 @@ namespace App\Services\Reviews;
 
 use App\Models\Review;
 
-class SearchBusinessReviews
+class SearchReviews
 {
     public function search(array $filters)
     {

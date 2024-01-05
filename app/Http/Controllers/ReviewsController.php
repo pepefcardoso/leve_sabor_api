@@ -5,25 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use App\Services\Reviews\DeleteReview;
 use App\Services\Reviews\RegisterReview;
-use App\Services\Reviews\SearchBusinessReviews;
-use App\Services\Reviews\SearchUserReviews;
+use App\Services\Reviews\SearchReviews;
 use App\Services\Reviews\ShowReview;
 use App\Services\Reviews\UpdateReview;
 use Illuminate\Http\Request;
 
 class ReviewsController extends Controller
 {
-    public function userIndex(SearchUserReviews $searchReviews, int $userId)
-    {
-
-        $filters = ['userId' => $userId];
-
-        $reviews = $searchReviews->search($filters);
-
-        return response()->json($reviews);
-    }
-
-    public function businessIndex(SearchBusinessReviews $searchReviews, int $businessId)
+    public function index(SearchReviews $searchReviews, int $businessId)
     {
         $filters = ['businessId' => $businessId];
 
