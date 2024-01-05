@@ -30,26 +30,6 @@ class DeleteUserBusiness
 
             $userBusiness->cookingStyle()->detach();
 
-            $address = $userBusiness->address;
-
-            if ($address) {
-                $this->deleteAddress->delete($address->id);
-            }
-
-            $contact = $userBusiness->contact;
-
-            if ($contact) {
-                $this->deleteContact->delete($contact->id);
-            }
-
-            $openingHours = $userBusiness->openingHours;
-
-            if ($openingHours) {
-                foreach ($openingHours as $openingHour) {
-                    $this->deleteOpeningHours->delete($openingHour->id);
-                }
-            }
-
             $businessImage = $userBusiness->businessImage;
 
             if ($businessImage) {

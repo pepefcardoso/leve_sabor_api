@@ -20,14 +20,6 @@ class DeleteContact
         try {
             $contact = Contact::with('phone')->findOrFail($id);
 
-            $phones = $contact->phones;
-
-            if ($phones) {
-                foreach ($phones as $phone) {
-                    $this->deletePhone->delete($phone->id);
-                }
-            }
-
             $contact->delete();
 
             DB::commit();
