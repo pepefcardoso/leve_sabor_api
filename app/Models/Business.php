@@ -102,6 +102,23 @@ class Business extends Model
         );
     }
 
+    public function logoTemporaryUrl(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $businessImage = $this->businessImage()->where('type', 'LOGO')->first();
+
+                if ($businessImage) {
+                    $temporaryUrlBusinessImage = app(TemporaryUrlBusinessImage::class);
+
+                    return $temporaryUrlBusinessImage->temporaryUrl($businessImage);
+                }
+
+                return null;
+            }
+        );
+    }
+
     public function ratings(): Attribute
     {
         return Attribute::make(
@@ -111,5 +128,40 @@ class Business extends Model
                 return $ratings->show($this->id);
             }
         );
+    }
+
+    public function scopeByMinRating($query, $minRating)
+    {
+        return $query->leftJoin('reviews', 'businesses.id', '=', 'reviews.business_id')
+            ->selectRaw('businesses.*, IFNULL(AVG(reviews.rating), 0) AS avg_rating')
+            ->groupBy('businesses.id')
+            ->havingRaw('avg_rating >= ?', [$minRating]);
+    }
+
+    public function scopeIsOpen($query, $day, $time)
+    {
+        return $query->where('week_day', $day)
+            ->where(function ($query) use ($time) {
+                $query->where(function ($q) use ($time) {
+                    $q->where('open_time_1', '<=', $time)
+                        ->where('close_time_1', '>=', $time);
+                })->orWhere(function ($q) use ($time) {
+                    $q->where('open_time_2', '<=', $time)
+                        ->where('close_time_2', '>=', $time);
+                });
+            });
+    }
+
+    public function scopeWithinDistanceOf($query, $latitude, $longitude, $distanceInKm)
+    {
+        return $query->whereHas('address', function ($addressQuery) use ($latitude, $longitude, $distanceInKm) {
+            $addressQuery->selectRaw('*,
+                ( 6371 * ACOS( COS( RADIANS(?) ) * COS( RADIANS( latitude ) ) * COS( RADIANS( longitude ) - RADIANS(?) ) + SIN( RADIANS(?) ) * SIN( RADIANS( latitude ) ) ) ) AS distance', [
+                $latitude,
+                $longitude,
+                $latitude
+            ])
+                ->havingRaw('distance <= ?', [$distanceInKm]);
+        });
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessImageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactsController;
@@ -79,6 +80,8 @@ Route::prefix('api')
             $router->get('business/{businessId}/reviews', [ReviewsController::class, 'index']);
 
             $router->get('business/{businessId}/ratings', [ReviewsController::class, 'ratings']);
+
+            $router->get('businesses', [BusinessController::class, 'index']);
         });
 
 Route::prefix('api/business')
