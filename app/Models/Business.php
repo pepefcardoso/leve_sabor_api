@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\BusinessImages\TemporaryUrlBusinessImage;
 use App\Services\Reviews\ShowReviewsRating;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -131,6 +132,31 @@ class Business extends Model
                 $ratings = app(ShowReviewsRating::class);
 
                 return $ratings->show($this->id);
+            }
+        );
+    }
+
+    public function isOpenNow(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $now = Carbon::now();
+                $dayOfWeek = $now->dayOfWeek;
+                $currentTime = $now->format('H:i:s');
+
+                return (bool)$this->openingHours->first(function ($openingHour) use ($dayOfWeek, $currentTime) {
+                    if ($openingHour->week_day === $dayOfWeek) {
+                        if ($currentTime >= $openingHour->open_time_1 && $currentTime <= $openingHour->close_time_1) {
+                            return true;
+                        }
+
+                        if ($openingHour->open_time_2 && $currentTime >= $openingHour->open_time_2 && $currentTime <= $openingHour->close_time_2) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                });
             }
         );
     }
