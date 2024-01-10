@@ -75,14 +75,14 @@ class Business extends Model
         return $this->belongsToMany(CookingStyle::class, 'rl_business_cooking_styles', 'business_id', 'cooking_style_id');
     }
 
-    public function businessImage()
-    {
-        return $this->hasMany(BusinessImage::class);
-    }
-
     public function review()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'rl_user_favorite_businesses', 'business_id', 'user_id');
     }
 
     public function imageTemporaryUrl(int $imageId): Attribute
@@ -100,6 +100,11 @@ class Business extends Model
                 return null;
             }
         );
+    }
+
+    public function businessImage()
+    {
+        return $this->hasMany(BusinessImage::class);
     }
 
     public function logoTemporaryUrl(): Attribute

@@ -138,4 +138,8 @@ Route::prefix('api/users')
         $router->get('{userId}/business/{id}', [UserBusinessController::class, 'show']);
         $router->put('{userId}/business/{id}', [UserBusinessController::class, 'update']);
         $router->delete('{userId}/business/{id}', [UserBusinessController::class, 'destroy']);
+
+        $router->post('{id}/favorites/{businessId}', [UserController::class, 'addToFavorites']);
+        $router->delete('{id}/favorites/{businessId}', [UserController::class, 'removeFromFavorites']);
+        $router->get('{id}/favorites', [UserController::class, 'showFavorites']);
     });

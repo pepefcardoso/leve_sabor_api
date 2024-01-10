@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\User\AddFavoriteBusiness;
 use App\Services\User\DeleteUser;
 use App\Services\User\LoginUser;
 use App\Services\User\RegisterUser;
+use App\Services\User\RemoveFavoriteBusiness;
 use App\Services\User\SearchUsers;
+use App\Services\User\ShowFavoriteBusiness;
 use App\Services\User\ShowUser;
 use App\Services\User\UpdateUser;
 use Illuminate\Http\Request;
@@ -29,15 +32,6 @@ class UserController extends Controller
         return response()->json(['token' => $token], 200);
     }
 
-    public function show(ShowUser $showUser, int $id)
-    {
-        $this->authorize('view', User::class);
-
-        $user = $showUser->show($id);
-
-        return response()->json($user);
-    }
-
     public function update(Request $request, UpdateUser $updateUser, int $id)
     {
         $this->authorize('update', User::class);
@@ -54,6 +48,42 @@ class UserController extends Controller
         $this->authorize('delete', User::class);
 
         $user = $deleteUser->delete($id);
+
+        return response()->json($user);
+    }
+
+    public function addToFavorites(AddFavoriteBusiness $addFavorite, int $id, int $businessId)
+    {
+        $this->authorize('update', User::class);
+
+        $response = $addFavorite->add($id, $businessId);
+
+        return response()->json($response);
+    }
+
+    public function removeFromFavorites(RemoveFavoriteBusiness $removeFavorite, int $id, int $businessId)
+    {
+        $this->authorize('update', User::class);
+
+        $response = $removeFavorite->remove($id, $businessId);
+
+        return response()->json($response);
+    }
+
+    public function showFavorites(ShowFavoriteBusiness $showFavorite, int $id)
+    {
+        $this->authorize('view', User::class);
+
+        $response = $showFavorite->show($id);
+
+        return response()->json($response);
+    }
+
+    public function show(ShowUser $showUser, int $id)
+    {
+        $this->authorize('view', User::class);
+
+        $user = $showUser->show($id);
 
         return response()->json($user);
     }
