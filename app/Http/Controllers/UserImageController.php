@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\UserImages\DeleteUserImage;
 use App\Services\UserImages\RegisterUserImage;
 use App\Services\UserImages\SearchUserImage;
@@ -22,6 +23,8 @@ class UserImageController extends Controller
 
     public function store(Request $request, RegisterUserImage $registerUserImage, int $userId)
     {
+        $this->authorize('create', User::class);
+
         $data = $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -40,6 +43,8 @@ class UserImageController extends Controller
 
     public function update(Request $request, UpdateUserImage $updateUserImage, int $id, int $userId)
     {
+        $this->authorize('update', User::class);
+
         $data = $request->validate([
             'image' => 'required|image',
         ]);
@@ -51,6 +56,8 @@ class UserImageController extends Controller
 
     public function destroy(DeleteUserImage $deleteUserImage, int $userId, int $id)
     {
+        $this->authorize('delete', User::class);
+
         $userImage = $deleteUserImage->delete($id);
 
         return response()->json($userImage);
