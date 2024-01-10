@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\User\AddFavoriteBusiness;
 use App\Services\User\DeleteUser;
 use App\Services\User\LoginUser;
+use App\Services\User\LogoutUser;
 use App\Services\User\RegisterUser;
 use App\Services\User\RemoveFavoriteBusiness;
 use App\Services\User\SearchUsers;
@@ -102,5 +103,12 @@ class UserController extends Controller
         } else {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+    }
+
+    public function logout(LogoutUser $logoutUser)
+    {
+        $response = $logoutUser->logout();
+
+        return response()->json($response);
     }
 }

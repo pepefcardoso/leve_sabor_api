@@ -122,6 +122,8 @@ Route::prefix('api/business')
 Route::prefix('api/users')
     ->middleware(['auth:api', 'role'])
     ->group(function (Router $router) {
+        $router->post('logout', [UserController::class, 'logout']);
+
         $router->get('', [UserController::class, 'index']);
         $router->get('{id}', [UserController::class, 'show']);
         $router->put('{id}', [UserController::class, 'update']);
