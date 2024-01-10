@@ -31,6 +31,8 @@ class UserController extends Controller
 
     public function show(ShowUser $showUser, int $id)
     {
+        $this->authorize('view', User::class);
+
         $user = $showUser->show($id);
 
         return response()->json($user);
@@ -38,6 +40,8 @@ class UserController extends Controller
 
     public function update(Request $request, UpdateUser $updateUser, int $id)
     {
+        $this->authorize('update', User::class);
+
         $data = $request->validate((User::rules()));
 
         $user = $updateUser->update($data, $id);
@@ -47,6 +51,8 @@ class UserController extends Controller
 
     public function destroy(DeleteUser $deleteUser, int $id)
     {
+        $this->authorize('delete', User::class);
+
         $user = $deleteUser->delete($id);
 
         return response()->json($user);
