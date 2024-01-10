@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Business;
 use App\Models\BusinessImage;
 use App\Services\BusinessImages\DeleteBusinessImage;
 use App\Services\BusinessImages\RegisterBusinessImage;
@@ -23,6 +24,8 @@ class BusinessImageController extends Controller
 
     public function store(Request $request, RegisterBusinessImage $registerBusinessImage, int $businessId)
     {
+        $this->authorize('create', Business::class);
+
         $data = $request->validate(BusinessImage::rules());
 
         $businessImage = $registerBusinessImage->register($data, $businessId);
@@ -39,6 +42,8 @@ class BusinessImageController extends Controller
 
     public function update(Request $request, UpdateBusinessImage $updateBusinessImage, int $id, int $businessId)
     {
+        $this->authorize('update', Business::class);
+
         $data = $request->validate(BusinessImage::rules());
 
         $businessImage = $updateBusinessImage->update($data, $id, $businessId);
@@ -48,6 +53,8 @@ class BusinessImageController extends Controller
 
     public function destroy(DeleteBusinessImage $deleteBusinessImage, int $businessId, int $id)
     {
+        $this->authorize('delete', Business::class);
+
         $businessImage = $deleteBusinessImage->delete($id);
 
         return response()->json($businessImage);

@@ -23,6 +23,8 @@ class UserBusinessController extends Controller
 
     public function store(Request $request, RegisterUserBusiness $registerUserBusiness, int $userId)
     {
+        $this->authorize('create', Business::class);
+
         $data = $request->validate(Business::rules());
 
         $userBusiness = $registerUserBusiness->register($data, $userId);
@@ -39,6 +41,8 @@ class UserBusinessController extends Controller
 
     public function update(Request $request, UpdateUserBusiness $updateUserBusiness, int $userId, int $id)
     {
+        $this->authorize('update', Business::class);
+
         $data = $request->validate(Business::rules());
 
         $userBusiness = $updateUserBusiness->update($data, $id);
@@ -48,6 +52,8 @@ class UserBusinessController extends Controller
 
     public function destroy(DeleteUserBusiness $deleteUserBusiness, int $userId, int $id)
     {
+        $this->authorize('delete', Business::class);
+
         $userBusiness = $deleteUserBusiness->delete($id);
 
         return response()->json($userBusiness);
