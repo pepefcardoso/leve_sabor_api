@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Services\Roles\DeleteRole;
 use App\Services\Roles\RegisterRole;
 use App\Services\Roles\SearchRoles;
@@ -21,6 +22,8 @@ class RoleController extends Controller
 
     public function store(Request $request, RegisterRole $registerRole)
     {
+        $this->authorize('create', Role::class);
+
         $data = $request->validate([
             'name' => 'required|string|min:3|max:99',
         ]);
@@ -39,6 +42,8 @@ class RoleController extends Controller
 
     public function update(Request $request, UpdateRole $updateRole, int $id)
     {
+        $this->authorize('update', Role::class);
+
         $data = $request->validate([
             'name' => 'required|string|min:3|max:99',
         ]);
@@ -50,6 +55,8 @@ class RoleController extends Controller
 
     public function destroy(DeleteRole $deleteRole, int $id)
     {
+        $this->authorize('delete', Role::class);
+
         $role = $deleteRole->delete($id);
 
         return response()->json($role);

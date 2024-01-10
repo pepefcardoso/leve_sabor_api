@@ -41,6 +41,8 @@ class PhoneController extends Controller
 
     public function update(Request $request, UpdatePhone $updatePhone, int $id)
     {
+        $this->authorize('update', Phone::class);
+
         $data = $request->validate(Phone::rules());
 
         $phone = $updatePhone->update($data, $id);
@@ -50,6 +52,8 @@ class PhoneController extends Controller
 
     public function destroy(DeletePhone $deletePhone, int $id)
     {
+        $this->authorize('delete', Phone::class);
+
         $phone = $deletePhone->delete($id);
 
         return response()->json($phone);

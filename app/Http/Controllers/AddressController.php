@@ -39,6 +39,8 @@ class AddressController extends Controller
 
     public function update(Request $request, UpdateAddress $updateAddress, int $businessId, int $id)
     {
+        $this->authorize('update', Address::class);
+
         $data = $request->validate(Address::rules());
 
         $address = $updateAddress->update($data, $id);
@@ -48,6 +50,8 @@ class AddressController extends Controller
 
     public function destroy(DeleteAddress $deleteAddress, int $businessId, int $id)
     {
+        $this->authorize('delete', Address::class);
+
         $address = $deleteAddress->delete($id);
 
         return response()->json($address);

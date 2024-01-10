@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Diet;
 use App\Services\Diets\DeleteDiet;
 use App\Services\Diets\RegisterDiet;
 use App\Services\Diets\SearchDiets;
@@ -21,6 +22,8 @@ class DietController extends Controller
 
     public function store(Request $request, RegisterDiet $registerDiet)
     {
+        $this->authorize('create', Diet::class);
+
         $data = $request->validate([
             'name' => 'required|string|min:3|max:30',
         ]);
@@ -39,6 +42,8 @@ class DietController extends Controller
 
     public function update(Request $request, UpdateDiet $updateDiet, int $id)
     {
+        $this->authorize('update', Diet::class);
+
         $data = $request->validate([
             'name' => 'required|string|min:3|max:30',
         ]);
@@ -50,6 +55,8 @@ class DietController extends Controller
 
     public function destroy(DeleteDiet $deleteDiet, int $id)
     {
+        $this->authorize('delete', Diet::class);
+
         $diet = $deleteDiet->delete($id);
 
         return response()->json($diet);

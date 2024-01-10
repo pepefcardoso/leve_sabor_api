@@ -39,6 +39,8 @@ class OpeningHoursController extends Controller
 
     public function update(Request $request, UpdateOpeningHours $updateOpeningHours, int $businessId, int $id)
     {
+        $this->authorize('update', OpeningHours::class);
+
         $data = $request->validate(OpeningHours::rules());
 
         $openingHours = $updateOpeningHours->update($data, $id);
@@ -48,6 +50,8 @@ class OpeningHoursController extends Controller
 
     public function destroy(DeleteOpeningHours $deleteOpeningHours, int $businessId, int $id)
     {
+        $this->authorize('delete', OpeningHours::class);
+
         $openingHours = $deleteOpeningHours->delete($id);
 
         return response()->json($openingHours);

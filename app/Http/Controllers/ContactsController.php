@@ -44,6 +44,8 @@ class ContactsController extends Controller
 
     public function update(Request $request, UpdateContact $updateContact, int $businessId, int $id)
     {
+        $this->authorize('update', Contact::class);
+
         $data = $request->validate([
             ...Contact::rules(),
             'phones' => 'nullable|array',
@@ -57,6 +59,8 @@ class ContactsController extends Controller
 
     public function destroy(DeleteContact $deleteContact, int $businessId, int $id)
     {
+        $this->authorize('delete', Contact::class);
+
         $contact = $deleteContact->delete($id);
 
         return response()->json($contact);

@@ -40,6 +40,8 @@ class ReviewsController extends Controller
 
     public function update(Request $request, UpdateReview $updateReview, int $id)
     {
+        $this->authorize('update', Review::class);
+
         $data = $request->validate(Review::rules());
 
         $review = $updateReview->update($data, $id);
@@ -49,6 +51,8 @@ class ReviewsController extends Controller
 
     public function destroy(DeleteReview $deleteReview, int $id)
     {
+        $this->authorize('delete', Review::class);
+
         $review = $deleteReview->delete($id);
 
         return response()->json($review);

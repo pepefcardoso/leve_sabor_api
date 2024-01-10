@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CookingStyle;
 use App\Services\CookingStyle\DeleteCookingStyle;
 use App\Services\CookingStyle\RegisterCookingStyle;
 use App\Services\CookingStyle\SearchCookingStyles;
@@ -21,6 +22,8 @@ class CookingStyleController extends Controller
 
     public function store(Request $request, RegisterCookingStyle $registerCookingStyle)
     {
+        $this->authorize('create', CookingStyle::class);
+
         $data = $request->validate([
             'name' => 'required|string|min:3|max:30',
         ]);
@@ -38,8 +41,10 @@ class CookingStyleController extends Controller
     }
 
 
-    public function update(Request $request,UpdateCookingStyle $updateCookingStyle, int $id)
+    public function update(Request $request, UpdateCookingStyle $updateCookingStyle, int $id)
     {
+        $this->authorize('update', CookingStyle::class);
+
         $data = $request->validate([
             'name' => 'required|string|min:3|max:30',
         ]);
@@ -52,6 +57,8 @@ class CookingStyleController extends Controller
 
     public function destroy(DeleteCookingStyle $deleteCookingStyle, int $id)
     {
+        $this->authorize('delete', CookingStyle::class);
+
         $cookingStyle = $deleteCookingStyle->delete($id);
 
         return response()->json($cookingStyle);
