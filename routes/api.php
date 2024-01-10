@@ -28,8 +28,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('api')
-    ->middleware(['auth:api', 'role:admin'])
+Route::
+middleware(['auth:api', 'role:admin'])
     ->group(
         function (Router $router) {
             $router->post('diets', [DietController::class, 'store']);
@@ -54,35 +54,34 @@ Route::prefix('api')
             $router->delete('roles/{id}', [RoleController::class, 'destroy']);
         });
 
-Route::prefix('api')
-    ->group(
-        function (Router $router) {
-            $router->post('register', [UserController::class, 'store']);
+Route::group([],
+    static function (Router $router) {
+        $router->post('register', [UserController::class, 'store']);
 
-            $router->post('login', [UserController::class, 'login']);
+        $router->post('login', [UserController::class, 'login']);
 
-            $router->get('diets', [DietController::class, 'index']);
+        $router->get('diets', [DietController::class, 'index']);
 
-            $router->get('categories', [CategoryController::class, 'index']);
+        $router->get('categories', [CategoryController::class, 'index']);
 
-            $router->get('cooking-styles', [CookingStyleController::class, 'index']);
+        $router->get('cooking-styles', [CookingStyleController::class, 'index']);
 
-            $router->get('contacts/{contactId}/phones', [PhoneController::class, 'index']);
+        $router->get('contacts/{contactId}/phones', [PhoneController::class, 'index']);
 
-            $router->get('business/{businessId}/contacts', [ContactsController::class, 'index']);
+        $router->get('business/{businessId}/contacts', [ContactsController::class, 'index']);
 
-            $router->get('business/{businessId}/addresses', [AddressController::class, 'index']);
+        $router->get('business/{businessId}/addresses', [AddressController::class, 'index']);
 
-            $router->get('business/{businessId}/opening-hours', [OpeningHoursController::class, 'index']);
+        $router->get('business/{businessId}/opening-hours', [OpeningHoursController::class, 'index']);
 
-            $router->get('business/{businessId}/images', [BusinessImageController::class, 'index']);
+        $router->get('business/{businessId}/images', [BusinessImageController::class, 'index']);
 
-            $router->get('business/{businessId}/reviews', [ReviewsController::class, 'index']);
+        $router->get('business/{businessId}/reviews', [ReviewsController::class, 'index']);
 
-            $router->get('business/{businessId}/ratings', [ReviewsController::class, 'ratings']);
+        $router->get('business/{businessId}/ratings', [ReviewsController::class, 'ratings']);
 
-            $router->get('businesses', [BusinessController::class, 'index']);
-        });
+        $router->get('businesses', [BusinessController::class, 'index']);
+    });
 
 Route::prefix('api/business')
     ->middleware(['auth:api', 'role'])
