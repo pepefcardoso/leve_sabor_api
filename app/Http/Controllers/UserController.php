@@ -13,6 +13,7 @@ use App\Services\User\SearchUsers;
 use App\Services\User\ShowFavoriteBusiness;
 use App\Services\User\ShowUser;
 use App\Services\User\UpdateUser;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -71,7 +72,7 @@ class UserController extends Controller
         return response()->json($response);
     }
 
-    public function showFavorites(ShowFavoriteBusiness $showFavorite, int $id)
+    public function showFavorites(ShowFavoriteBusiness $showFavorite, int $id): JsonResponse
     {
         $this->authorize('view', User::class);
 

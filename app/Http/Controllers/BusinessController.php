@@ -19,9 +19,9 @@ class BusinessController
             'cooking_style.*' => 'nullable|integer|exists:cooking_styles,id',
             'rating' => 'nullable|integer|between:1,5',
             'distance' => 'nullable|array',
-            'distance.latitude' => 'required|numeric|between:-90,90',
-            'distance.longitude' => 'required|numeric|between:-180,180',
-            'distance.radius' => 'required|integer|min:1',
+            'distance.latitude' => 'nullable|numeric|between:-90,90',
+            'distance.longitude' => 'nullable|numeric|between:-180,180',
+            'distance.radius' => 'nullable|integer|min:1',
             'is_open' => 'nullable|boolean',
         ]);
 

@@ -60,7 +60,7 @@ class ReviewsController extends Controller
 
     public function ratings(ShowReviewsRating $showReviewsRating, int $businessId)
     {
-        $ratingInfo = $showReviewsRating->getRating($businessId);
+        $ratingInfo = $showReviewsRating->show($businessId);
 
         return response()->json($ratingInfo);
     }

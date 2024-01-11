@@ -86,22 +86,22 @@ class Business extends Model
         return $this->belongsToMany(User::class, 'rl_user_favorite_businesses', 'business_id', 'user_id');
     }
 
-    public function imageTemporaryUrl(int $imageId): Attribute
-    {
-        return Attribute::make(
-            get: function () use ($imageId) {
-                $businessImage = $this->businessImage()->find($imageId);
-
-                if ($businessImage) {
-                    $temporaryUrlBusinessImage = app(TemporaryUrlBusinessImage::class);
-
-                    return $temporaryUrlBusinessImage->temporaryUrl($businessImage);
-                }
-
-                return null;
-            }
-        );
-    }
+//    public function imageTemporaryUrl(int $imageId): Attribute
+//    {
+//        return Attribute::make(
+//            get: function () use ($imageId) {
+//                $businessImage = $this->businessImage()->find($imageId);
+//
+//                if ($businessImage) {
+//                    $temporaryUrlBusinessImage = app(TemporaryUrlBusinessImage::class);
+//
+//                    return $temporaryUrlBusinessImage->temporaryUrl($businessImage);
+//                }
+//
+//                return null;
+//            }
+//        );
+//    }
 
     public function businessImage()
     {

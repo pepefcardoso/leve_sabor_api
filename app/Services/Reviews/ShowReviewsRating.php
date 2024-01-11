@@ -6,7 +6,7 @@ use App\Models\Review;
 
 class ShowReviewsRating
 {
-    public function getRating(int $businessId)
+    public function show(int $businessId)
     {
         $reviews = Review::where('business_id', $businessId)->get();
 

@@ -83,7 +83,7 @@ Route::group([],
         $router->get('businesses', [BusinessController::class, 'index']);
     });
 
-Route::prefix('api/business')
+Route::prefix('business')
     ->middleware(['auth:api', 'role'])
     ->group(
         function (Router $router) {
@@ -118,7 +118,7 @@ Route::prefix('api/business')
             $router->delete('{businessId}/reviews/{id}', [ReviewsController::class, 'destroy']);
         });
 
-Route::prefix('api/users')
+Route::prefix('users')
     ->middleware(['auth:api', 'role'])
     ->group(function (Router $router) {
         $router->post('logout', [UserController::class, 'logout']);
