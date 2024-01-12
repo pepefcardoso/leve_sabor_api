@@ -21,16 +21,25 @@ class FilterBusinesses
                         $dayOfWeek = Carbon::now()->dayOfWeek;
                         $currentTime = Carbon::now()->format('H:i:s');
 
-                        $query->whereHas('openingHours', function ($openingHoursQuery) use ($dayOfWeek, $currentTime) {
-                            $openingHoursQuery->isOpen($dayOfWeek, $currentTime);
+                        $query->isOpen($dayOfWeek, $currentTime);
+                        break;
+                    case 'diet':
+                        $query->whereHas('diet', function ($dietQuery) use ($value) {
+                            $table = $dietQuery->getModel()->getTable();
+                            $dietQuery->whereIn($table . '.id', $value);
                         });
                         break;
-                    case 'diet_ids':
-                    case 'category_ids':
-                    case 'cooking_style_ids':
-                        if (is_array($value) && count($value) > 0) {
-                            $query->whereIn($key === 'diet_ids' ? 'diet_id' : ($key === 'category_ids' ? 'category_id' : 'cooking_style_id'), $value);
-                        }
+                    case 'category':
+                        $query->whereHas('category', function ($categoryQuery) use ($value) {
+                            $table = $categoryQuery->getModel()->getTable();
+                            $categoryQuery->whereIn($table . '.id', $value);
+                        });
+                        break;
+                    case 'cooking_style':
+                        $query->whereHas('cookingStyle', function ($cookingStyleQuery) use ($value) {
+                            $table = $cookingStyleQuery->getModel()->getTable();
+                            $cookingStyleQuery->whereIn($table . '.id', $value);
+                        });
                         break;
                     case 'rating':
                         $query->byMinRating($value);
@@ -50,7 +59,7 @@ class FilterBusinesses
 
         $count = $query->count();
 
-        $businesses = $query->with(['diet', 'category'])->get();
+        $businesses = $query->with(['mainDiet', 'category'])->get();
 
         $businesses->transform(function ($business) {
             $business->profile_image = $business->logoTemporaryUrl();

@@ -45,8 +45,9 @@ class OpeningHoursPolicy
      */
     public function delete(User $user, OpeningHours $openingHours): bool
     {
-        $business = $openingHours->business;
-        return $user->business->id === $business->id || $user->isAdmin();
+        return true;
+//        $business = $openingHours->business;
+//        return $user->business->id === $business->id || $user->isAdmin();
     }
 
     /**

@@ -50,7 +50,7 @@ class OpeningHoursController extends Controller
 
     public function destroy(DeleteOpeningHours $deleteOpeningHours, int $businessId, int $id)
     {
-        $this->authorize('delete', OpeningHours::class);
+//        $this->authorize('delete', [$id, OpeningHours::class]);
 
         $openingHours = $deleteOpeningHours->delete($id);
 

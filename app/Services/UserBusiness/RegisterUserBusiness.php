@@ -34,6 +34,12 @@ class RegisterUserBusiness
 
             $userBusiness->diet()->attach($diets);
 
+            $mainDiet = data_get($data, 'main_diet_id');
+
+            throw_if(empty($mainDiet), \Exception::class, 'Main diet is required');
+
+            $userBusiness->main_diet_id = $mainDiet;
+
             $cookingStyles = data_get($data, 'cooking_styles_ids');
 
             throw_if(empty($cookingStyles), \Exception::class, 'Cooking styles is required');

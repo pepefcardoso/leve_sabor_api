@@ -92,17 +92,17 @@ class UserController extends Controller
 
     public function login(Request $request, LoginUser $loginUser)
     {
-        $data = [
-            'email' => $request->email,
-            'password' => $request->password
-        ];
+        $data = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-        $token = $loginUser->login($data);
+        $result = $loginUser->login($data);
 
-        if ($token) {
-            return response()->json(['token' => $token], 200);
+        if (isset($result['token'])) {
+            return response()->json(['token' => $result['token']], 200);
         } else {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => $result['error']], 422);
         }
     }
 

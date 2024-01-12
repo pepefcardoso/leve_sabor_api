@@ -50,6 +50,10 @@ class UpdateUserBusiness
             throw_if(empty($diets), \Exception::class, 'Diets are required');
             $userBusiness->diet()->sync($diets);
 
+            $main_diet = data_get($data, 'main_diet_id');
+            throw_if(empty($main_diet), \Exception::class, 'Main diet is required');
+            $userBusiness->main_diet_id = $main_diet;
+
             $cooking_styles = data_get($data, 'cooking_styles_ids');
             throw_if(empty($cooking_styles), \Exception::class, 'Cooking styles are required');
             $userBusiness->cookingStyle()->sync($cooking_styles);
