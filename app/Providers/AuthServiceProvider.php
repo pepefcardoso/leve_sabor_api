@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\Address;
+use App\Models\BlogPostCategory;
 use App\Models\Business;
 use App\Models\Category;
 use App\Models\Contact;
@@ -15,6 +16,7 @@ use App\Models\Review;
 use App\Models\Role;
 use App\Models\User;
 use App\Policies\AddressPolicy;
+use App\Policies\BlogPostCategoryPolicy;
 use App\Policies\BusinessPolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\ContactPolicy;
@@ -48,6 +50,7 @@ class AuthServiceProvider extends ServiceProvider
         Phone::class => PhonePolicy::class,
         Review::class => ReviewPolicy::class,
         Role::class => RolePolicy::class,
+        BlogPostCategory::class => BlogPostCategoryPolicy::class,
     ];
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\BlogPostCategoryController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessImageController;
 use App\Http\Controllers\CategoryController;
@@ -52,6 +53,12 @@ middleware(['auth:api', 'role:admin'])
             $router->get('roles/{id}', [RoleController::class, 'show']);
             $router->put('roles/{id}', [RoleController::class, 'update']);
             $router->delete('roles/{id}', [RoleController::class, 'destroy']);
+
+            $router->get('blog-post-category', [BlogPostCategoryController::class, 'index']);
+            $router->post('blog-post-category', [BlogPostCategoryController::class, 'store']);
+            $router->get('blog-post-category/{id}', [BlogPostCategoryController::class, 'show']);
+            $router->put('blog-post-category/{id}', [BlogPostCategoryController::class, 'update']);
+            $router->delete('blog-post-category/{id}', [BlogPostCategoryController::class, 'destroy']);
         });
 
 Route::group([],
