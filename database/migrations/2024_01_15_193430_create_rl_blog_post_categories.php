@@ -14,12 +14,12 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBiginteger('blog_post_id')->unsigned();
             $table->unsignedBiginteger('blog_post_category_id')->unsigned();
-            $table->foreign('blog_post_id')->references('id')
-                ->on('blog_posts')->onDelete('cascade');
-            $table->foreign('blog_post_category_id')->references('id');
+            $table->foreign('blog_post_id')->references('id')->on('blog_posts')->onDelete('cascade');
+            $table->foreign('blog_post_category_id')->references('id')->on('blog_post_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
