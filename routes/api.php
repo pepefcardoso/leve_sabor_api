@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\BlogPostCategoryController;
+use App\Http\Controllers\BlogPostController;
+use App\Http\Controllers\BlogPostImageController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessImageController;
 use App\Http\Controllers\CategoryController;
@@ -59,6 +61,16 @@ middleware(['auth:api', 'role:admin'])
             $router->get('blog-post-category/{id}', [BlogPostCategoryController::class, 'show']);
             $router->put('blog-post-category/{id}', [BlogPostCategoryController::class, 'update']);
             $router->delete('blog-post-category/{id}', [BlogPostCategoryController::class, 'destroy']);
+
+            $router->get('blog-post-category-image', [BlogPostImageController::class, 'index']);
+            $router->post('blog-post-category-image', [BlogPostImageController::class, 'store']);
+            $router->get('blog-post-category-image/{id}', [BlogPostImageController::class, 'show']);
+            $router->put('blog-post-category-image/{id}', [BlogPostImageController::class, 'update']);
+            $router->delete('blog-post-category-image/{id}', [BlogPostImageController::class, 'destroy']);
+
+            $router->post('blog-posts', [BlogPostController::class, 'store']);
+            $router->put('blog-posts/{id}', [BlogPostController::class, 'update']);
+            $router->delete('blog-posts/{id}', [BlogPostController::class, 'destroy']);
         });
 
 Route::group([],
@@ -88,6 +100,9 @@ Route::group([],
         $router->get('business/{businessId}/ratings', [ReviewsController::class, 'ratings']);
 
         $router->get('businesses', [BusinessController::class, 'index']);
+
+        $router->get('blog-posts', [BlogPostController::class, 'index']);
+        $router->get('blog-posts/{id}', [BlogPostController::class, 'show']);
     });
 
 Route::prefix('business')

@@ -97,6 +97,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Business::class, 'rl_user_favorite_businesses', 'user_id', 'business_id');
     }
 
+    public function blogPosts()
+    {
+        return $this->hasMany(BlogPost::class);
+    }
+
     public function isAdmin(): bool
     {
         return $this->role->name === 'ADMIN';

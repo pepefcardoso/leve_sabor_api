@@ -12,4 +12,9 @@ class BlogPostCategory extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function blogPosts()
+    {
+        return $this->belongsToMany(BlogPost::class, 'rl_blog_post_categories', 'blog_post_category_id', 'blog_post_id');
+    }
 }
