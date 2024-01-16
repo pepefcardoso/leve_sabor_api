@@ -9,13 +9,11 @@ use Illuminate\Support\Facades\Storage;
 
 class RegisterBlogPostImage
 {
-    public function register(array $data, int $blogPostId)
+    public function register($image, int $blogPostId)
     {
         DB::beginTransaction();
 
         try {
-            $image = $data['image'];
-
             $imageName = $blogPostId . '.' . $image->extension();
 
             $path = Storage::disk('s3')->putFileAs('blog_posts_images', $image, $imageName);

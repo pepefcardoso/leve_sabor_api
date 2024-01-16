@@ -21,6 +21,10 @@ class BlogPost extends Model
         'user_id',
     ];
 
+    protected $appends = [
+        'temporary_url_blog_post_image',
+    ];
+
     static public function rules()
     {
         return [
@@ -28,7 +32,7 @@ class BlogPost extends Model
             'description' => 'required|string|min:3|max:150',
             'content' => 'required|string|min:3|max:5000',
             'status' => ['required', Rule::in(BlogPostStatusEnum::cases())],
-            'image' => 'required|image|max:2048|mimes:jpeg,png,jpg,svg',
+            'image' => 'required',
             'categories' => 'required|array',
             'categories.*' => 'required|integer|exists:blog_post_categories,id',
         ];

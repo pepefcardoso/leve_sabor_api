@@ -13,11 +13,16 @@ class RegisterBlogPost
         $this->registerBlogPostImage = $registerBlogPostImage;
     }
 
-    public function register(array $data, int $userId)
+    public function register(array $data)
     {
         DB::beginTransaction();
 
         try {
+
+            $userId = auth()->user()->id;
+
+            throw_if(empty($userId), \Exception::class, 'User is required');
+
             $data['user_id'] = $userId;
 
             $blogPost = BlogPost::create($data);

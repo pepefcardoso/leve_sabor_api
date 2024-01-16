@@ -20,13 +20,13 @@ class BlogPostController extends Controller
     }
 
 
-    public function store(Request $request, RegisterBlogPost $registerBlogPost, int $userId)
+    public function store(Request $request, RegisterBlogPost $registerBlogPost)
     {
         $this->authorize('create', BlogPost::class);
 
         $data = $request->validate(BlogPost::rules());
 
-        $blogPost = $registerBlogPost->register($data, $userId);
+        $blogPost = $registerBlogPost->register($data);
 
         return response()->json($blogPost);
     }

@@ -31,7 +31,7 @@ class BusinessImage extends Model
     {
         return [
             'images' => 'nullable|array',
-            'images.*.file' => 'required|image|max:2048|mimes:jpeg,png,jpg,svg',
+            'images.*.file' => 'required|image',
             'images.*.type' => ['nullable', Rule::in(BusinessImageTypeEnum::cases())],
         ];
     }
