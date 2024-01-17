@@ -8,14 +8,12 @@ use Illuminate\Support\Facades\Storage;
 
 class UpdateBlogPostImage
 {
-    public function update(array $data, int $id, int $blogPostId)
+    public function update($image, int $id, int $blogPostId)
     {
         DB::beginTransaction();
 
         try {
             $blogPostImage = BlogPostImage::findOrFail($id);
-
-            $image = data_get($data, 'image');
 
             $imageName = $blogPostId . '.' . $image->extension();
 
