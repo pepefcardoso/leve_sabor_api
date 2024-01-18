@@ -108,6 +108,7 @@ class UserController extends Controller
 
     public function logout(LogoutUser $logoutUser)
     {
+
         $response = $logoutUser->logout();
 
         return response()->json($response);

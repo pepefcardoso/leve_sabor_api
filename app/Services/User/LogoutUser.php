@@ -11,7 +11,6 @@ class LogoutUser
         $user = Auth::user();
 
         if ($user) {
-            // Revoke the token
             $user->token()->revoke();
 
             return response()->json(['message' => 'User logged out successfully'], 200);
