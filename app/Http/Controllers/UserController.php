@@ -112,4 +112,13 @@ class UserController extends Controller
 
         return response()->json($response);
     }
+
+    public function loggedUserData()
+    {
+        $user = auth()->user();
+
+        $user->append('temporary_url_profile_pic');
+
+        return response()->json($user);
+    }
 }

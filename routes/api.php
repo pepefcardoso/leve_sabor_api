@@ -144,6 +144,7 @@ Route::prefix('users')
     ->middleware(['auth:api', 'role'])
     ->group(function (Router $router) {
         $router->post('logout', [UserController::class, 'logout']);
+        $router->get('me', [UserController::class, 'loggedUserData']);
 
         $router->get('', [UserController::class, 'index']);
         $router->get('{id}', [UserController::class, 'show']);
