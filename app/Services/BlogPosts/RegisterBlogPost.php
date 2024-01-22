@@ -4,16 +4,19 @@ namespace App\Services\BlogPosts;
 
 use App\Models\BlogPost;
 use App\Services\BlogPostImages\RegisterBlogPostImage;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class RegisterBlogPost
 {
+    private RegisterBlogPostImage $registerBlogPostImage;
+
     public function __construct(RegisterBlogPostImage $registerBlogPostImage)
     {
         $this->registerBlogPostImage = $registerBlogPostImage;
     }
 
-    public function register(array $data)
+    public function register(array $data): BlogPost|string
     {
         DB::beginTransaction();
 
@@ -21,7 +24,7 @@ class RegisterBlogPost
 
             $userId = auth()->user()->id;
 
-            throw_if(empty($userId), \Exception::class, 'User is required');
+            throw_if(empty($userId), Exception::class, 'User is required');
 
             $data['user_id'] = $userId;
 
@@ -29,7 +32,7 @@ class RegisterBlogPost
 
             $categories = data_get($data, 'categories');
 
-            throw_if(empty($categories), \Exception::class, 'Categories is required');
+            throw_if(empty($categories), Exception::class, 'Categories is required');
 
             $blogPost->categories()->attach($categories);
 
@@ -42,7 +45,7 @@ class RegisterBlogPost
             DB::commit();
 
             return $blogPost;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             return $e->getMessage();
         }

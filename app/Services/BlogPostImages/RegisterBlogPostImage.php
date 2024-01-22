@@ -3,25 +3,29 @@
 namespace App\Services\BlogPostImages;
 
 use App\Models\BlogPostImage;
-use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class RegisterBlogPostImage
 {
-    public function register($image, int $blogPostId)
+    public function register(array $data, int $blogPostId)
     {
         DB::beginTransaction();
 
         try {
-            $imageName = $blogPostId . '.' . $image->extension();
+            $file = data_get($data, 'file');
 
-            $path = Storage::disk('s3')->putFileAs('blog_posts_images', $image, $imageName);
+            throw_if(!$file, new Exception('File not found'));
+
+            $name = $blogPostId . '.' . $file->extension();
+
+            $path = Storage::disk('s3')->putFileAs('blog_posts_images', $file, $name);
 
             $blogPostImage = BlogPostImage::create([
                     'blog_post_id' => $blogPostId,
                     'path' => $path,
-                    'name' => $imageName,
+                    'name' => $name,
                 ]
             );
 

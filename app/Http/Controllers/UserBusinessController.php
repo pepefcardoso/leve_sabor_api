@@ -8,11 +8,12 @@ use App\Services\UserBusiness\RegisterUserBusiness;
 use App\Services\UserBusiness\SearchUserBusinesses;
 use App\Services\UserBusiness\ShowUserBusiness;
 use App\Services\UserBusiness\UpdateUserBusiness;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserBusinessController extends Controller
 {
-    public function index(SearchUserBusinesses $searchUserBusinesses, int $userId)
+    public function index(SearchUserBusinesses $searchUserBusinesses, int $userId): JsonResponse
     {
         $filters = ['userId' => $userId];
 
@@ -21,7 +22,7 @@ class UserBusinessController extends Controller
         return response()->json($userBusinesses);
     }
 
-    public function store(Request $request, RegisterUserBusiness $registerUserBusiness, int $userId)
+    public function store(Request $request, RegisterUserBusiness $registerUserBusiness, int $userId): JsonResponse
     {
         $this->authorize('create', Business::class);
 
@@ -32,14 +33,14 @@ class UserBusinessController extends Controller
         return response()->json($userBusiness);
     }
 
-    public function show(ShowUserBusiness $showUserBusiness, int $userId, int $id)
+    public function show(ShowUserBusiness $showUserBusiness, int $id): JsonResponse
     {
         $userBusiness = $showUserBusiness->show($id);
 
         return response()->json($userBusiness);
     }
 
-    public function update(Request $request, UpdateUserBusiness $updateUserBusiness, int $userId, int $id)
+    public function update(Request $request, UpdateUserBusiness $updateUserBusiness, int $id): JsonResponse
     {
         $this->authorize('update', Business::class);
 
@@ -50,7 +51,7 @@ class UserBusinessController extends Controller
         return response()->json($userBusiness);
     }
 
-    public function destroy(DeleteUserBusiness $deleteUserBusiness, int $userId, int $id)
+    public function destroy(DeleteUserBusiness $deleteUserBusiness, int $id): JsonResponse
     {
         $this->authorize('delete', Business::class);
 

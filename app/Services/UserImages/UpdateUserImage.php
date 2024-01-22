@@ -3,35 +3,45 @@
 namespace App\Services\UserImages;
 
 use App\Models\UserImage;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class UpdateUserImage
 {
-    public function update(array $data, int $id, int $userId)
+    public function update(array $data, int $id, int $userId): UserImage|string
     {
         DB::beginTransaction();
 
         try {
             $userImage = UserImage::findOrFail($id);
 
-            $image = data_get($data, 'image');
+            $newFile = data_get($data, 'file');
 
-            $imageName = $userId . '.' . $image->extension();
+            throw_if(!$newFile, new Exception('File not found'));
 
-            $path = Storage::disk('s3')->putFileAs('users_images', $image, $imageName);
+            $newName = $userId . '.' . $newFile->extension();
+
+            $path = Storage::disk('s3')->putFileAs('user_images', $newFile, $newName);
+
+            if ($path && $userImage->name !== $newName) {
+                Storage::disk('s3')->delete('user_images/' . $userImage->name);
+            } else {
+                throw new Exception('Error uploading image.');
+            }
 
             $userImage->fill([
                 'user_id' => $userId,
                 'path' => $path,
-                'name' => $imageName,
+                'name' => $newName,
             ]);
+
             $userImage->save();
 
             DB::commit();
 
             return $userImage;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             return $e->getMessage();
         }

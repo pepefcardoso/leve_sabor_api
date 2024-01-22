@@ -32,9 +32,9 @@ class BlogPost extends Model
             'description' => 'required|string|min:3|max:150',
             'content' => 'required|string|min:3|max:5000',
             'status' => ['required', Rule::in(BlogPostStatusEnum::cases())],
-            'image' => 'required',
             'categories' => 'required|array',
             'categories.*' => 'required|integer|exists:blog_post_categories,id',
+            ...BlogPostImage::blogPostRules(),
         ];
     }
 

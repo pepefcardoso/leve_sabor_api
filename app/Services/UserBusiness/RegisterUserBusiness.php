@@ -7,10 +7,16 @@ use App\Services\Addresses\RegisterAddress;
 use App\Services\BusinessImages\RegisterBusinessImage;
 use App\Services\Contacts\RegisterContact;
 use App\Services\OpeningHours\RegisterOpeningHours;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class RegisterUserBusiness
 {
+    private RegisterAddress $registerAddress;
+    private RegisterContact $registerContact;
+    private RegisterOpeningHours $registerOpeningHours;
+    private RegisterBusinessImage $registerBusinessImage;
+
     public function __construct(RegisterAddress $registerAddress, RegisterContact $registerContact, RegisterOpeningHours $registerOpeningHours, RegisterBusinessImage $registerBusinessImage)
     {
         $this->registerAddress = $registerAddress;
@@ -19,7 +25,7 @@ class RegisterUserBusiness
         $this->registerBusinessImage = $registerBusinessImage;
     }
 
-    public function register(array $data, int $userId)
+    public function register(array $data, int $userId): Business|string
     {
         DB::beginTransaction();
 
@@ -30,19 +36,19 @@ class RegisterUserBusiness
 
             $diets = data_get($data, 'diets_id');
 
-            throw_if(empty($diets), \Exception::class, 'Diets is required');
+            throw_if(empty($diets), Exception::class, 'Diets is required');
 
             $userBusiness->diet()->attach($diets);
 
             $mainDiet = data_get($data, 'main_diet_id');
 
-            throw_if(empty($mainDiet), \Exception::class, 'Main diet is required');
+            throw_if(empty($mainDiet), Exception::class, 'Main diet is required');
 
             $userBusiness->main_diet_id = $mainDiet;
 
             $cookingStyles = data_get($data, 'cooking_styles_ids');
 
-            throw_if(empty($cookingStyles), \Exception::class, 'Cooking styles is required');
+            throw_if(empty($cookingStyles), Exception::class, 'Cooking styles is required');
 
             $userBusiness->cookingStyle()->attach($cookingStyles);
 
@@ -63,8 +69,8 @@ class RegisterUserBusiness
                 $usedWeekdays = [];
                 foreach ($openingHours as $openingHour) {
                     $weekday = $openingHour['week_day'] ?? null;
-                    if ($weekday !== null && in_array($weekday, $usedWeekdays)) {
-                        throw new \Exception("Only one opening hour allowed per week day.");
+                    if ($weekday !== null && in_array($weekday, $usedWeekdays, true)) {
+                        throw new Exception("Only one opening hour allowed per week day.");
                     }
                     if ($weekday !== null) {
                         $usedWeekdays[] = $weekday;
@@ -84,7 +90,7 @@ class RegisterUserBusiness
             DB::commit();
 
             return $userBusiness;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             return $e->getMessage();
         }

@@ -6,10 +6,15 @@ use App\Models\User;
 use App\Services\UserImages\DeleteUserImage;
 use App\Services\UserImages\RegisterUserImage;
 use App\Services\UserImages\UpdateUserImage;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateUser
 {
+    private RegisterUserImage $registerUserImage;
+    private UpdateUserImage $updateUserImage;
+    private DeleteUserImage $deleteUserImage;
+
     public function __construct(RegisterUserImage $registerUserImage, UpdateUserImage $updateUserImage, DeleteUserImage $deleteUserImage)
     {
         $this->registerUserImage = $registerUserImage;
@@ -17,7 +22,7 @@ class UpdateUser
         $this->deleteUserImage = $deleteUserImage;
     }
 
-    public function update(array $data, int $userId)
+    public function update(array $data, int $userId): User|string
     {
         DB::beginTransaction();
 
@@ -28,24 +33,29 @@ class UpdateUser
             $user->save();
 
             $currentUserImage = $user->userImage;
-            $newUserImage = data_get($data, 'image');
 
-            if ($currentUserImage) {
-                if ($newUserImage) {
-                    $this->updateUserImage->update($newUserImage, $currentUserImage->id, $user->id);
+            $newUserImage = data_get($data, 'image');
+            $newUserImageId = data_get($newUserImage, 'id');
+            $newUserImageFile = data_get($newUserImage, 'file');
+
+            if ($currentUserImage && !$newUserImage) {
+                $this->deleteUserImage->delete($currentUserImage->id);
+            } elseif ($newUserImageFile && !$newUserImageId) {
+                if ($currentUserImage) {
+                    $this->updateUserImage->update($data, $currentUserImage->id, $userId);
                 } else {
-                    $this->deleteUserImage->delete($currentUserImage->id);
+                    $this->registerUserImage->register($data, $userId);
                 }
-            } else {
-                if ($newUserImage) {
-                    $this->registerUserImage->register($newUserImage, $user->id);
+            } elseif (!$newUserImageFile && !$newUserImageId) {
+                if ($currentUserImage) {
+                    $this->deleteUserImage->delete($currentUserImage->id);
                 }
             }
 
             DB::commit();
 
             return $user;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
             return $e->getMessage();
         }

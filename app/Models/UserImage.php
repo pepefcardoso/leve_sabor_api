@@ -15,6 +15,23 @@ class UserImage extends Model
         'user_id',
     ];
 
+    static public function rules()
+    {
+        return [
+            'id' => 'nullable|integer|exists:user_images,id',
+            'file' => 'nullable',
+        ];
+    }
+
+    static public function userRules()
+    {
+        return [
+            'image' => 'nullable|array',
+            'image.id' => 'nullable|integer|exists:user_images,id',
+            'image.file' => 'nullable',
+        ];
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

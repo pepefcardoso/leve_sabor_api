@@ -14,16 +14,18 @@ class RegisterUserImage
         DB::beginTransaction();
 
         try {
-            $image = $data['image'];
+            $file = data_get($data, 'file');
 
-            $imageName = $userId . '.' . $image->extension();
+            throw_if(!$file, new Exception('File not found'));
 
-            $path = Storage::disk('s3')->putFileAs('user_images', $image, $imageName);
+            $name = $userId . '.' . $file->extension();
+
+            $path = Storage::disk('s3')->putFileAs('user_images', $file, $name);
 
             $userImage = UserImage::create([
                     'user_id' => $userId,
                     'path' => $path,
-                    'name' => $imageName,
+                    'name' => $name,
                 ]
             );
 

@@ -8,11 +8,12 @@ use App\Services\BlogPosts\RegisterBlogPost;
 use App\Services\BlogPosts\SearchBlogPosts;
 use App\Services\BlogPosts\ShowBlogPost;
 use App\Services\BlogPosts\UpdateBlogPost;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BlogPostController extends Controller
 {
-    public function index(SearchBlogPosts $searchBlogPosts)
+    public function index(SearchBlogPosts $searchBlogPosts): JsonResponse
     {
         $blogPosts = $searchBlogPosts->search();
 
@@ -20,7 +21,7 @@ class BlogPostController extends Controller
     }
 
 
-    public function store(Request $request, RegisterBlogPost $registerBlogPost)
+    public function store(Request $request, RegisterBlogPost $registerBlogPost): JsonResponse
     {
         $this->authorize('create', BlogPost::class);
 
@@ -31,14 +32,14 @@ class BlogPostController extends Controller
         return response()->json($blogPost);
     }
 
-    public function show(ShowBlogPost $showBlogPost, int $id)
+    public function show(ShowBlogPost $showBlogPost, int $id): JsonResponse
     {
         $blogPost = $showBlogPost->show($id);
 
         return response()->json($blogPost);
     }
 
-    public function update(Request $request, UpdateBlogPost $updateBlogPost, int $id)
+    public function update(Request $request, UpdateBlogPost $updateBlogPost, int $id): JsonResponse
     {
         $this->authorize('update', BlogPost::class);
 
@@ -49,7 +50,7 @@ class BlogPostController extends Controller
         return response()->json($blogPost);
     }
 
-    public function destroy(DeleteBlogPost $deleteBlogPost, int $id)
+    public function destroy(DeleteBlogPost $deleteBlogPost, int $id): JsonResponse
     {
         $this->authorize('delete', BlogPost::class);
 

@@ -15,10 +15,25 @@ use App\Services\Contacts\UpdateContact;
 use App\Services\OpeningHours\DeleteOpeningHours;
 use App\Services\OpeningHours\RegisterOpeningHours;
 use App\Services\OpeningHours\UpdateOpeningHours;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateUserBusiness
 {
+    private RegisterAddress $registerAddress;
+    private UpdateAddress $updateAddress;
+    private DeleteAddress $deleteAddress;
+    private RegisterContact $registerContact;
+    private UpdateContact $updateContact;
+    private DeleteContact $deleteContact;
+    private RegisterOpeningHours $registerOpeningHours;
+    private UpdateOpeningHours $updateOpeningHours;
+    private DeleteOpeningHours $deleteOpeningHours;
+    private RegisterBusinessImage $registerBusinessImage;
+    private UpdateBusinessImage $updateBusinessImage;
+    private DeleteBusinessImage $deleteBusinessImage;
+
+
     public function __construct(
         RegisterAddress       $registerAddress, UpdateAddress $updateAddress, DeleteAddress $deleteAddress,
         RegisterContact       $registerContact, UpdateContact $updateContact, DeleteContact $deleteContact,
@@ -39,7 +54,7 @@ class UpdateUserBusiness
         $this->deleteBusinessImage = $deleteBusinessImage;
     }
 
-    public function update(array $data, int $id)
+    public function update(array $data, int $id): Business|string
     {
         DB::beginTransaction();
 
@@ -47,15 +62,15 @@ class UpdateUserBusiness
             $userBusiness = Business::findOrFail($id);
 
             $diets = data_get($data, 'diets_id');
-            throw_if(empty($diets), \Exception::class, 'Diets are required');
+            throw_if(empty($diets), Exception::class, 'Diets are required');
             $userBusiness->diet()->sync($diets);
 
             $main_diet = data_get($data, 'main_diet_id');
-            throw_if(empty($main_diet), \Exception::class, 'Main diet is required');
+            throw_if(empty($main_diet), Exception::class, 'Main diet is required');
             $userBusiness->main_diet_id = $main_diet;
 
             $cooking_styles = data_get($data, 'cooking_styles_ids');
-            throw_if(empty($cooking_styles), \Exception::class, 'Cooking styles are required');
+            throw_if(empty($cooking_styles), Exception::class, 'Cooking styles are required');
             $userBusiness->cookingStyle()->sync($cooking_styles);
 
             $userBusiness->fill($data);
@@ -89,7 +104,7 @@ class UpdateUserBusiness
                 foreach ($openingHours as $openingHour) {
                     $weekday = $openingHour['week_day'] ?? null;
                     if ($weekday !== null && in_array($weekday, $usedWeekdays)) {
-                        throw new \Exception("Only one opening hour allowed per weekday.");
+                        throw new Exception("Only one opening hour allowed per weekday.");
                     }
                     if ($weekday !== null) {
                         $usedWeekdays[] = $weekday;
@@ -113,12 +128,16 @@ class UpdateUserBusiness
 
             if ($newImages) {
                 foreach ($newImages as $image) {
-                    if (isset($image['id'])) {
-                        $this->updateBusinessImage->update($image, $userBusiness->id);
-                        $updatedImagesIds[] = $image['id'];
-                    } else {
+                    $imageId = data_get($image, 'id');
+                    $imageFile = data_get($image, 'file');
+
+                    if ($imageFile && !$imageId) {
                         $newImage = $this->registerBusinessImage->register($image, $userBusiness->id);
                         $updatedImagesIds[] = $newImage->id;
+
+                    } elseif ($imageFile && $imageId) {
+                        $this->updateBusinessImage->update($image, $imageId, $userBusiness->id);
+                        $updatedImagesIds[] = $imageId;
                     }
                 }
             }
@@ -134,7 +153,7 @@ class UpdateUserBusiness
             DB::commit();
 
             return $userBusiness;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             return $e->getMessage();
         }

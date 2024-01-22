@@ -21,8 +21,8 @@ class BusinessImage extends Model
     static public function rules()
     {
         return [
-            'name' => 'required|string|min:3|max:99',
-            'path' => 'required|string|min:3|max:99',
+            'id' => 'nullable|integer|exists:business_images,id',
+            'file' => 'nullable',
             'type' => ['nullable', Rule::in(BusinessImageTypeEnum::cases())],
         ];
     }
@@ -31,8 +31,9 @@ class BusinessImage extends Model
     {
         return [
             'images' => 'nullable|array',
-            'images.*.file' => 'required|image',
-            'images.*.type' => ['nullable', Rule::in(BusinessImageTypeEnum::cases())],
+            'images.*.id' => 'nullable|integer|exists:business_images,id',
+            'images.*.file' => 'nullable',
+            'images.*.type' => ['required', Rule::in(BusinessImageTypeEnum::cases())],
         ];
     }
 
