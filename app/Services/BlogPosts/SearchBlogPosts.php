@@ -8,6 +8,6 @@ class SearchBlogPosts
 {
     public function search()
     {
-        return BlogPost::with('user', 'blogPostImage')->get();
+        return BlogPost::with('categories', 'blogPostImage')->get();
     }
 }
