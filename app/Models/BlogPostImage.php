@@ -2,10 +2,16 @@
 
 namespace App\Models;
 
+use App\Services\BlogPostImages\TemporaryUrlBlogPostImage;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class BlogPostImage extends Model
 {
+    protected $appends = [
+        'url',
+    ];
+
     protected $fillable = [
         'name',
         'path',
@@ -32,5 +38,12 @@ class BlogPostImage extends Model
     public function blogPost()
     {
         return $this->belongsTo(BlogPost::class);
+    }
+
+    public function url(): Attribute
+    {
+        return Attribute::make(
+            fn() => (new TemporaryUrlBlogPostImage())->temporaryUrl($this)
+        );
     }
 }

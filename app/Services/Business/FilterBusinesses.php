@@ -52,18 +52,15 @@ class FilterBusinesses
                         $query->withinDistanceOf($latitude, $longitude, $distanceInKm);
 
                         break;
-                    // Add other cases for new filters if needed
                 }
             }
         }
 
         $count = $query->count();
 
-        $businesses = $query->with(['mainDiet', 'category'])->get();
+        $businesses = $query->with(['mainDiet', 'category', 'logo'])->get();
 
         $businesses->transform(function ($business) {
-            $business->profile_image = $business->logoTemporaryUrl();
-
             $business->ratings = $business->ratings();
 
             return $business;

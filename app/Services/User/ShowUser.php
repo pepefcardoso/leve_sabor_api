@@ -10,6 +10,6 @@ class ShowUser
     {
         $user = User::findOrFail($id);
 
-        return $user->load('role', 'userImage')->append('temporary_url_profile_pic');
+        return $user->load('role', 'userImage', 'userImage');
     }
 }

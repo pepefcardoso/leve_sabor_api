@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Services\UserImages\TemporaryUrlUserImage;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -58,23 +56,6 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
-    }
-
-    public function temporaryUrlProfilePic(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                $userImage = $this->userImage;
-
-                if ($userImage) {
-                    $temporaryUrlUserImage = app(TemporaryUrlUserImage::class);
-
-                    return $temporaryUrlUserImage->temporaryUrl($userImage);
-                }
-
-                return null;
-            }
-        );
     }
 
     public function userImage()

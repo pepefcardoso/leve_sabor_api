@@ -10,6 +10,6 @@ class SearchUsers
     {
         $users = User::with('role', 'userImage')->get();
 
-        return $users;
+        return $users->load( 'userImage');
     }
 }

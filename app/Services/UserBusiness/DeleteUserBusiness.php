@@ -3,23 +3,20 @@
 namespace App\Services\UserBusiness;
 
 use App\Models\Business;
-use App\Services\Addresses\DeleteAddress;
 use App\Services\BusinessImages\DeleteBusinessImage;
-use App\Services\Contacts\DeleteContact;
-use App\Services\OpeningHours\DeleteOpeningHours;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class DeleteUserBusiness
 {
-    public function __construct(DeleteAddress $deleteAddress, DeleteContact $deleteContact, DeleteOpeningHours $deleteOpeningHours, DeleteBusinessImage $deleteBusinessImage)
+    private DeleteBusinessImage $deleteBusinessImage;
+
+    public function __construct(DeleteBusinessImage $deleteBusinessImage)
     {
-        $this->deleteAddress = $deleteAddress;
-        $this->deleteContact = $deleteContact;
-        $this->deleteOpeningHours = $deleteOpeningHours;
         $this->deleteBusinessImage = $deleteBusinessImage;
     }
 
-    public function delete($id)
+    public function delete(int $id): Business|Exception|string
     {
         DB::beginTransaction();
 
@@ -43,7 +40,7 @@ class DeleteUserBusiness
             DB::commit();
 
             return $userBusiness;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             return $e->getMessage();
         }

@@ -118,7 +118,7 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        $user->append('temporary_url_profile_pic');
+        $user->load('userImage');
 
         return response()->json($user);
     }

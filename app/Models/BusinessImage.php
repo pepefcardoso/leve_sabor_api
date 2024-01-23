@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\BusinessImageTypeEnum;
+use App\Services\BusinessImages\TemporaryUrlBusinessImage;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
@@ -10,6 +12,10 @@ use Illuminate\Validation\Rule;
 class BusinessImage extends Model
 {
     use HasFactory;
+
+    protected $appends = [
+        'url',
+    ];
 
     protected $fillable = [
         'name',
@@ -40,5 +46,12 @@ class BusinessImage extends Model
     public function business()
     {
         return $this->belongsTo(Business::class);
+    }
+
+    public function url(): Attribute
+    {
+        return Attribute::make(
+            fn() => (new TemporaryUrlBusinessImage())->temporaryUrl($this)
+        );
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Services\BusinessImages\TemporaryUrlBusinessImage;
+use App\Enums\BusinessImageTypeEnum;
 use App\Services\Reviews\ShowReviewsRating;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -22,7 +22,7 @@ class Business extends Model
         'main_diet_id',
     ];
 
-    static public function rules()
+    public static function rules(): array
     {
         return [
             'name' => 'required|string|min:3|max:99|unique:businesses,name',
@@ -94,35 +94,26 @@ class Business extends Model
         return $this->belongsTo(Diet::class, 'main_diet_id');
     }
 
-    public function logoTemporaryUrl(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                $businessImage = $this->businessImage()->where('type', 'LOGO')->first();
-
-                if ($businessImage) {
-                    $temporaryUrlBusinessImage = app(TemporaryUrlBusinessImage::class);
-
-                    return $temporaryUrlBusinessImage->temporaryUrl($businessImage);
-                }
-
-                return null;
-            }
-        );
-    }
-
     public function businessImage()
     {
         return $this->hasMany(BusinessImage::class);
+    }
+
+    public function logo()
+    {
+        return $this->hasOne(BusinessImage::class)->where('type', BusinessImageTypeEnum::LOGO);
+    }
+
+    public function coverImages()
+    {
+        return $this->hasMany(BusinessImage::class)->where('type', BusinessImageTypeEnum::COVER);
     }
 
     public function ratings(): Attribute
     {
         return Attribute::make(
             get: function () {
-                $ratings = app(ShowReviewsRating::class);
-
-                return $ratings->show($this->id);
+                return app(ShowReviewsRating::class)->show($this->id);
             }
         );
     }

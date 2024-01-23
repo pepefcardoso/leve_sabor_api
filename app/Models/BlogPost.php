@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Enums\BlogPostStatusEnum;
-use App\Services\BlogPostImages\TemporaryUrlBlogPostImage;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
@@ -19,10 +17,6 @@ class BlogPost extends Model
         'content',
         'status',
         'user_id',
-    ];
-
-    protected $appends = [
-        'temporary_url_blog_post_image',
     ];
 
     static public function rules()
@@ -51,22 +45,5 @@ class BlogPost extends Model
     public function blogPostImage()
     {
         return $this->hasOne(BlogPostImage::class);
-    }
-
-    public function temporaryUrlBlogPostImage(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                $blogPostImage = $this->blogPostImage;
-
-                if ($blogPostImage) {
-                    $temporaryUrlBlogPostImage = app(TemporaryUrlBlogPostImage::class);
-
-                    return $temporaryUrlBlogPostImage->temporaryUrl($blogPostImage);
-                }
-
-                return null;
-            }
-        );
     }
 }

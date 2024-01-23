@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Services\UserImages\TemporaryUrlUserImage;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class UserImage extends Model
 {
     use HasFactory;
+
+    protected $appends = [
+        'url',
+    ];
 
     protected $fillable = [
         'name',
@@ -35,5 +41,12 @@ class UserImage extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function url(): Attribute
+    {
+        return Attribute::make(
+            fn() => (new TemporaryUrlUserImage())->temporaryUrl($this)
+        );
     }
 }

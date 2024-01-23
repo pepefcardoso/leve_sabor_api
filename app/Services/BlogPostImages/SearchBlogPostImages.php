@@ -10,9 +10,7 @@ class SearchBlogPostImages
     {
         $blogPostId = data_get($filters, 'blogPostId');
 
-        $blogPostImages = BlogPostImage::where('blog_post_id', $blogPostId)
+        return BlogPostImage::where('blog_post_id', $blogPostId)
             ->get();
-
-        return $blogPostImages->append('temporary_url_blog_post_image');
     }
 }
