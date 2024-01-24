@@ -22,10 +22,10 @@ class UpdateUserImage
 
             $newName = $userId . '.' . $newFile->extension();
 
-            $path = Storage::disk('s3')->putFileAs('user_images', $newFile, $newName);
+            $path = Storage::disk('s3')->putFileAs(UserImage::$S3Directory, $newFile, $newName);
 
             if ($path && $userImage->name !== $newName) {
-                Storage::disk('s3')->delete('user_images/' . $userImage->name);
+                Storage::disk('s3')->delete(UserImage::$S3Directory . '/' . $userImage->name);
             } else {
                 throw new Exception('Error uploading image.');
             }

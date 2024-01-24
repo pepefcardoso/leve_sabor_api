@@ -17,7 +17,7 @@ class DeleteUserImage
 
             $userImage->delete();
 
-            Storage::disk('s3')->delete('user_images/' . $userImage->name);
+            Storage::disk('s3')->delete(UserImage::$S3Directory . '/' . $userImage->name);
 
             DB::commit();
 

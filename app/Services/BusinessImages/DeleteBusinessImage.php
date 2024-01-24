@@ -17,7 +17,7 @@ class DeleteBusinessImage
 
             $businessImage->delete();
 
-            Storage::disk('s3')->delete('business_images/' . $businessImage->name);
+            Storage::disk('s3')->delete(BusinessImage::$S3Directory . '/' . $businessImage->name);
 
             DB::commit();
 

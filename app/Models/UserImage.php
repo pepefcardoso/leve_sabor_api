@@ -11,6 +11,7 @@ class UserImage extends Model
 {
     use HasFactory;
 
+    static public string $S3Directory = 'user_images';
     protected $appends = [
         'url',
     ];

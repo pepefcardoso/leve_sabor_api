@@ -20,7 +20,7 @@ class RegisterUserImage
 
             $name = $userId . '.' . $file->extension();
 
-            $path = Storage::disk('s3')->putFileAs('user_images', $file, $name);
+            $path = Storage::disk('s3')->putFileAs(UserImage::$S3Directory, $file, $name);
 
             $userImage = UserImage::create([
                     'user_id' => $userId,

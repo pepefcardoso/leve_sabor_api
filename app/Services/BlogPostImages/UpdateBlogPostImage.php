@@ -22,10 +22,10 @@ class UpdateBlogPostImage
 
             $newName = $blogPostId . '.' . $newFile->extension();
 
-            $path = Storage::disk('s3')->putFileAs('blog_posts_images', $newFile, $newName);
+            $path = Storage::disk('s3')->putFileAs(BlogPostImage::$S3Directory, $newFile, $newName);
 
             if ($path && $blogPostImage->name !== $newName) {
-                Storage::disk('s3')->delete('blog_posts_images/' . $blogPostImage->name);
+                Storage::disk('s3')->delete(BlogPostImage::$S3Directory . '/' . $blogPostImage->name);
             } else {
                 throw new Exception('Error uploading image.');
             }

@@ -33,17 +33,17 @@ class UpdateBlogPost
             $blogPost->fill($data);
             $blogPost->save();
 
-            $currentBlogPostImage = $blogPost->userImage;
+            $currentBlogPostImage = $blogPost->blogPostImage;
 
-            $newBlogPostImage = data_get($data, 'image');
-            $newBlogPostImageId = data_get($newBlogPostImage, 'id');
-            $newBlogPostImageFile = data_get($newBlogPostImage, 'file');
+            $newImageData = data_get($data, 'image');
+            $newImageId = data_get($newImageData, 'id');
+            $newImageFile = data_get($newImageData, 'file');
 
-            if ($newBlogPostImageFile && !$newBlogPostImageId) {
+            if ($newImageFile && !$newImageId) {
                 if ($currentBlogPostImage) {
-                    $this->updateBlogPostImage->update($data, $currentBlogPostImage->id, $blogPost);
+                    $this->updateBlogPostImage->update($newImageData, $currentBlogPostImage->id, $blogPost->id);
                 } else {
-                    $this->registerBlogPostImage->register($data, $blogPost);
+                    $this->registerBlogPostImage->register($newImageData, $blogPost->id);
                 }
             }
 

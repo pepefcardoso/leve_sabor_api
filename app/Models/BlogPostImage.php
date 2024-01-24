@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BlogPostImage extends Model
 {
+    static public string $S3Directory = 'blog_posts_images';
     protected $appends = [
         'url',
     ];

@@ -35,10 +35,10 @@ class UpdateBusinessImage
                 throw_if($existingLogoCount > 0, new Exception('Business already has a LOGO image.'));
             }
 
-            $path = Storage::disk('s3')->putFileAs('business_images', $newFile, $newName);
+            $path = Storage::disk('s3')->putFileAs(BusinessImage::$S3Directory, $newFile, $newName);
 
             if ($path) {
-                Storage::disk('s3')->delete('business_images/' . $businessImage->name);
+                Storage::disk('s3')->delete(BusinessImage::$S3Directory . '/' . $businessImage->name);
             } else {
                 throw new Exception('Error uploading image.');
             }

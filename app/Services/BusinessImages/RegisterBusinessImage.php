@@ -35,7 +35,7 @@ class RegisterBusinessImage
                 throw_if($existingLogoCount > 0, new Exception('Business already has a LOGO image.'));
             }
 
-            $path = Storage::disk('s3')->putFileAs('business_images', $file, $name);
+            $path = Storage::disk('s3')->putFileAs(BusinessImage::$S3Directory, $file, $name);
 
             $businessImage = BusinessImage::create([
                 'business_id' => $businessId,

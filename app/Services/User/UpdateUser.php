@@ -34,19 +34,19 @@ class UpdateUser
 
             $currentUserImage = $user->userImage;
 
-            $newUserImage = data_get($data, 'image');
-            $newUserImageId = data_get($newUserImage, 'id');
-            $newUserImageFile = data_get($newUserImage, 'file');
+            $newImageData = data_get($data, 'image');
+            $newImageId = data_get($newImageData, 'id');
+            $newImageFile = data_get($newImageData, 'file');
 
-            if ($currentUserImage && !$newUserImage) {
+            if ($currentUserImage && !$newImageData) {
                 $this->deleteUserImage->delete($currentUserImage->id);
-            } elseif ($newUserImageFile && !$newUserImageId) {
+            } elseif ($newImageFile && !$newImageId) {
                 if ($currentUserImage) {
-                    $this->updateUserImage->update($data, $currentUserImage->id, $userId);
+                    $this->updateUserImage->update($newImageData, $currentUserImage->id, $userId);
                 } else {
-                    $this->registerUserImage->register($data, $userId);
+                    $this->registerUserImage->register($newImageData, $userId);
                 }
-            } elseif (!$newUserImageFile && !$newUserImageId) {
+            } elseif (!$newImageFile && !$newImageId) {
                 if ($currentUserImage) {
                     $this->deleteUserImage->delete($currentUserImage->id);
                 }

@@ -4,6 +4,7 @@ namespace App\Services\BlogPostImages;
 
 use App\Models\BlogPostImage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class DeleteBlogPostImage
@@ -15,9 +16,13 @@ class DeleteBlogPostImage
         try {
             $blogPostImage = BlogPostImage::findOrFail($id);
 
+            Log::info($blogPostImage->name);
+
             $blogPostImage->delete();
 
-            Storage::disk('s3')->delete('blog_post_images/' . $blogPostImage->name);
+            Log::info($blogPostImage->name);
+
+            Storage::disk('s3')->delete(BlogPostImage::$S3Directory . '/' . $blogPostImage->name);
 
             DB::commit();
 

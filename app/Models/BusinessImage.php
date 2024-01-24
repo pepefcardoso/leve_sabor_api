@@ -13,6 +13,7 @@ class BusinessImage extends Model
 {
     use HasFactory;
 
+    static public string $S3Directory = 'business_images';
     protected $appends = [
         'url',
     ];

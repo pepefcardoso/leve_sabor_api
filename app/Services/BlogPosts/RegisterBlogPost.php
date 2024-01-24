@@ -36,10 +36,10 @@ class RegisterBlogPost
 
             $blogPost->categories()->attach($categories);
 
-            $blogPostImage = data_get($data, 'image');
+            $imageData = data_get($data, 'image');
 
-            if ($blogPostImage) {
-                $this->registerBlogPostImage->register($blogPostImage, $blogPost->id);
+            if ($imageData) {
+                $this->registerBlogPostImage->register($imageData, $blogPost->id);
             }
 
             DB::commit();

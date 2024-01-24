@@ -20,7 +20,7 @@ class RegisterBlogPostImage
 
             $name = $blogPostId . '.' . $file->extension();
 
-            $path = Storage::disk('s3')->putFileAs('blog_posts_images', $file, $name);
+            $path = Storage::disk('s3')->putFileAs(BlogPostImage::$S3Directory, $file, $name);
 
             $blogPostImage = BlogPostImage::create([
                     'blog_post_id' => $blogPostId,
