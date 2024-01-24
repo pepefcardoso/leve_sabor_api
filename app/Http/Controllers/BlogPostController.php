@@ -2,20 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BlogPostStatusEnum;
 use App\Models\BlogPost;
 use App\Services\BlogPosts\DeleteBlogPost;
+use App\Services\BlogPosts\GetLastBlogPost;
 use App\Services\BlogPosts\RegisterBlogPost;
 use App\Services\BlogPosts\SearchBlogPosts;
 use App\Services\BlogPosts\ShowBlogPost;
 use App\Services\BlogPosts\UpdateBlogPost;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class BlogPostController extends Controller
 {
-    public function index(SearchBlogPosts $searchBlogPosts): JsonResponse
+    public function index(Request $request, SearchBlogPosts $searchBlogPosts): JsonResponse
     {
-        $blogPosts = $searchBlogPosts->search();
+        $data = $request->validate([
+            'status' => 'nullable|array',
+            'status.*' => ['nullable', 'string', Rule::in(BlogPostStatusEnum::cases()),],
+        ]);
+
+        $blogPosts = $searchBlogPosts->search($data);
 
         return response()->json($blogPosts);
     }
@@ -55,6 +64,13 @@ class BlogPostController extends Controller
         $this->authorize('delete', BlogPost::class);
 
         $blogPost = $deleteBlogPost->delete($id);
+
+        return response()->json($blogPost);
+    }
+
+    public function getLastPost(GetLastBlogPost $service): JsonResponse
+    {
+        $blogPost = $service->get();
 
         return response()->json($blogPost);
     }

@@ -16,11 +16,7 @@ class DeleteBlogPostImage
         try {
             $blogPostImage = BlogPostImage::findOrFail($id);
 
-            Log::info($blogPostImage->name);
-
             $blogPostImage->delete();
-
-            Log::info($blogPostImage->name);
 
             Storage::disk('s3')->delete(BlogPostImage::$S3Directory . '/' . $blogPostImage->name);
 

@@ -103,6 +103,7 @@ Route::group([],
 
         $router->get('blog-posts', [BlogPostController::class, 'index']);
         $router->get('blog-posts/{id}', [BlogPostController::class, 'show']);
+        $router->get('last-blog-post', [BlogPostController::class, 'getLastPost']);
     });
 
 Route::prefix('business')
