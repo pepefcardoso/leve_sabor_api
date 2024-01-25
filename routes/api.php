@@ -56,17 +56,16 @@ middleware(['auth:api', 'role:admin'])
             $router->put('roles/{id}', [RoleController::class, 'update']);
             $router->delete('roles/{id}', [RoleController::class, 'destroy']);
 
-            $router->get('blog-post-category', [BlogPostCategoryController::class, 'index']);
             $router->post('blog-post-category', [BlogPostCategoryController::class, 'store']);
             $router->get('blog-post-category/{id}', [BlogPostCategoryController::class, 'show']);
             $router->put('blog-post-category/{id}', [BlogPostCategoryController::class, 'update']);
             $router->delete('blog-post-category/{id}', [BlogPostCategoryController::class, 'destroy']);
 
-            $router->get('blog-post-category-image', [BlogPostImageController::class, 'index']);
-            $router->post('blog-post-category-image', [BlogPostImageController::class, 'store']);
-            $router->get('blog-post-category-image/{id}', [BlogPostImageController::class, 'show']);
-            $router->put('blog-post-category-image/{id}', [BlogPostImageController::class, 'update']);
-            $router->delete('blog-post-category-image/{id}', [BlogPostImageController::class, 'destroy']);
+            $router->get('blog-post-image', [BlogPostImageController::class, 'index']);
+            $router->post('blog-post-image', [BlogPostImageController::class, 'store']);
+            $router->get('blog-post-image/{id}', [BlogPostImageController::class, 'show']);
+            $router->put('blog-post-image/{id}', [BlogPostImageController::class, 'update']);
+            $router->delete('blog-post-image/{id}', [BlogPostImageController::class, 'destroy']);
 
             $router->post('blog-posts', [BlogPostController::class, 'store']);
             $router->put('blog-posts/{id}', [BlogPostController::class, 'update']);
@@ -104,6 +103,7 @@ Route::group([],
         $router->get('blog-posts', [BlogPostController::class, 'index']);
         $router->get('blog-posts/{id}', [BlogPostController::class, 'show']);
         $router->get('last-blog-post', [BlogPostController::class, 'getLastPost']);
+        $router->get('blog-post-category', [BlogPostCategoryController::class, 'index']);
     });
 
 Route::prefix('business')
