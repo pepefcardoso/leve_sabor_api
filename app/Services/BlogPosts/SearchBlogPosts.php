@@ -21,6 +21,6 @@ class SearchBlogPosts
         }
 
 
-        return BlogPost::with(['categories', 'blogPostImage'])->get();
+        return BlogPost::with(['categories', 'blogPostImage', 'user'])->get();
     }
 }

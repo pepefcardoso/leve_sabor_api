@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('blog_post_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

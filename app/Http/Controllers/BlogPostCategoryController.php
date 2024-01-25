@@ -25,6 +25,7 @@ class BlogPostCategoryController extends Controller
 
         $data = $request->validate([
             'name' => 'required|string|min:3|max:30',
+            'image' => 'required|url',
         ]);
 
         $category = $registerBlogPostCategory->register($data);
@@ -45,6 +46,7 @@ class BlogPostCategoryController extends Controller
 
         $data = $request->validate([
             'name' => 'required|string|min:3|max:30',
+            'image' => 'required|url',
         ]);
 
         $category = $updateBlogPostCategory->update($data, $id);
