@@ -39,7 +39,8 @@ class RegisterBlogPost
             $imageData = data_get($data, 'image');
 
             if ($imageData) {
-                $this->registerBlogPostImage->register($imageData, $blogPost->id);
+                $response = $this->registerBlogPostImage->register($imageData, $blogPost->id);
+                throw_if(is_string($response), Exception::class, $response);
             }
 
             DB::commit();

@@ -6,6 +6,7 @@ use App\Models\Contact;
 use App\Services\Phones\DeletePhone;
 use App\Services\Phones\RegisterPhone;
 use App\Services\Phones\UpdatePhone;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateContact
@@ -38,10 +39,12 @@ class UpdateContact
             if ($phones) {
                 foreach ($phones as $phone) {
                     if (isset($phone['id'])) {
-                        $this->updatePhone->update($phone, $contact->id);
+                        $response = $this->updatePhone->update($phone, $contact->id);
+                        throw_if(is_string($response), Exception::class, $response);
                         $updatedPhoneIds[] = $phone['id'];
                     } else {
                         $newPhone = $this->registerPhone->register($phone, $contact->id);
+                        throw_if(is_string($newPhone), Exception::class, $newPhone);
                         $updatedPhoneIds[] = $newPhone->id;
                     }
                 }
@@ -51,7 +54,8 @@ class UpdateContact
 
             if ($deletedPhoneIds) {
                 foreach ($deletedPhoneIds as $phoneId) {
-                    $this->deletePhone->delete($phoneId);
+                    $response = $this->deletePhone->delete($phoneId);
+                    throw_if(is_string($response), Exception::class, $response);
                 }
             }
 

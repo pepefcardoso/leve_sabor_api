@@ -32,7 +32,8 @@ class RegisterUser
             $userImage = data_get($data, 'image');
 
             if ($userImage) {
-                $this->registerUserImage->register($userImage, $user->id);
+                $response = $this->registerUserImage->register($userImage, $user->id);
+                throw_if(is_string($response), Exception::class, $response);
             }
 
             DB::commit();

@@ -31,7 +31,8 @@ class DeleteUserBusiness
 
             if ($businessImage) {
                 foreach ($businessImage as $image) {
-                    $this->deleteBusinessImage->delete($image->id);
+                    $response = $this->deleteBusinessImage->delete($image->id);
+                    throw_if(is_string($response), Exception::class, $response);
                 }
             }
 

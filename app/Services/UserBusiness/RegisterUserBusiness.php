@@ -55,13 +55,15 @@ class RegisterUserBusiness
             $address = data_get($data, 'address');
 
             if ($address) {
-                $this->registerAddress->register($address, $userBusiness->id);
+                $response = $this->registerAddress->register($address, $userBusiness->id);
+                throw_if(is_string($response), Exception::class, $response);
             }
 
             $contact = data_get($data, 'contact');
 
             if ($contact) {
-                $this->registerContact->register($contact, $userBusiness->id);
+                $response = $this->registerContact->register($contact, $userBusiness->id);
+                throw_if(is_string($response), Exception::class, $response);
             }
 
             $openingHours = data_get($data, 'opening_hours');
@@ -75,7 +77,8 @@ class RegisterUserBusiness
                     if ($weekday !== null) {
                         $usedWeekdays[] = $weekday;
                     }
-                    $this->registerOpeningHours->register($openingHour, $userBusiness->id);
+                    $response = $this->registerOpeningHours->register($openingHour, $userBusiness->id);
+                    throw_if(is_string($response), Exception::class, $response);
                 }
             }
 
@@ -83,7 +86,8 @@ class RegisterUserBusiness
 
             if ($images) {
                 foreach ($images as $image) {
-                    $this->registerBusinessImage->register($image, $userBusiness->id);
+                    $response = $this->registerBusinessImage->register($image, $userBusiness->id);
+                    throw_if(is_string($response), Exception::class, $response);
                 }
             }
 

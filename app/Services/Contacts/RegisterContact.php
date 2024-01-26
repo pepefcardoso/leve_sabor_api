@@ -22,14 +22,15 @@ class RegisterContact
 
             $contact = Contact::create($data);
 
-            $phones = $data['phones'] ?? [];
+            $phones = data_get($data, 'phones');
 
-            if (count($phones) > 2) {
-                throw new \Exception("A contact can have at most 2 phones.");
-            }
+            throw_if(empty($phones), new \Exception("A contact must have at least 1 phone."));
+
+            throw_if(count($phones) > 2, new \Exception("A contact can have a maximum of 2 phones."));
 
             foreach ($phones as $phone) {
-                $this->registerPhone->register($phone, $contact->id);
+                $response = $this->registerPhone->register($phone, $contact->id);
+                throw_if(is_string($response), \Exception::class, $response);
             }
 
             DB::commit();

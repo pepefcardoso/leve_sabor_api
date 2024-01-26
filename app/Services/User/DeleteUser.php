@@ -26,7 +26,8 @@ class DeleteUser
             $userImage = $user->userImage;
 
             if ($userImage) {
-                $this->deleteUserImage->delete($userImage->id);
+                $response = $this->deleteUserImage->delete($userImage->id);
+                throw_if(is_string($response), Exception::class, $response);
             }
 
             $user->delete();

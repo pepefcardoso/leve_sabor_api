@@ -79,23 +79,29 @@ class UpdateUserBusiness
             $address = data_get($data, 'address');
             if ($address) {
                 if (isset($address['id'])) {
-                    $this->updateAddress->update($address, $userBusiness->id);
+                    $response = $this->updateAddress->update($address, $userBusiness->id);
+                    throw_if(is_string($response), Exception::class, $response);
                 } else {
-                    $this->registerAddress->register($address, $userBusiness->id);
+                    $response = $this->registerAddress->register($address, $userBusiness->id);
+                    throw_if(is_string($response), Exception::class, $response);
                 }
             } else {
-                $this->deleteAddress->delete($userBusiness->id);
+                $response = $this->deleteAddress->delete($userBusiness->id);
+                throw_if(is_string($response), Exception::class, $response);
             }
 
             $contact = data_get($data, 'contact');
             if ($contact) {
                 if (isset($contact['id'])) {
-                    $this->updateContact->update($contact, $userBusiness->id);
+                    $response = $this->updateContact->update($contact, $userBusiness->id);
+                    throw_if(is_string($response), Exception::class, $response);
                 } else {
-                    $this->registerContact->register($contact, $userBusiness->id);
+                    $response = $this->registerContact->register($contact, $userBusiness->id);
+                    throw_if(is_string($response), Exception::class, $response);
                 }
             } else {
-                $this->deleteContact->delete($userBusiness->id);
+                $response = $this->deleteContact->delete($userBusiness->id);
+                throw_if(is_string($response), Exception::class, $response);
             }
 
             $openingHours = data_get($data, 'opening_hours');
@@ -111,13 +117,16 @@ class UpdateUserBusiness
                     }
 
                     if (isset($openingHour['id'])) {
-                        $this->updateOpeningHours->update($openingHour, $userBusiness->id);
+                        $response = $this->updateOpeningHours->update($openingHour, $userBusiness->id);
+                        throw_if(is_string($response), Exception::class, $response);
                     } else {
-                        $this->registerOpeningHours->register($openingHour, $userBusiness->id);
+                        $response = $this->registerOpeningHours->register($openingHour, $userBusiness->id);
+                        throw_if(is_string($response), Exception::class, $response);
                     }
                 }
             } else {
-                $this->deleteOpeningHours->delete($userBusiness->id);
+                $response = $this->deleteOpeningHours->delete($userBusiness->id);
+                throw_if(is_string($response), Exception::class, $response);
             }
 
             $currentImagesIds = $userBusiness->businessImages->pluck('id')->toArray();
@@ -132,11 +141,13 @@ class UpdateUserBusiness
                     $imageFile = data_get($image, 'file');
 
                     if ($imageFile && !$imageId) {
-                        $newImage = $this->registerBusinessImage->register($image, $userBusiness->id);
+                        $newImage = $response = $this->registerBusinessImage->register($image, $userBusiness->id);
+                        throw_if(is_string($response), Exception::class, $response);
                         $updatedImagesIds[] = $newImage->id;
 
                     } elseif ($imageFile && $imageId) {
-                        $this->updateBusinessImage->update($image, $imageId, $userBusiness->id);
+                        $response = $this->updateBusinessImage->update($image, $imageId, $userBusiness->id);
+                        throw_if(is_string($response), Exception::class, $response);
                         $updatedImagesIds[] = $imageId;
                     }
                 }
@@ -146,7 +157,8 @@ class UpdateUserBusiness
 
             if ($deletedImagesIds) {
                 foreach ($deletedImagesIds as $imageId) {
-                    $this->deleteBusinessImage->delete($imageId);
+                    $response = $this->deleteBusinessImage->delete($imageId);
+                    throw_if(is_string($response), Exception::class, $response);
                 }
             }
 

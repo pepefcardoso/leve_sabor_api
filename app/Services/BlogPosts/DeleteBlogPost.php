@@ -26,7 +26,8 @@ class DeleteBlogPost
             $blogPostImage = $blogPost->blogPostImage;
 
             if ($blogPostImage) {
-                $this->deleteBlogPostImage->delete($blogPostImage->id);
+                $response = $this->deleteBlogPostImage->delete($blogPostImage->id);
+                throw_if(is_string($response), Exception::class, $response);
             }
 
             $blogPost->delete();

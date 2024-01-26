@@ -41,9 +41,11 @@ class UpdateBlogPost
 
             if ($newImageFile && !$newImageId) {
                 if ($currentBlogPostImage) {
-                    $this->updateBlogPostImage->update($newImageData, $currentBlogPostImage->id, $blogPost->id);
+                    $response = $this->updateBlogPostImage->update($newImageData, $currentBlogPostImage->id, $blogPost->id);
+                    throw_if(is_string($response), Exception::class, $response);
                 } else {
-                    $this->registerBlogPostImage->register($newImageData, $blogPost->id);
+                    $response = $this->registerBlogPostImage->register($newImageData, $blogPost->id);
+                    throw_if(is_string($response), Exception::class, $response);
                 }
             }
 

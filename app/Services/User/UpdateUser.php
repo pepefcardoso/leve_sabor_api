@@ -39,16 +39,20 @@ class UpdateUser
             $newImageFile = data_get($newImageData, 'file');
 
             if ($currentUserImage && !$newImageData) {
-                $this->deleteUserImage->delete($currentUserImage->id);
+                $response = $this->deleteUserImage->delete($currentUserImage->id);
+                throw_if(is_string($response), Exception::class, $response);
             } elseif ($newImageFile && !$newImageId) {
                 if ($currentUserImage) {
-                    $this->updateUserImage->update($newImageData, $currentUserImage->id, $userId);
+                    $response = $this->updateUserImage->update($newImageData, $currentUserImage->id, $userId);
+                    throw_if(is_string($response), Exception::class, $response);
                 } else {
-                    $this->registerUserImage->register($newImageData, $userId);
+                    $response = $this->registerUserImage->register($newImageData, $userId);
+                    throw_if(is_string($response), Exception::class, $response);
                 }
             } elseif (!$newImageFile && !$newImageId) {
                 if ($currentUserImage) {
-                    $this->deleteUserImage->delete($currentUserImage->id);
+                    $response = $this->deleteUserImage->delete($currentUserImage->id);
+                    throw_if(is_string($response), Exception::class, $response);
                 }
             }
 
