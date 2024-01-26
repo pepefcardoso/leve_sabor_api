@@ -10,6 +10,6 @@ class ShowBlogPost
     {
         $blogPost = BlogPost::findOrFail($id);
 
-        return $blogPost->load('user', 'blogPostImage', 'categories');
+        return $blogPost->load('user.userImage', 'blogPostImage', 'categories');
     }
 }
