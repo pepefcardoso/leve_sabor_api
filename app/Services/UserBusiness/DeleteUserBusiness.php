@@ -6,6 +6,7 @@ use App\Models\Business;
 use App\Services\BusinessImages\DeleteBusinessImage;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class DeleteUserBusiness
 {
@@ -42,6 +43,9 @@ class DeleteUserBusiness
 
             return $userBusiness;
         } catch (Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        } catch (Throwable $e) {
             DB::rollBack();
             return $e->getMessage();
         }

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\UserImages\RegisterUserImage;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class RegisterUser
 {
@@ -40,6 +41,9 @@ class RegisterUser
 
             return $token;
         } catch (Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        } catch (Throwable $e) {
             DB::rollBack();
             return $e->getMessage();
         }

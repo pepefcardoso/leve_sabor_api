@@ -3,6 +3,7 @@
 namespace App\Services\CookingStyle;
 
 use App\Models\CookingStyle;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class DeleteCookingStyle
@@ -14,9 +15,11 @@ class DeleteCookingStyle
         try {
             $cookingStyle = CookingStyle::findOrFail($id);
 
-            if ($cookingStyle->business()->exists()) {
-                throw new \Exception("Cannot delete this diet. It is associated with one or more businesses.");
-            }
+            throw_if(
+                $cookingStyle->business()->exists(),
+                Exception::class,
+                "Cannot delete this diet. It is associated with one or more businesses."
+            );
 
             $cookingStyle->delete();
 
@@ -26,8 +29,9 @@ class DeleteCookingStyle
         } catch (\Exception $e) {
             DB::rollBack();
             return $e->getMessage();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return $e->getMessage();
         }
-
-
     }
 }

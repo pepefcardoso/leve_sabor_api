@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\UserImages\DeleteUserImage;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class DeleteUser
 {
@@ -37,6 +38,9 @@ class DeleteUser
             return $user;
         } catch (Exception $e) {
             DB::rollback();
+            return $e->getMessage();
+        } catch (Throwable $e) {
+            DB::rollBack();
             return $e->getMessage();
         }
     }

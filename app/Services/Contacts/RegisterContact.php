@@ -5,6 +5,7 @@ namespace App\Services\Contacts;
 use App\Models\Contact;
 use App\Services\Phones\RegisterPhone;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class RegisterContact
 {
@@ -38,6 +39,9 @@ class RegisterContact
             return $contact;
         } catch (\Exception $e) {
             DB::rollback();
+            return $e->getMessage();
+        } catch (Throwable $e) {
+            DB::rollBack();
             return $e->getMessage();
         }
     }

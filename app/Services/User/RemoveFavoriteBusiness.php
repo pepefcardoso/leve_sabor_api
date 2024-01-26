@@ -18,7 +18,7 @@ class RemoveFavoriteBusiness
 
             DB::commit();
 
-            return response()->json(['message' => 'Business removed from favorites.'], 200);
+            return response()->json(['message' => 'Business removed from favorites.']);
         } catch (\Exception $e) {
             DB::rollBack();
 

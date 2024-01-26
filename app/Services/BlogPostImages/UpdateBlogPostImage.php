@@ -6,6 +6,8 @@ use App\Models\BlogPostImage;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
+use Throwable;
 
 class UpdateBlogPostImage
 {
@@ -27,7 +29,7 @@ class UpdateBlogPostImage
             if ($path && $blogPostImage->name !== $newName) {
                 Storage::disk('s3')->delete(BlogPostImage::$S3Directory . '/' . $blogPostImage->name);
             } else {
-                throw new Exception('Error uploading image.');
+                throw new RuntimeException('Error uploading image.');
             }
 
             $blogPostImage->fill([
@@ -42,6 +44,9 @@ class UpdateBlogPostImage
 
             return $blogPostImage;
         } catch (Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        } catch (Throwable $e) {
             DB::rollBack();
             return $e->getMessage();
         }

@@ -3,6 +3,7 @@
 namespace App\Services\Addresses;
 
 use App\Models\Address;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UpdateAddress
@@ -20,7 +21,7 @@ class UpdateAddress
             DB::commit();
 
             return $address;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
             return $e->getMessage();
         }

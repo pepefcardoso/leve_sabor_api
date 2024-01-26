@@ -167,4 +167,8 @@ Route::prefix('users')
         $router->post('{id}/favorites/{businessId}', [UserController::class, 'addToFavorites']);
         $router->delete('{id}/favorites/{businessId}', [UserController::class, 'removeFromFavorites']);
         $router->get('{id}/favorites', [UserController::class, 'showFavorites']);
+
+        $router->post('blog-posts/favorites/{id}', [BlogPostController::class, 'addToFavorites']);
+        $router->delete('blog-posts/favorites/{id}', [BlogPostController::class, 'removeFromFavorites']);
+        $router->get('blog-posts/favorites', [BlogPostController::class, 'showFavorites']);
     });

@@ -12,10 +12,8 @@ class TemporaryUrlBlogPostImage
     public function temporaryUrl(BlogPostImage $blogPostImage)
     {
 
-        $url = Storage::disk('s3')->temporaryUrl(
+        return Storage::disk('s3')->temporaryUrl(
             $blogPostImage->path, Carbon::now()->addMinutes(5)
         );
-
-        return $url;
     }
 }

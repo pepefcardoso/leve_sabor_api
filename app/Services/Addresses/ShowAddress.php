@@ -6,10 +6,8 @@ use App\Models\Address;
 
 class ShowAddress
 {
-    public function show(int $id)
+    public function show(int $id): ?Address
     {
-        $address = Address::findOrFail($id);
-
-        return $address;
+        return Address::findOrFail($id);
     }
 }

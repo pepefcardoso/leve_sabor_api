@@ -9,6 +9,5 @@ class ShowBlogPostImage
     public function show(int $id)
     {
         return BlogPostImage::findOrfail($id);
-
     }
 }

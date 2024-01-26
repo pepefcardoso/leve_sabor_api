@@ -13,7 +13,7 @@ class LogoutUser
         if ($user) {
             $user->token()->revoke();
 
-            return response()->json(['message' => 'User logged out successfully'], 200);
+            return response()->json(['message' => 'User logged out successfully']);
         } else {
             return response()->json(['error' => 'User not found'], 404);
         }

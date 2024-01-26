@@ -6,6 +6,8 @@ use App\Models\UserImage;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
+use Throwable;
 
 class UpdateUserImage
 {
@@ -27,7 +29,7 @@ class UpdateUserImage
             if ($path && $userImage->name !== $newName) {
                 Storage::disk('s3')->delete(UserImage::$S3Directory . '/' . $userImage->name);
             } else {
-                throw new Exception('Error uploading image.');
+                throw new RuntimeException('Error uploading image.');
             }
 
             $userImage->fill([
@@ -42,6 +44,9 @@ class UpdateUserImage
 
             return $userImage;
         } catch (Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        } catch (Throwable $e) {
             DB::rollBack();
             return $e->getMessage();
         }

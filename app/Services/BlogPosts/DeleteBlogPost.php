@@ -6,6 +6,7 @@ use App\Models\BlogPost;
 use App\Services\BlogPostImages\DeleteBlogPostImage;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class DeleteBlogPost
 {
@@ -37,6 +38,9 @@ class DeleteBlogPost
             return $blogPost;
         } catch (Exception $e) {
             DB::rollback();
+            return $e->getMessage();
+        } catch (Throwable $e) {
+            DB::rollBack();
             return $e->getMessage();
         }
     }

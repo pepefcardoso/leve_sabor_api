@@ -3,7 +3,9 @@
 namespace App\Services\Diets;
 
 use App\Models\Diet;
+use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class DeleteDiet
 {
@@ -14,9 +16,11 @@ class DeleteDiet
         try {
             $diet = Diet::findOrFail($id);
 
-            if ($diet->business()->exists()) {
-                throw new \Exception("Cannot delete this diet. It is associated with one or more businesses.");
-            }
+            throw_if(
+                $diet->business()->exists(),
+                Exception::class,
+                "Cannot delete this diet. It is associated with one or more businesses."
+            );
 
             $diet->delete();
 
@@ -25,6 +29,9 @@ class DeleteDiet
             return $diet;
         } catch (\Exception $e) {
             DB::rollback();
+            return $e->getMessage();
+        } catch (Throwable $e) {
+            DB::rollBack();
             return $e->getMessage();
         }
     }

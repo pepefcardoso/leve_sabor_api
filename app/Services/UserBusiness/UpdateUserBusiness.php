@@ -17,6 +17,7 @@ use App\Services\OpeningHours\RegisterOpeningHours;
 use App\Services\OpeningHours\UpdateOpeningHours;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class UpdateUserBusiness
 {
@@ -166,6 +167,9 @@ class UpdateUserBusiness
 
             return $userBusiness;
         } catch (Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        } catch (Throwable $e) {
             DB::rollBack();
             return $e->getMessage();
         }

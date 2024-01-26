@@ -6,6 +6,7 @@ use App\Models\BusinessImage;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class RegisterBusinessImage
 {
@@ -50,6 +51,9 @@ class RegisterBusinessImage
         } catch (Exception $e) {
             DB::rollBack();
 
+            return $e->getMessage();
+        } catch (Throwable $e) {
+            DB::rollBack();
             return $e->getMessage();
         }
     }

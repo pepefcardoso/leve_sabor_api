@@ -3,7 +3,9 @@
 namespace App\Services\Categories;
 
 use App\Models\Category;
+use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class DeleteCategory
 {
@@ -14,9 +16,7 @@ class DeleteCategory
         try {
             $category = Category::findOrFail($id);
 
-            if ($category->business()->exists()) {
-                throw new \Exception("Cannot delete this diet. It is associated with one or more businesses.");
-            }
+            throw_if($category->business()->exists(), Exception::class, "Cannot delete this diet. It is associated with one or more businesses.");
 
             $category->delete();
 
@@ -24,6 +24,9 @@ class DeleteCategory
 
             return $category;
         } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        } catch (Throwable $e) {
             DB::rollBack();
             return $e->getMessage();
         }

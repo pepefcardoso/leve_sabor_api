@@ -6,6 +6,7 @@ use App\Models\BlogPost;
 use App\Services\BlogPostImages\RegisterBlogPostImage;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class RegisterBlogPost
 {
@@ -47,6 +48,9 @@ class RegisterBlogPost
 
             return $blogPost;
         } catch (Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        } catch (Throwable $e) {
             DB::rollBack();
             return $e->getMessage();
         }

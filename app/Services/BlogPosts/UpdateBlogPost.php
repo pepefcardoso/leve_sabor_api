@@ -7,6 +7,7 @@ use App\Services\BlogPostImages\RegisterBlogPostImage;
 use App\Services\BlogPostImages\UpdateBlogPostImage;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class UpdateBlogPost
 {
@@ -54,6 +55,9 @@ class UpdateBlogPost
             return $blogPost;
         } catch (Exception $e) {
             DB::rollback();
+            return $e->getMessage();
+        } catch (Throwable $e) {
+            DB::rollBack();
             return $e->getMessage();
         }
     }

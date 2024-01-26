@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Enums\BlogPostStatusEnum;
 use App\Models\BlogPost;
+use App\Models\User;
+use App\Services\BlogPosts\AddToFavorites;
 use App\Services\BlogPosts\DeleteBlogPost;
 use App\Services\BlogPosts\GetLastBlogPost;
 use App\Services\BlogPosts\RegisterBlogPost;
+use App\Services\BlogPosts\RemoveFromFavorites;
 use App\Services\BlogPosts\SearchBlogPosts;
 use App\Services\BlogPosts\ShowBlogPost;
+use App\Services\BlogPosts\ShowFavorites;
 use App\Services\BlogPosts\UpdateBlogPost;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class BlogPostController extends Controller
@@ -29,6 +32,12 @@ class BlogPostController extends Controller
         return response()->json($blogPosts);
     }
 
+    public function show(ShowBlogPost $showBlogPost, int $id): JsonResponse
+    {
+        $blogPost = $showBlogPost->show($id);
+
+        return response()->json($blogPost);
+    }
 
     public function store(Request $request, RegisterBlogPost $registerBlogPost): JsonResponse
     {
@@ -37,13 +46,6 @@ class BlogPostController extends Controller
         $data = $request->validate(BlogPost::rules());
 
         $blogPost = $registerBlogPost->register($data);
-
-        return response()->json($blogPost);
-    }
-
-    public function show(ShowBlogPost $showBlogPost, int $id): JsonResponse
-    {
-        $blogPost = $showBlogPost->show($id);
 
         return response()->json($blogPost);
     }
@@ -75,4 +77,30 @@ class BlogPostController extends Controller
         return response()->json($blogPost);
     }
 
+    public function addToFavorites(AddToFavorites $service, int $id): JsonResponse
+    {
+        $this->authorize('update', User::class);
+
+        $response = $service->add($id);
+
+        return response()->json($response);
+    }
+
+    public function removeFromFavorites(RemoveFromFavorites $service, int $id): JsonResponse
+    {
+        $this->authorize('update', User::class);
+
+        $response = $service->remove($id);
+
+        return response()->json($response);
+    }
+
+    public function showFavorites(ShowFavorites $service): JsonResponse
+    {
+        $this->authorize('view', User::class);
+
+        $response = $service->index();
+
+        return response()->json($response);
+    }
 }

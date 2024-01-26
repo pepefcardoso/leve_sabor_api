@@ -35,6 +35,9 @@ class RegisterUserImage
         } catch (Exception $e) {
             DB::rollBack();
             return $e->getMessage();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return $e->getMessage();
         }
     }
 }

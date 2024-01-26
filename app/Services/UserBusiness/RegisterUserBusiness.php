@@ -9,6 +9,7 @@ use App\Services\Contacts\RegisterContact;
 use App\Services\OpeningHours\RegisterOpeningHours;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class RegisterUserBusiness
 {
@@ -95,6 +96,9 @@ class RegisterUserBusiness
 
             return $userBusiness;
         } catch (Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        } catch (Throwable $e) {
             DB::rollBack();
             return $e->getMessage();
         }

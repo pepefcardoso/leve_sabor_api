@@ -10,6 +10,6 @@ class ShowUser
     {
         $user = User::findOrFail($id);
 
-        return $user->load('role', 'userImage', 'userImage');
+        return $user->load('role', 'userImage');
     }
 }

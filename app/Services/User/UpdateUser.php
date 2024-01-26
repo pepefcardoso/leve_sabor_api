@@ -8,6 +8,7 @@ use App\Services\UserImages\RegisterUserImage;
 use App\Services\UserImages\UpdateUserImage;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class UpdateUser
 {
@@ -61,6 +62,9 @@ class UpdateUser
             return $user;
         } catch (Exception $e) {
             DB::rollback();
+            return $e->getMessage();
+        } catch (Throwable $e) {
+            DB::rollBack();
             return $e->getMessage();
         }
     }

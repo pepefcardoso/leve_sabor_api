@@ -78,6 +78,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Business::class, 'rl_user_favorite_businesses', 'user_id', 'business_id');
     }
 
+    public function favoriteBlogPosts()
+    {
+        return $this->belongsToMany(BlogPost::class, 'rl_user_favorite_blog_posts', 'user_id', 'blog_post_id');
+    }
+
     public function blogPosts()
     {
         return $this->hasMany(BlogPost::class);

@@ -8,6 +8,7 @@ use App\Services\Phones\RegisterPhone;
 use App\Services\Phones\UpdatePhone;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class UpdateContact
 {
@@ -64,6 +65,9 @@ class UpdateContact
             return $contact->load('phone');
         } catch (\Exception $e) {
             DB::rollback();
+            return $e->getMessage();
+        } catch (Throwable $e) {
+            DB::rollBack();
             return $e->getMessage();
         }
     }
