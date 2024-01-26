@@ -18,7 +18,6 @@ class BlogPostCategoryFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->word(),
-            'image' => $this->faker->url(),
         ];
     }
 }

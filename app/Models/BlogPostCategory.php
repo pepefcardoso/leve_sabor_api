@@ -11,7 +11,6 @@ class BlogPostCategory extends Model
 
     protected $fillable = [
         'name',
-        'image'
     ];
 
     public function blogPosts()
