@@ -37,11 +37,6 @@ class BlogPost extends Model
         ];
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function categories()
     {
         return $this->belongsToMany(BlogPostCategory::class, 'rl_blog_post_categories', 'blog_post_id', 'blog_post_category_id');
@@ -54,9 +49,22 @@ class BlogPost extends Model
 
     public function favorite(): Attribute
     {
-        return Attribute::make(
-            fn() => $this->favoritedBy()->where('user_id', auth()->id())->exists()
+        return new Attribute(
+            function () {
+                $user = auth('api')->user();
+
+                if (!$user) {
+                    return false;
+                }
+
+                return $this->favoritedBy()->where('user_id', $user->id)->exists();
+            }
         );
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function favoritedBy()

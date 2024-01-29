@@ -2,15 +2,22 @@
 
 namespace App\Services\BlogPosts;
 
+use App\Models\BlogPost;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class AddToFavorites
 {
-    public function add(int $postId): string|JsonResponse
+    private ShowBlogPost $showBlogPost;
+
+    public function __construct(ShowBlogPost $showBlogPost)
+    {
+        $this->showBlogPost = $showBlogPost;
+    }
+
+    public function add(int $postId): BlogPost|string
     {
         DB::beginTransaction();
 
@@ -21,11 +28,11 @@ class AddToFavorites
 
             $user = User::findOrFail($userId);
 
-            $user->favoriteBusinesses()->attach($postId);
+            $user->favoriteBlogPosts()->attach($postId);
 
             DB::commit();
 
-            return response()->json(['message' => 'Business added to favorites.']);
+            return $this->showBlogPost->show($postId);
         } catch (Exception $e) {
             DB::rollBack();
             return $e->getMessage();

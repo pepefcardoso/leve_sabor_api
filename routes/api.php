@@ -55,21 +55,6 @@ middleware(['auth:api', 'role:admin'])
             $router->get('roles/{id}', [RoleController::class, 'show']);
             $router->put('roles/{id}', [RoleController::class, 'update']);
             $router->delete('roles/{id}', [RoleController::class, 'destroy']);
-
-            $router->post('blog-post-category', [BlogPostCategoryController::class, 'store']);
-            $router->get('blog-post-category/{id}', [BlogPostCategoryController::class, 'show']);
-            $router->put('blog-post-category/{id}', [BlogPostCategoryController::class, 'update']);
-            $router->delete('blog-post-category/{id}', [BlogPostCategoryController::class, 'destroy']);
-
-            $router->get('blog-post-image', [BlogPostImageController::class, 'index']);
-            $router->post('blog-post-image', [BlogPostImageController::class, 'store']);
-            $router->get('blog-post-image/{id}', [BlogPostImageController::class, 'show']);
-            $router->put('blog-post-image/{id}', [BlogPostImageController::class, 'update']);
-            $router->delete('blog-post-image/{id}', [BlogPostImageController::class, 'destroy']);
-
-            $router->post('blog-posts', [BlogPostController::class, 'store']);
-            $router->put('blog-posts/{id}', [BlogPostController::class, 'update']);
-            $router->delete('blog-posts/{id}', [BlogPostController::class, 'destroy']);
         });
 
 Route::group([],
@@ -99,11 +84,6 @@ Route::group([],
         $router->get('business/{businessId}/ratings', [ReviewsController::class, 'ratings']);
 
         $router->get('businesses', [BusinessController::class, 'index']);
-
-        $router->get('blog-posts', [BlogPostController::class, 'index']);
-        $router->get('blog-posts/{id}', [BlogPostController::class, 'show']);
-        $router->get('last-blog-post', [BlogPostController::class, 'getLastPost']);
-        $router->get('blog-post-category', [BlogPostCategoryController::class, 'index']);
     });
 
 Route::prefix('business')
@@ -167,8 +147,39 @@ Route::prefix('users')
         $router->post('{id}/favorites/{businessId}', [UserController::class, 'addToFavorites']);
         $router->delete('{id}/favorites/{businessId}', [UserController::class, 'removeFromFavorites']);
         $router->get('{id}/favorites', [UserController::class, 'showFavorites']);
-
-        $router->post('blog-posts/favorites/{id}', [BlogPostController::class, 'addToFavorites']);
-        $router->delete('blog-posts/favorites/{id}', [BlogPostController::class, 'removeFromFavorites']);
-        $router->get('blog-posts/favorites', [BlogPostController::class, 'showFavorites']);
     });
+
+Route::prefix('blog-posts')
+    ->group(function (Router $router) {
+        $router->middleware(['auth:api', 'role'])
+            ->group(function (Router $router) {
+                $router->get('categories', [BlogPostCategoryController::class, 'index']);
+                $router->get('favorites', [BlogPostController::class, 'showFavorites']);
+                $router->post('favorites/{id}', [BlogPostController::class, 'addToFavorites']);
+                $router->delete('favorites/{id}', [BlogPostController::class, 'removeFromFavorites']);
+            });
+
+        $router->middleware(['auth:api', 'role:admin'])
+            ->group(function (Router $router) {
+                $router->post('categories', [BlogPostCategoryController::class, 'store']);
+                $router->get('categories/{id}', [BlogPostCategoryController::class, 'show']);
+                $router->put('categories/{id}', [BlogPostCategoryController::class, 'update']);
+                $router->delete('categories/{id}', [BlogPostCategoryController::class, 'destroy']);
+
+                $router->get('image', [BlogPostImageController::class, 'index']);
+                $router->post('image', [BlogPostImageController::class, 'store']);
+                $router->get('image/{id}', [BlogPostImageController::class, 'show']);
+                $router->put('image/{id}', [BlogPostImageController::class, 'update']);
+                $router->delete('image/{id}', [BlogPostImageController::class, 'destroy']);
+
+                $router->post('', [BlogPostController::class, 'store']);
+                $router->put('{id}', [BlogPostController::class, 'update']);
+                $router->delete('{id}', [BlogPostController::class, 'destroy']);
+            });
+
+        $router->get('latest', [BlogPostController::class, 'getLastPost']);
+        $router->get('', [BlogPostController::class, 'index']);
+        $router->get('{id}', [BlogPostController::class, 'show']);
+
+    });
+

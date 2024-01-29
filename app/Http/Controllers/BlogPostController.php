@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\BlogPostStatusEnum;
 use App\Models\BlogPost;
-use App\Models\User;
 use App\Services\BlogPosts\AddToFavorites;
 use App\Services\BlogPosts\DeleteBlogPost;
 use App\Services\BlogPosts\GetLastBlogPost;
@@ -79,8 +78,6 @@ class BlogPostController extends Controller
 
     public function addToFavorites(AddToFavorites $service, int $id): JsonResponse
     {
-        $this->authorize('update', User::class);
-
         $response = $service->add($id);
 
         return response()->json($response);
@@ -88,8 +85,6 @@ class BlogPostController extends Controller
 
     public function removeFromFavorites(RemoveFromFavorites $service, int $id): JsonResponse
     {
-        $this->authorize('update', User::class);
-
         $response = $service->remove($id);
 
         return response()->json($response);
@@ -97,8 +92,6 @@ class BlogPostController extends Controller
 
     public function showFavorites(ShowFavorites $service): JsonResponse
     {
-        $this->authorize('view', User::class);
-
         $response = $service->index();
 
         return response()->json($response);

@@ -2,15 +2,22 @@
 
 namespace App\Services\BlogPosts;
 
+use App\Models\BlogPost;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class RemoveFromFavorites
 {
-    public function remove(int $postId): string|JsonResponse
+    private ShowBlogPost $showBlogPost;
+
+    public function __construct(ShowBlogPost $showBlogPost)
+    {
+        $this->showBlogPost = $showBlogPost;
+    }
+
+    public function remove(int $postId): BlogPost|string
     {
         DB::beginTransaction();
 
@@ -25,7 +32,7 @@ class RemoveFromFavorites
 
             DB::commit();
 
-            return response()->json(['message' => 'Business removed from favorites.']);
+            return $this->showBlogPost->show($postId);
         } catch (Exception $e) {
             DB::rollBack();
             return $e->getMessage();
