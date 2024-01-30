@@ -18,7 +18,7 @@ class ShowFavorites
 
             $user = User::findOrFail($userId);
 
-            $favoriteBlogPosts = $user->favoriteBlogPosts()->get();
+            $favoriteBlogPosts = $user->favoriteBlogPosts()->get()->load('categories', 'blogPostImage');
 
             return response()->json($favoriteBlogPosts);
         } catch (Exception $e) {

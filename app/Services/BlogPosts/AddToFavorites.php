@@ -2,7 +2,6 @@
 
 namespace App\Services\BlogPosts;
 
-use App\Models\BlogPost;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +16,7 @@ class AddToFavorites
         $this->showBlogPost = $showBlogPost;
     }
 
-    public function add(int $postId): BlogPost|string
+    public function add(int $postId): bool|string
     {
         DB::beginTransaction();
 
@@ -32,7 +31,7 @@ class AddToFavorites
 
             DB::commit();
 
-            return $this->showBlogPost->show($postId);
+            return $user->favoriteBlogPosts()->where('blog_post_id', $postId)->exists();
         } catch (Exception $e) {
             DB::rollBack();
             return $e->getMessage();

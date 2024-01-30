@@ -17,7 +17,7 @@ class RemoveFromFavorites
         $this->showBlogPost = $showBlogPost;
     }
 
-    public function remove(int $postId): BlogPost|string
+    public function remove(int $postId): bool|string
     {
         DB::beginTransaction();
 
@@ -32,7 +32,7 @@ class RemoveFromFavorites
 
             DB::commit();
 
-            return $this->showBlogPost->show($postId);
+            return $user->favoriteBlogPosts()->where('blog_post_id', $postId)->exists();
         } catch (Exception $e) {
             DB::rollBack();
             return $e->getMessage();

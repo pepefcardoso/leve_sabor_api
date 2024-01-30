@@ -83,7 +83,6 @@ class UserController extends Controller
 
     public function show(ShowUser $showUser, int $id): JsonResponse
     {
-        $this->authorize('view', User::class);
 
         $user = $showUser->show($id);
 

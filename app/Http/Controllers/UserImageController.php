@@ -25,7 +25,6 @@ class UserImageController extends Controller
 
     public function store(Request $request, RegisterUserImage $registerUserImage, int $userId): JsonResponse
     {
-        $this->authorize('create', User::class);
 
         $data = $request->validate(UserImage::rules());
 
