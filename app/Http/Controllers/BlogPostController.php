@@ -22,6 +22,7 @@ class BlogPostController extends Controller
     public function index(Request $request, SearchBlogPosts $searchBlogPosts): JsonResponse
     {
         $data = $request->validate([
+            'title' => 'nullable|string|max:255',
             'status' => 'nullable|array',
             'status.*' => ['nullable', 'string', Rule::in(BlogPostStatusEnum::cases()),],
         ]);

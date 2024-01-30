@@ -13,6 +13,9 @@ class SearchBlogPosts
         foreach ($filters as $key => $value) {
             if ($value !== null) {
                 switch ($key) {
+                    case 'title':
+                        $query->where('title', 'like', '%' . $value . '%');
+                        break;
                     case 'status':
                         $query->whereIn('status', $value);
                         break;
@@ -20,7 +23,6 @@ class SearchBlogPosts
             }
         }
 
-
-        return BlogPost::with(['categories', 'blogPostImage', 'user.userImage'])->get();
+        return $query->with(['categories', 'blogPostImage'])->get();
     }
 }
