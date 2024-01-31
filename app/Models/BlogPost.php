@@ -27,8 +27,8 @@ class BlogPost extends Model
     static public function rules()
     {
         return [
-            'title' => 'required|string|min:3|max:1000',
-            'description' => 'required|string|min:3|max:150',
+            'title' => 'required|string|min:3|max:100',
+            'description' => 'required|string|min:3|max:200',
             'content' => 'required|string|min:3|max:5000',
             'status' => ['required', Rule::in(BlogPostStatusEnum::cases())],
             'categories' => 'required|array',

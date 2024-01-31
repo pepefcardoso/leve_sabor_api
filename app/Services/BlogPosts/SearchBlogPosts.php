@@ -23,6 +23,6 @@ class SearchBlogPosts
             }
         }
 
-        return $query->with(['categories', 'blogPostImage'])->get();
+        return $query->with(['categories', 'blogPostImage', 'user'])->get();
     }
 }
